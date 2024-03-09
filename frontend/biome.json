@@ -38,8 +38,7 @@
       "indentWidth": 2,
       "lineWidth": 100,
       "quoteProperties": "asNeeded"
-    },
-    "globals": ["expect", "describe", "it", "test", "jest", "beforeEach", "afterEach", "JSX"]
+    }
   },
   "linter": {
     "enabled": true,
