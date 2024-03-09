@@ -5,7 +5,7 @@ export const test = base.extend<{
   context: BrowserContext;
   extensionId: string;
 }>({
-  context: async (_, use) => {
+  context: async ({}, use) => {
     const pathToExtension = path.join(__dirname, '../../build/chrome-mv3-prod');
     const context = await chromium.launchPersistentContext('', {
       headless: true,
@@ -16,13 +16,6 @@ export const test = base.extend<{
     });
     await use(context);
     await context.close();
-  },
-  extensionId: async ({ context }, use) => {
-    let [background] = context.serviceWorkers();
-    if (!background) background = await context.waitForEvent('serviceworker');
-
-    const extensionId = background.url().split('/')[2];
-    await use(extensionId);
-  },
+  }
 });
 export const expect = test.expect;
