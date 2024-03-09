@@ -1,0 +1,38 @@
+{
+	"name": "internet-avengers",
+	"dockerComposeFile": [
+		"../docker-compose.yml"
+	],
+	"customizations": {
+		"vscode": {
+			"settings": {
+				"python.linting.enabled": true,
+				"python.linting.lintOnSave": true,
+				// Pylance
+				"python.languageServer": "Pylance",
+				"python.analysis.completeFunctionParens": true,
+				// Linter(flake8)
+				"python.linting.flake8Path": "/usr/local/bin/flake8",
+				"python.linting.pylintEnabled": false,
+				"python.linting.flake8Enabled": true,
+				// Formatter(black)
+				"python.formatting.blackPath": "/usr/local/bin/black",
+				"python.formatting.provider": "black",
+				"python.formatting.blackArgs": [
+					"--line-length=79"
+				],
+				"[python]": {
+					"editor.formatOnSave": true
+				},
+				"runArgs": ["--platform=linux/amd64"]
+			},
+			"extensions": [
+				"ms-python.python",
+				"ms-python.vscode-pylance",
+				"njpwerner.autodocstring"
+			]
+		}
+	},
+	"service": "api",
+	"workspaceFolder": "/works"
+}
