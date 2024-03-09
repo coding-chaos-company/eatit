@@ -1,0 +1,16 @@
+{
+  "recommendations": [
+    "esbenp.prettier-vscode",
+    "ms-playwright.playwright",
+    "streetsidesoftware.code-spell-checker",
+    "hediet.vscode-drawio",
+    "orta.vscode-jest",
+    "clinyong.vscode-css-modules",
+    "biomejs.biome",
+    "DavidAnson.vscode-markdownlint",
+    "unifiedjs.vscode-mdx",
+    "ms-python.python",
+    "ms-python.vscode-pylance",
+    "njpwerner.autodocstring"
+  ]
+}

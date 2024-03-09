@@ -1,0 +1,55 @@
+{
+  "editor.bracketPairColorization.enabled": true,
+  "editor.codeActionsOnSave": {
+    "quickfix.biome": "explicit",
+    "source.organizeImports.biome": "explicit"
+  },
+  "[css]": {
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "explicit"
+    },
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[markdown]": {
+    "editor.codeActionsOnSave": {
+      "source.fixAll.markdownlint": "explicit"
+    }
+  },
+  "[mdx]": {
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "explicit"
+    },
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[python]": {
+    "editor.formatOnSave": true
+  },
+  "editor.defaultFormatter": "biomejs.biome",
+  "editor.formatOnSave": true,
+  "editor.guides.bracketPairs": true,
+  "editor.renderWhitespace": "all",
+  "editor.suggestOnTriggerCharacters": false,
+  "eslint.format.enable": true,
+  "files.eol": "\n",
+  "files.insertFinalNewline": true,
+  "files.trimFinalNewlines": true,
+  "files.trimTrailingWhitespace": true,
+  "jest.jestCommandLine": "yarn test:unit",
+  "jest.rootPath": "./",
+  "jest.runMode": "on-demand",
+  "python.linting.enabled": true,
+  "python.linting.lintOnSave": true,
+  // Pylance
+  "python.languageServer": "Pylance",
+  "python.analysis.completeFunctionParens": true,
+  // Linter(flake8)
+  "python.linting.flake8Path": "/usr/local/bin/flake8",
+  "python.linting.pylintEnabled": false,
+  "python.linting.flake8Enabled": true,
+  // Formatter(black)
+  "python.formatting.blackPath": "/usr/local/bin/black",
+  "python.formatting.provider": "black",
+  "python.formatting.blackArgs": [
+    "--line-length=79"
+  ]
+}
