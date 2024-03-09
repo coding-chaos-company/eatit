@@ -6,7 +6,7 @@ services:
       context: ./docker/api
       dockerfile: Dockerfile
     volumes:
-      - ./app:/works/app:cached
+      - ./api:/works/app:cached
       - ./scripts:/works/scripts:cached
     working_dir: /works/scripts
     command: bash -c "./run.sh"
