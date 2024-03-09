@@ -7,25 +7,28 @@
   "scripts": {
     "dev": "plasmo dev",
     "build": "plasmo build",
+    "build-docker": "docker compose -f ../docker/vrt/docker-compose.yml run --rm vrt yarn build",
     "package": "plasmo package",
     "ci": "biome ci .",
-    "format": "biome check --apply ."
+    "format": "biome format --write . && biome check --apply-unsafe .",
+    "test:vrt": "playwright test tests/vrt",
+    "test:vrt-docker": "yarn build-docker && docker compose -f ../docker/vrt/docker-compose.yml run --rm vrt yarn test:vrt"
   },
   "dependencies": {
-    "plasmo": "0.83.0",
+    "plasmo": "0.85.0",
     "react": "18.2.0",
     "react-dom": "18.2.0"
   },
   "devDependencies": {
     "@biomejs/biome": "1.6.0",
-    "@ianvs/prettier-plugin-sort-imports": "4.1.0",
-    "@types/chrome": "0.0.245",
-    "@types/node": "20.5.9",
-    "@types/react": "18.2.21",
-    "@types/react-dom": "18.2.7",
+    "@playwright/test": "1.42.1",
+    "@types/chrome": "0.0.263",
+    "@types/node": "20.11.25",
+    "@types/react": "18.2.64",
+    "@types/react-dom": "18.2.21",
     "os-browserify": "0.3.0",
-    "path-browserify": "1.0.0",
-    "typescript": "5.2.2"
+    "path-browserify": "1.0.1",
+    "typescript": "5.4.2"
   },
   "manifest": {
     "host_permissions": ["https://*/*"],

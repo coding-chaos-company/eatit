@@ -1,3 +1,5 @@
 /node_modules/
 .plasmo
 build
+/test-results/
+/playwright-report/

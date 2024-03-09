@@ -1,0 +1,15 @@
+version: '3.9'
+
+services:
+  vrt:
+    working_dir: /vrt
+    build:
+      context: ../../frontend
+      dockerfile: ../docker/vrt/Dockerfile
+    volumes:
+      - ../../frontend:/vrt
+      - node_modules:/vrt/node_modules
+    ports:
+      - 9323:9323 # show-report
+volumes:
+  node_modules:
