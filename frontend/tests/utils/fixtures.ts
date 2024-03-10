@@ -16,6 +16,6 @@ export const test = base.extend<{
     });
     await use(context);
     await context.close();
-  }
+  },
 });
 export const expect = test.expect;

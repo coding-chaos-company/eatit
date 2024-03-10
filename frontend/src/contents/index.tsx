@@ -1,5 +1,5 @@
 import type { PlasmoCSConfig, PlasmoGetInlineAnchor } from 'plasmo';
-import { SaurusArea, styleText } from './components';
+import { SaurusArea, styleText } from './components/saurus-area';
 
 /**
  * Matches
@@ -13,7 +13,7 @@ export const config: PlasmoCSConfig = {
  */
 export const getStyle = () => {
   const style = document.createElement('style');
-  style.textContent = styleText;
+  style.textContent = `${styleText}`;
   return style;
 };
 
@@ -27,10 +27,10 @@ export const getInlineAnchor: PlasmoGetInlineAnchor = async () =>
   );
 
 /**
- * Components
+ * Component
  */
 const Index = () => {
-  return <SaurusArea>あいうえお</SaurusArea>;
+  return <SaurusArea />;
 };
 
 export default Index;

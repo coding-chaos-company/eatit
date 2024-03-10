@@ -48,7 +48,8 @@
         "noUndeclaredVariables": "error",
         "noUnusedVariables": "error",
         "useExhaustiveDependencies": "error",
-        "useHookAtTopLevel": "off"
+        "useHookAtTopLevel": "off",
+        "noEmptyPattern": "off"
       },
       "style": {
         "noNamespace": "error"
