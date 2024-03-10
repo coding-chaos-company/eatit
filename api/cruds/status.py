@@ -3,6 +3,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 import models.status as status_model
 import schemas.status as status_schema
 
+
 async def register_user(
     db: AsyncSession, status_register: status_schema.StatusRegisterRequest
 ) -> status_schema.StatusResponse:
@@ -14,8 +15,9 @@ async def register_user(
         "color": status.color,
         "kind": status.kind,
         "level": status.level,
-        "loop": status.loop
+        "loop": status.loop,
     }
+
 
 async def feed_dino(
     db: AsyncSession, status_register: status_schema.FeedRequest
