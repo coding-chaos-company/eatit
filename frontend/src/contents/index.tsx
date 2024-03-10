@@ -30,7 +30,7 @@ export const getInlineAnchor: PlasmoGetInlineAnchor = async () =>
  * Components
  */
 const Index = () => {
-  return <SaurusArea />;
+  return <SaurusArea>あいうえお</SaurusArea>;
 };
 
 export default Index;

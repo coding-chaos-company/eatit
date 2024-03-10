@@ -40,15 +40,24 @@
     "os-browserify": "0.3.0",
     "path-browserify": "1.0.1",
     "ts-jest": "29.1.2",
+    "ts-node": "10.9.2",
     "typescript": "5.4.2"
   },
   "manifest": {
-    "host_permissions": ["https://*/*"],
-    "permissions": ["tabs"],
+    "host_permissions": [
+      "https://*/*"
+    ],
+    "permissions": [
+      "tabs"
+    ],
     "web_accessible_resources": [
       {
-        "resources": [],
-        "matches": ["https://*/*"]
+        "resources": [
+          "assets/*"
+        ],
+        "matches": [
+          "https://*/*"
+        ]
       }
     ]
   },
