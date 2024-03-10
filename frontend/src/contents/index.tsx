@@ -1,5 +1,6 @@
 import type { PlasmoCSConfig, PlasmoGetInlineAnchor } from 'plasmo';
 import { SaurusArea, styleText } from './components/saurus-area';
+import { checkIfSelf } from './utils/check-if-self';
 
 /**
  * Matches
@@ -27,10 +28,15 @@ export const getInlineAnchor: PlasmoGetInlineAnchor = async () =>
   );
 
 /**
+ * ログインユーザのページかどうかを判定する
+ */
+const isMe = checkIfSelf();
+
+/**
  * Component
  */
 const Index = () => {
-  return <SaurusArea />;
+  return <SaurusArea isMe={isMe} />;
 };
 
 export default Index;
