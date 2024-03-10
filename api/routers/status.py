@@ -15,11 +15,11 @@ async def register_user(
     return await status_crud.register_user(db, status_body)
 
 
-@router.get("/feed", response_model=List[status_shema.StatusResponse])
+@router.put("/feed", response_model=status_shema.StatusResponse)
 async def make_feed(
-    status_body: status_shema.FeedRequest, db: AsyncSession = Depends(get_db)
+    feed_body: status_shema.FeedRequest, db: AsyncSession = Depends(get_db)
 ):
-    return status_crud.feed_dino(db)
+    return await status_crud.feed_dino(db, feed_body.github_name)
 
 
 @router.delete("/bye", response_model=None)
