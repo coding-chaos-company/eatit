@@ -1,9 +1,10 @@
 from sqlalchemy import Column, Integer, String, DateTime
 from database import Base
 
+
 class Users(Base):
     __tablename__ = "users"
-    
+
     user_id = Column(Integer, primary_key=True, autoincrement=True, index=True)
     github_name = Column(String(64), unique=True)
     level = Column(Integer, default=1)
@@ -16,4 +17,3 @@ class Users(Base):
     commits = Column(Integer, nullable=True)
     last_update = Column(DateTime, nullable=True)
     loop = Column(Integer, default=1)
-    

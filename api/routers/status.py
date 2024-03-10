@@ -8,6 +8,7 @@ from database import get_db
 
 router = APIRouter()
 
+
 @router.post("/register", response_model=status_shema.StatusResponse)
 async def register_user(
     status_body: status_shema.StatusRegisterRequest, db: AsyncSession = Depends(get_db)
