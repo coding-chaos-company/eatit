@@ -4,3 +4,4 @@ flake8==4.0.1
 black==22.3.0
 SQLAlchemy==2.0.28
 aiosqlite==0.20.0
+requests==2.31.0
