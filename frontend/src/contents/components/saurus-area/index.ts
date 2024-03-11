@@ -1,11 +1,11 @@
 import styleFeedBowl from 'data-text:./feed-bowl/feed-bowl.module.css';
 import styleSaurusArea from 'data-text:./saurus-area.module.css';
-import styleWalkSaurus from 'data-text:./walk-saurus/walk-saurus.module.css';
+import styleSaurus from 'data-text:./saurus/saurus.module.css';
 
 export const styleText = `
 ${styleSaurusArea}
-${styleWalkSaurus}
 ${styleFeedBowl}
+${styleSaurus}
 `;
 
 export { SaurusArea } from './saurus-area';

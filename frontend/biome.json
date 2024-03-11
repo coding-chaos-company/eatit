@@ -38,7 +38,8 @@
       "indentWidth": 2,
       "lineWidth": 100,
       "quoteProperties": "asNeeded"
-    }
+    },
+    "globals": ["chrome"]
   },
   "linter": {
     "enabled": true,

@@ -2,7 +2,16 @@
   position: relative;
   width: 100%;
   height: 300px;
-  border-right: var(--borderWidth-thin, max(1px, 0.0625rem)) solid var(--color-border-default);
-  border-left: var(--borderWidth-thin, max(1px, 0.0625rem)) solid var(--color-border-default);
-  border-bottom: var(--borderWidth-thin, max(1px, 0.0625rem)) solid var(--color-border-default);
+  border-right: var(--borderWidth-thin, max(1px, 0.0625rem)) solid
+    var(--color-border-default);
+  border-left: var(--borderWidth-thin, max(1px, 0.0625rem)) solid
+    var(--color-border-default);
+  border-bottom: var(--borderWidth-thin, max(1px, 0.0625rem)) solid
+    var(--color-border-default);
+}
+
+.saurus {
+  position: absolute;
+  box-sizing: border-box;
+  bottom: 0;
 }
