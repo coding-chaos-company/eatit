@@ -3,10 +3,7 @@ from sqlalchemy import create_engine
 from models.status import Base
 
 SQLALCHEMY_DATABASE_URL = "sqlite:///db.sqlite3"
-Engine = create_engine(
-  SQLALCHEMY_DATABASE_URL,
-  echo=False
-)
+Engine = create_engine(SQLALCHEMY_DATABASE_URL, echo=False)
 
 
 def reset_database():

@@ -9,20 +9,20 @@ class StatusResponse(BaseModel):
     level: int = Field(None, example=1, description="恐竜のレベル")
     loop: int = Field(None, example=1, description="何周目の育成か")
 
-    class Config():
+    class Config:
         orm_mode = True
 
 
 class StatusRegisterRequest(BaseModel):
     github_name: str = Field(None, example="Brachiosaurus", description="ユーザの名前")
     color: str = Field(None, example="red", description="恐竜の色")
-   
-    class Config():
-        orm_mode = True 
+
+    class Config:
+        orm_mode = True
 
 
 class FeedRequest(BaseModel):
     github_name: str = Field(None, example="Brachiosaurus", description="ユーザの名前")
 
-    class Config():
+    class Config:
         orm_mode = True
