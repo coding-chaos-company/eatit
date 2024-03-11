@@ -8,6 +8,7 @@ from database import get_db
 
 router = APIRouter()
 
+
 @router.post("/register", response_model=status_shema.StatusResponse)
 async def register_user(
     status_body: status_shema.StatusRegisterRequest, db: AsyncSession = Depends(get_db)
@@ -23,5 +24,7 @@ async def make_feed(
 
 
 @router.delete("/bye", response_model=None)
-async def kill_rex():
-    return
+async def kill_dino(
+    feed_body: status_shema.FeedRequest, db: AsyncSession = Depends(get_db)
+):
+    return await status_crud.kill_dino(db, feed_body.github_name)
