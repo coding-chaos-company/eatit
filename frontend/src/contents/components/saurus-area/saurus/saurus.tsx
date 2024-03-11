@@ -12,6 +12,7 @@ export type SaurusType = {
   kind: 'brachio';
   level: 1 | 2 | 3 | 4;
   color: 'green';
+  direction: 'left' | 'right';
 };
 
 export type SaurusAnimationType = 'walking' | 'toWalking' | 'toBowl' | 'stop';
@@ -23,7 +24,7 @@ type SaurusProps = ComponentPropsWithRef<'img'> &
   };
 
 export const Saurus = forwardRef<HTMLImageElement, SaurusProps>(
-  ({ state, kind, level, color, animation, initialPos, onAnimationIteration }, ref) => {
+  ({ state, kind, level, color, direction, animation, initialPos, onAnimationIteration }, ref) => {
     const saurusImage = chrome.runtime.getURL(
       `assets/saurus/${state}-${kind}-${level}-${color}.gif`
     );
@@ -36,6 +37,7 @@ export const Saurus = forwardRef<HTMLImageElement, SaurusProps>(
         alt="saurus walking"
         style={{
           left: initialPos,
+          transform: direction === 'right' ? 'scaleX(-1)' : 'scaleX(1)',
         }}
         onAnimationIteration={onAnimationIteration}
       />

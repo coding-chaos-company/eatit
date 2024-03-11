@@ -1,6 +1,7 @@
 .saurus {
   position: absolute;
   bottom: 0;
+  z-index: 10;
 }
 
 .walking {
@@ -32,23 +33,23 @@
   }
 
   100% {
-    left: 70%;
+    left: calc(100% - 250px);
   }
 }
 
 @keyframes toBowl {
   50% {
-    left: 80%;
+    left: calc(100% - 160px);
   }
 
   100% {
-    left: 80%;
+    left: calc(100% - 160px);
   }
 }
 
 @keyframes toWalking {
   0% {
-    left: 80%;
+    left: calk(100% - 160px);
   }
 
   100% {

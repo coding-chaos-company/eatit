@@ -25,13 +25,12 @@ export const SaurusArea = ({}: SaurusAreaProps) => {
    * States
    */
   const [initialPos, setInitialPos] = useState<CSSProperties['left']>(0);
-  const [saurusState, setSaurusState] = useState<
-    Omit<SaurusType, 'animation' | 'initialPos' | 'onAnimationEnd'>
-  >({
+  const [saurusState, setSaurusState] = useState<SaurusType>({
     state: 'walk',
     level: 1,
     kind: 'brachio',
     color: 'green',
+    direction: 'right',
   });
   const [animationClass, setAnimationClass] = useState<SaurusAnimationType>('walking');
 
@@ -43,11 +42,19 @@ export const SaurusArea = ({}: SaurusAreaProps) => {
       saurusRef.current.getBoundingClientRect().left - areaRef.current.getBoundingClientRect().left;
 
     setAnimationClass('toBowl');
+    setSaurusState((prev) => ({ ...prev, direction: 'right' }));
     setInitialPos(absolutePos);
   };
   const onSaurusAnimationIterationHandler: AnimationEventHandler<HTMLImageElement> = (e) => {
+    if (e.animationName.endsWith('walking')) {
+      setSaurusState((prev) => ({
+        ...prev,
+        direction: prev.direction === 'left' ? 'right' : 'left',
+      }));
+    }
+
     if (e.animationName.endsWith('toBowl')) {
-      setInitialPos('80%');
+      setInitialPos('calc(100% - 160px)');
       setAnimationClass('stop');
       setSaurusState((prev) => ({ ...prev, state: 'eat' }));
     }
