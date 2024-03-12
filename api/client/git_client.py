@@ -1,9 +1,14 @@
 import requests
 import sys
+from typing import NamedTuple
 
 sys.path.append("../")
 from config import constants
 
+class Diff(NamedTuple):
+    file_name: str
+    additions: int
+    delections: int
 
 # ユーザの全リポジトリを取得する
 def get_repos_list(user_name: str):
@@ -52,13 +57,17 @@ def get_latest_commit_diff(user_name: str):
     latest_commit = get_latest_commit(user_name, repos_list)
     response = requests.get(latest_commit["url"])
     if response.status_code == 200:
-        return response.json()["files"]
+        diffs = response.json()["files"]
+        diff_list = []
+        for diff in diffs:
+            diff_list.append(Diff(diff['filename'], diff['additions'], diff['deletions']))
+        return diff_list
     else:
         print("対象コミットのdiffが取得できませんでした．:", latest_commit)
 
 
 # ユーザの前回更新時までのdiffを全て取得する
-def get_latest_commits_diff(user_name: str, last_date: str, current_date: str):
+def get_commits_diff(user_name: str, last_date: str, current_date: str):
     repos_list = get_repos_list(user_name)
     diff_list = []
     for repo in repos_list:
@@ -82,8 +91,9 @@ def get_latest_commits_diff(user_name: str, last_date: str, current_date: str):
                 commit["url"]
                 diff_response = requests.get(commit["url"])
                 if diff_response.status_code == 200:
-                    diff = diff_response.json()["files"]
-                    diff_list.append(diff)
+                    diffs = diff_response.json()["files"]
+                    for diff in diffs:
+                        diff_list.append(Diff(diff["filename"], diff["additions"], diff["deletions"]))
                 else:
                     return
         else:
