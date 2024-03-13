@@ -6,7 +6,7 @@ export const fetcher = async <Response>(
   path: string,
   init: RequestInit = {}
 ): Promise<Response> => {
-  const { headers, body, ...args } = init;
+  const { headers, ...args } = init;
 
   try {
     const res = await fetch(`http://localhost:8080/${path}`, {
