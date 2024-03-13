@@ -7,6 +7,7 @@
       "@/*": ["./src/*"],
       "@/tests/*": ["./tests/*"]
     },
-    "baseUrl": "."
+    "baseUrl": ".",
+    "verbatimModuleSyntax": false
   }
 }
