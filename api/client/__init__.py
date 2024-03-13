@@ -1,1 +1,1 @@
-from .git_client import *
+from .git_client import GitClient
