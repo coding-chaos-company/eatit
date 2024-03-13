@@ -38,22 +38,22 @@ const isMe = checkIfSelf();
  * Component
  */
 const Index = () => {
-  // const [a, setA] = useState<feedAPI.FeedResponse>();
+  const [a, setA] = useState<feedAPI.FeedResponse>();
 
-  // useEffect(() => {
-  //   const fetchFeed = async () => {
-  //     const res = await feedAPI.put({
-  //       github_name: window.location.pathname.split('/')[1],
-  //     });
+  useEffect(() => {
+    const fetchFeed = async () => {
+      const res = await feedAPI.put({
+        github_name: window.location.pathname.split('/')[1],
+      });
 
-  //     setA(res);
-  //   };
+      setA(res);
+    };
 
-  //   fetchFeed();
-  // }, [a]);
+    fetchFeed();
+  }, [a]);
 
-  // console.log(a);
-  // console.log(window.location.pathname.split('/')[1]);
+  console.log(a);
+  console.log(window.location.pathname.split('/')[1]);
 
   return <SaurusArea isMe={isMe} />;
 };
