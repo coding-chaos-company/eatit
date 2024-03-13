@@ -6,7 +6,7 @@
 
 .walking {
   animation-name: walking;
-  animation-duration: 10s;
+  animation-duration: 18s;
   animation-timing-function: linear;
   animation-iteration-count: infinite;
   animation-direction: alternate;
