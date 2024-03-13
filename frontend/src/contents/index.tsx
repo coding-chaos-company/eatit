@@ -1,5 +1,8 @@
 import type { PlasmoCSConfig, PlasmoGetInlineAnchor } from 'plasmo';
-import { SaurusArea, styleText } from './components';
+import { useEffect, useState } from 'react';
+import * as feedAPI from './api/feed';
+import { SaurusArea, styleText } from './components/saurus-area';
+import { checkIfSelf } from './utils/check-if-self';
 
 /**
  * Matches
@@ -13,7 +16,7 @@ export const config: PlasmoCSConfig = {
  */
 export const getStyle = () => {
   const style = document.createElement('style');
-  style.textContent = styleText;
+  style.textContent = `${styleText}`;
   return style;
 };
 
@@ -27,10 +30,32 @@ export const getInlineAnchor: PlasmoGetInlineAnchor = async () =>
   );
 
 /**
- * Components
+ * ログインユーザのページかどうかを判定する
+ */
+const isMe = checkIfSelf();
+
+/**
+ * Component
  */
 const Index = () => {
-  return <SaurusArea />;
+  // const [a, setA] = useState<feedAPI.FeedResponse>();
+
+  // useEffect(() => {
+  //   const fetchFeed = async () => {
+  //     const res = await feedAPI.put({
+  //       github_name: window.location.pathname.split('/')[1],
+  //     });
+
+  //     setA(res);
+  //   };
+
+  //   fetchFeed();
+  // }, [a]);
+
+  // console.log(a);
+  // console.log(window.location.pathname.split('/')[1]);
+
+  return <SaurusArea isMe={isMe} />;
 };
 
 export default Index;

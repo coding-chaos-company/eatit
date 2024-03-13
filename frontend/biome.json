@@ -38,7 +38,8 @@
       "indentWidth": 2,
       "lineWidth": 100,
       "quoteProperties": "asNeeded"
-    }
+    },
+    "globals": ["chrome"]
   },
   "linter": {
     "enabled": true,
@@ -48,7 +49,8 @@
         "noUndeclaredVariables": "error",
         "noUnusedVariables": "error",
         "useExhaustiveDependencies": "error",
-        "useHookAtTopLevel": "off"
+        "useHookAtTopLevel": "off",
+        "noEmptyPattern": "off"
       },
       "style": {
         "noNamespace": "error"
