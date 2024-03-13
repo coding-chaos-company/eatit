@@ -1,4 +1,6 @@
 import type { PlasmoCSConfig, PlasmoGetInlineAnchor } from 'plasmo';
+import { useEffect, useState } from 'react';
+import * as feedAPI from './api/feed';
 import { SaurusArea, styleText } from './components/saurus-area';
 import { checkIfSelf } from './utils/check-if-self';
 
@@ -36,6 +38,23 @@ const isMe = checkIfSelf();
  * Component
  */
 const Index = () => {
+  // const [a, setA] = useState<feedAPI.FeedResponse>();
+
+  // useEffect(() => {
+  //   const fetchFeed = async () => {
+  //     const res = await feedAPI.put({
+  //       github_name: window.location.pathname.split('/')[1],
+  //     });
+
+  //     setA(res);
+  //   };
+
+  //   fetchFeed();
+  // }, [a]);
+
+  // console.log(a);
+  // console.log(window.location.pathname.split('/')[1]);
+
   return <SaurusArea isMe={isMe} />;
 };
 
