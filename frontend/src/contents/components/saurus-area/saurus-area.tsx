@@ -6,6 +6,7 @@ import {
   useState,
 } from 'react';
 import { FeedBowl } from './feed-bowl/feed-bowl';
+import { Feed } from './feed/feed';
 import * as styles from './saurus-area.module.css';
 import { Saurus, type SaurusAnimationType, type SaurusType } from './saurus/saurus';
 
@@ -79,6 +80,7 @@ export const SaurusArea = ({}: SaurusAreaProps) => {
       </button>
 
       <FeedBowl isFull />
+      <Feed />
     </div>
   );
 };
