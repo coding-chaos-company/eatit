@@ -9,16 +9,39 @@ import schemas.status as status_schema
 async def register_user(
     db: AsyncSession, status_register: status_schema.StatusRegisterRequest
 ) -> status_schema.StatusResponse:
-    status = status_model.Users(**status_register.dict())
-    db.add(status)
-    await db.commit()
-    await db.refresh(status)
-    return {
-        "color": status.color,
-        "kind": status.kind,
-        "level": status.level,
-        "loop": status.loop,
-    }
+    users = await db.execute(
+        select(status_model.Users).filter(
+            status_model.Users.github_name == status_register.github_name
+        )
+    )
+    user = users.first()
+    if user is None:
+        status = status_model.Users(**status_register.dict())
+        status.last_update = utils.what_time()
+        db.add(status)
+        await db.commit()
+        await db.refresh(status)
+        return {
+            "color": status.color,
+            "kind": status.kind,
+            "level": status.level,
+            "loop": status.loop,
+        }
+    else:
+        user = user[0]
+        user.loop += 1
+        user.exp = 0
+        user.level = 1
+        user.color = status_register.color
+        user.last_update = utils.what_time()
+        await db.commit()
+        await db.refresh(user)
+        return {
+            "color": user.color,
+            "kind": user.kind,
+            "level": user.level,
+            "loop": user.loop,
+        }
 
 
 async def feed_dino(db: AsyncSession, github_name: str) -> status_schema.StatusResponse:
