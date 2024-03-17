@@ -7,7 +7,7 @@ import { Egg } from './egg/egg';
 import { StartButton } from './start-button/start-button';
 
 type DinoSelectionProps = {
-  handleChangeDinoStatus: (status: DinoStatus) => void;
+  handleChangeDinoStatus: (status: Partial<DinoStatus>) => void;
 };
 
 export const DinoSelection = ({ handleChangeDinoStatus }: DinoSelectionProps) => {

@@ -78,7 +78,11 @@ const Index = () => {
   return (
     <Container>
       {dinoStatus ? (
-        <DinoHome isMe={isMe} />
+        <DinoHome
+          isMe={isMe}
+          dinoStatus={dinoStatus}
+          handleChangeDinoStatus={handleChangeDinoStatus}
+        />
       ) : (
         <DinoSelection handleChangeDinoStatus={handleChangeDinoStatus} />
       )}
