@@ -5,7 +5,7 @@ type RegisterParams = {
   color: 'green';
 };
 
-type RegisterResponse = {
+export type RegisterResponse = {
   color: 'green';
   kind: 'brachio';
   level: 1;

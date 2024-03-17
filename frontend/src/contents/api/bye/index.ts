@@ -4,7 +4,7 @@ type ByeParams = {
   github_name: string;
 };
 
-type ByeResponse = string;
+export type ByeResponse = string;
 
 /**
  *  DELETE /bye

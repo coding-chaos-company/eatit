@@ -13,6 +13,13 @@ class StatusResponse(BaseModel):
         orm_mode = True
 
 
+class MeResponse(BaseModel):
+    status: Optional[StatusResponse] = None
+
+    class Config:
+        orm_mode = True
+
+
 class StatusRegisterRequest(BaseModel):
     github_name: str = Field(None, example="Brachiosaurus", description="ユーザの名前")
     color: str = Field(None, example="red", description="恐竜の色")
