@@ -6,7 +6,7 @@ import models.status as status_model
 import schemas.status as status_schema
 
 
-async def check_me(db: AsyncSession, github_name: str) -> status_schema.MeResponse:
+async def check_status(db: AsyncSession, github_name: str) -> status_schema.MeResponse:
     users = await db.execute(
         select(status_model.Users).filter(status_model.Users.github_name == github_name)
     )

@@ -9,11 +9,11 @@ from database import get_db
 router = APIRouter()
 
 
-@router.post("/me", response_model=status_schema.MeResponse)
-async def check_me(
+@router.post("/status", response_model=status_schema.MeResponse)
+async def check_status(
     me_body: status_schema.FeedRequest, db: AsyncSession = Depends(get_db)
 ):
-    return await status_crud.check_me(db, me_body.github_name)
+    return await status_crud.check_status(db, me_body.github_name)
 
 
 @router.post("/register", response_model=status_schema.StatusResponse)
