@@ -11,8 +11,9 @@ def GIT_REPOS_URL(user_name: str):
 def GIT_COMMITS_URL(user_name: str, repo_name: str):
     return GIT_BASE_URL + "repos/" + user_name + "/" + repo_name + "/commits"
 
+
 # ファイル
-__json_data = open('extensions.json')
+__json_data = open("extensions.json")
 EXTENSIONS = json.load(__json_data)
 
 # スコア
@@ -21,6 +22,13 @@ LANGS_BASE_SCORE = 10
 CHANGE_FILES_BASE_SCORE = 30
 
 # 基準経験値
-LEVEL1_EXP = 1000
-LEVEL2_EXP = 1500
-LEVEL3_EXP = 2000
+EXP_DICT = {1: 3000, 2: 4500, 3: 6000}
+
+
+def EXP(level: int):
+    return EXP_DICT[level]
+
+
+# 重み
+DEL_WEIGHT = 0.5
+ADD_WEIGHT = 1.5

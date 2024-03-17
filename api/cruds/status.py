@@ -45,7 +45,6 @@ async def register_user(
         user.exp = 0
         user.level = 1
         user.color = status_register.color
-        user.commits_count = 1
         user.last_update = utils.what_time()
         await db.commit()
         await db.refresh(user)
