@@ -1,48 +1,15 @@
-import {
-  type AnimationEventHandler,
-  type CSSProperties,
-  type ComponentPropsWithRef,
-  type RefObject,
-  forwardRef,
-} from 'react';
-import * as styles from './dino.module.css';
+import type { DinoStatus } from '@/contents/api/types';
+import type { DinoBehavier } from '../dino-home';
 
-export type DinoType = {
-  state: 'walk' | 'bend' | 'eat';
-  kind: 'brachio';
-  level: 1 | 2 | 3 | 4;
-  color: 'green';
-  direction: 'left' | 'right';
+type DinoProps = {
+  dinoBehavier: DinoBehavier;
+  dinoStatus: DinoStatus;
 };
 
-export type DinoAnimationType = 'walking' | 'toWalking' | 'toBowl' | 'stop';
+export const Dino = ({ dinoBehavier, dinoStatus }: DinoProps) => {
+  const dinoImage = chrome.runtime.getURL(
+    `assets/dinos/${dinoBehavier.state}-${dinoStatus.kind}-${dinoStatus.level}-${dinoStatus.color}.gif`
+  );
 
-type DinoProps = ComponentPropsWithRef<'img'> &
-  DinoType & {
-    animation: DinoAnimationType;
-    initialPos: CSSProperties['left'];
-  };
-
-export const Dino = forwardRef<HTMLImageElement, DinoProps>(
-  ({ state, kind, level, color, direction, animation, initialPos, onAnimationIteration }, ref) => {
-    const dinoImage = chrome.runtime.getURL(
-      `assets/dino/${state}-${kind}-${level}-${color}.gif`
-    );
-
-    return (
-      <img
-        ref={ref}
-        className={`${styles.dino} ${styles[animation]}`}
-        src={dinoImage}
-        alt="dino walking"
-        style={{
-          left: initialPos,
-          transform: direction === 'right' ? 'scaleX(-1)' : 'scaleX(1)',
-        }}
-        onAnimationIteration={onAnimationIteration}
-      />
-    );
-  }
-);
-
-Dino.displayName = 'Dino';
+  return <img src={dinoImage} alt="dino walking" />;
+};

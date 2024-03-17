@@ -1,6 +1,10 @@
-import egg from 'data-base64:~/../assets/egg.gif';
-import * as styles from './egg.module.css';
+import type { DinoStatus } from '@/contents/api/types';
 
-export const Egg = () => {
-  return <img src={egg} alt="egg" className={styles.egg} />;
+type EggProps = {
+  color: DinoStatus['color'];
+};
+
+export const Egg = ({ color }: EggProps) => {
+  const eggImage = chrome.runtime.getURL(`assets/eggs/egg-${color}.gif`);
+  return <img src={eggImage} alt="egg" />;
 };

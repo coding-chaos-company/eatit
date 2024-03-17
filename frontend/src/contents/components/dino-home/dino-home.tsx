@@ -1,4 +1,7 @@
-import startButton from 'data-base64:~/../assets/start-button.png';
+import * as feedAPI from '@/contents/api/feed';
+import type { DinoStatus } from '@/contents/api/types';
+import { getUserName } from '@/contents/utils/get-user-name';
+import { wait } from '@/contents/utils/wait';
 import {
   type AnimationEventHandler,
   type CSSProperties,
@@ -7,15 +10,25 @@ import {
   useState,
 } from 'react';
 import * as styles from './dino-home.module.css';
-import { Dino, type DinoAnimationType, type DinoType } from './dino/dino';
+import { Dino } from './dino/dino';
 import { FeedBowl } from './feed-bowl/feed-bowl';
+import { FeedButton } from './feed-button/feed-button';
 import { Feed } from './feed/feed';
 
 type DinoHomeProps = {
   isMe: boolean;
+  dinoStatus: DinoStatus;
+  handleChangeDinoStatus: (status: DinoStatus) => void;
 };
 
-export const DinoHome = ({}: DinoHomeProps) => {
+export type DinoBehavier = {
+  startPos: CSSProperties['left']; // アニメーションの開始位置
+  direction: 'left' | 'right';
+  animation: 'walking' | 'toWalking' | 'toBowl' | 'stop';
+  state: 'eat' | 'bend' | 'walk';
+};
+
+export const DinoHome = ({ dinoStatus, handleChangeDinoStatus }: DinoHomeProps) => {
   /**
    * RefObjects
    * 親要素からの相対位置を取得するため2つ定義する
@@ -26,63 +39,76 @@ export const DinoHome = ({}: DinoHomeProps) => {
   /**
    * States
    */
-  const [initialPos, setInitialPos] = useState<CSSProperties['left']>(0);
-  const [dinoState, setDinoState] = useState<DinoType>({
-    state: 'walk',
-    level: 1,
-    kind: 'brachio',
-    color: 'green',
+  const [dinoBehavier, setDinoBehavier] = useState<DinoBehavier>({
+    startPos: 0,
     direction: 'right',
+    animation: 'walking',
+    state: 'walk',
   });
-  const [animationClass, setAnimationClass] = useState<DinoAnimationType>('walking');
+  const [isFull, _setIsFull] = useState(true);
+  const [disabled, _setIsDisabled] = useState(false);
 
   /**
    * Handlers
    */
+  const handleChangeDinoBehavier = (dinoBehavier: Partial<DinoBehavier>) => {
+    setDinoBehavier((prev) => ({ ...prev, ...dinoBehavier }));
+  };
+
   const onFeedButtonClickHandler: MouseEventHandler<HTMLButtonElement> = () => {
     const absolutePos =
       dinoRef.current.getBoundingClientRect().left - areaRef.current.getBoundingClientRect().left;
 
-    setAnimationClass('toBowl');
-    setDinoState((prev) => ({ ...prev, direction: 'right' }));
-    setInitialPos(absolutePos);
+    handleChangeDinoBehavier({ startPos: absolutePos, direction: 'right', animation: 'toBowl' });
   };
-  const onDinoAnimationIterationHandler: AnimationEventHandler<HTMLImageElement> = (e) => {
+
+  const onDinoAnimationIterationHandler: AnimationEventHandler<HTMLImageElement> = async (e) => {
     if (e.animationName.endsWith('walking')) {
-      setDinoState((prev) => ({
-        ...prev,
-        direction: prev.direction === 'left' ? 'right' : 'left',
-      }));
+      handleChangeDinoBehavier(
+        dinoBehavier.direction === 'right' ? { direction: 'left' } : { direction: 'right' }
+      );
     }
 
     if (e.animationName.endsWith('toBowl')) {
-      setInitialPos('calc(100% - 160px)');
-      setAnimationClass('stop');
-      setDinoState((prev) => ({ ...prev, state: 'eat' }));
+      // animationを止める
+      handleChangeDinoBehavier({ startPos: 'calc(100% - 160px)', animation: 'stop', state: 'eat' });
+
+      // 3秒ご飯食べるのを待つ
+      await wait(3000);
+
+      const res = await feedAPI.put({ github_name: getUserName() });
+
+      handleChangeDinoStatus(res);
+
+      handleChangeDinoBehavier({ animation: 'toWalking', direction: 'left', state: 'walk' });
+    }
+
+    if (e.animationName.endsWith('toWalking')) {
+      handleChangeDinoBehavier({ animation: 'walking', direction: 'right', startPos: 0 });
     }
   };
 
   return (
-    <div ref={areaRef} data-testid="DinoHome">
-      <Dino
+    <div ref={areaRef} data-testid="DinoHome" className={styles.area}>
+      <div
         ref={dinoRef}
-        initialPos={initialPos}
-        animation={animationClass}
+        className={`${styles.dino} ${styles[dinoBehavier.animation]}`}
         onAnimationIteration={onDinoAnimationIterationHandler}
-        {...dinoState}
-      />
-
-      <button
-        className={styles.startButton}
-        type="button"
-        onClick={onFeedButtonClickHandler}
-        disabled={animationClass !== 'walking'}
+        style={{
+          left: dinoBehavier.startPos,
+          transform: dinoBehavier.direction === 'right' ? 'scaleX(-1)' : 'scaleX(1)',
+        }}
       >
-        <img src={startButton} alt="start" />
-      </button>
+        <Dino dinoBehavier={dinoBehavier} dinoStatus={dinoStatus} />
+      </div>
+      <div className={styles.bowl}>
+        <FeedBowl isFull={isFull} />
+      </div>
+      <div className={styles.feed}>
+        <Feed />
+      </div>
 
-      <FeedBowl isFull />
-      <Feed />
+      <FeedButton onClick={onFeedButtonClickHandler} disabled={disabled} />
     </div>
   );
 };
