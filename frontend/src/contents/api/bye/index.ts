@@ -1,4 +1,4 @@
-import { fetcher } from '../fetcher';
+import { fetcher } from '@/contents/api/fetcher';
 
 type ByeParams = {
   github_name: string;

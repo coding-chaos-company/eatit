@@ -1,18 +1,19 @@
 import { fetcher } from '@/contents/api/fetcher';
 import type { DinoStatus } from '@/contents/api/types';
 
-type RegisterParams = {
+type StatusParams = {
   github_name: string;
-  color: DinoStatus['color'];
 };
 
-export type RegisterResponse = DinoStatus;
+export type StatusResponse = {
+  status: DinoStatus | null;
+};
 
 /**
- *  POST /register
+ *  POST /status
  */
-export const post = (params: RegisterParams) =>
-  fetcher<RegisterResponse>('register', {
+export const post = (params: StatusParams) =>
+  fetcher<StatusResponse>('status', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

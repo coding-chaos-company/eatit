@@ -1,15 +1,11 @@
-import { fetcher } from '../fetcher';
+import { fetcher } from '@/contents/api/fetcher';
+import type { DinoStatus } from '@/contents/api/types';
 
 type FeedParams = {
   github_name: string;
 };
 
-export type FeedResponse = {
-  color: 'green';
-  kind: 'brachio';
-  level: 1;
-  loop: 1;
-};
+export type FeedResponse = DinoStatus;
 
 /**
  *  PUT /feed

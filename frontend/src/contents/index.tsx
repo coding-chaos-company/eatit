@@ -1,7 +1,9 @@
 import type { PlasmoCSConfig, PlasmoGetInlineAnchor } from 'plasmo';
-import { useEffect, useState } from 'react';
-import * as feedAPI from './api/register';
-import { SaurusArea, styleText } from './components/saurus-area';
+import { Suspense, useEffect, useState } from 'react';
+import * as statusAPI from './api/status';
+import { Container, styleTextContainer } from './components/container';
+import { DinoHome, styleTextDinoHome } from './components/dino-home';
+import { DinoSelection, styleTextDinoSelection } from './components/dino-selection';
 import { checkIfSelf } from './utils/check-if-self';
 
 /**
@@ -16,7 +18,7 @@ export const config: PlasmoCSConfig = {
  */
 export const getStyle = () => {
   const style = document.createElement('style');
-  style.textContent = `${styleText}`;
+  style.textContent = `${styleTextDinoHome} ${styleTextContainer} ${styleTextDinoSelection}`;
   return style;
 };
 
@@ -25,9 +27,7 @@ export const getStyle = () => {
  * 草が生えているエリアを取得する
  */
 export const getInlineAnchor: PlasmoGetInlineAnchor = async () =>
-  document.querySelector(
-    '#user-profile-frame > div > div:nth-child(3) > div > div.col-12.col-lg-10 > div.js-yearly-contributions > div:nth-child(1)'
-  );
+  document.querySelector('div.graph-before-activity-overview');
 
 /**
  * ログインユーザのページかどうかを判定する
@@ -35,28 +35,32 @@ export const getInlineAnchor: PlasmoGetInlineAnchor = async () =>
 const isMe = checkIfSelf();
 
 /**
+ * GitHubのユーザ名を取得する
+ */
+const githubUserName = window.location.pathname.split('/')[1];
+
+/**
  * Component
  */
 const Index = () => {
-  const [a, setA] = useState<feedAPI.RegisterResponse>();
+  const [status, setStatus] = useState(null);
 
   useEffect(() => {
-    const fetchFeed = async () => {
-      const res = await feedAPI.post({
-        github_name: window.location.pathname.split('/')[1],
-        color: 'green'
-      });
+    const fetchMe = async () => {
+      const res = await statusAPI.post({ github_name: githubUserName });
 
-      setA(res);
+      setStatus(res);
     };
 
-    fetchFeed();
+    fetchMe();
   }, []);
 
-  console.log(a);
-  console.log(window.location.pathname.split('/')[1]);
+  // 他人のユーザページで、そのユーザが未登録の場合は何も表示しない
+  if (!status && !isMe) {
+    return <></>;
+  }
 
-  return <SaurusArea isMe={isMe} />;
+  return <Container>{status ? <DinoHome isMe={isMe} /> : <DinoSelection />}</Container>;
 };
 
 export default Index;
