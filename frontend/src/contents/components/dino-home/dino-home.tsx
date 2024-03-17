@@ -9,6 +9,7 @@ import {
 import * as styles from './dino-home.module.css';
 import { Dino } from './dino/dino';
 import { FeedBowl } from './feed-bowl/feed-bowl';
+import { FeedButton } from './feed-button/feed-button';
 import { Feed } from './feed/feed';
 
 type DinoHomeProps = {
@@ -42,6 +43,7 @@ export const DinoHome = ({ dinoStatus }: DinoHomeProps) => {
     state: 'walk',
   });
   const [isFull, _setIsFull] = useState(true);
+  const [disabled, _setIsDisabled] = useState(false);
 
   /**
    * Handlers
@@ -50,7 +52,7 @@ export const DinoHome = ({ dinoStatus }: DinoHomeProps) => {
     setDinoBehavier((prev) => ({ ...prev, ...dinoBehavier }));
   };
 
-  const _onFeedButtonClickHandler: MouseEventHandler<HTMLButtonElement> = () => {
+  const onFeedButtonClickHandler: MouseEventHandler<HTMLButtonElement> = () => {
     const absolutePos =
       dinoRef.current.getBoundingClientRect().left - areaRef.current.getBoundingClientRect().left;
 
@@ -72,8 +74,8 @@ export const DinoHome = ({ dinoStatus }: DinoHomeProps) => {
   return (
     <div ref={areaRef} data-testid="DinoHome" className={styles.area}>
       <div
-        className={styles.dino}
         ref={dinoRef}
+        className={`${styles.dino} ${styles[dinoBehavier.animation]}`}
         onAnimationIteration={onDinoAnimationIterationHandler}
         style={{
           left: dinoBehavier.pos,
@@ -88,6 +90,8 @@ export const DinoHome = ({ dinoStatus }: DinoHomeProps) => {
       <div className={styles.feed}>
         <Feed />
       </div>
+
+      <FeedButton onClick={onFeedButtonClickHandler} disabled={disabled} />
     </div>
   );
 };
