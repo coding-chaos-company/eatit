@@ -1,13 +1,16 @@
-import { fetcher } from '../fetcher';
+import { fetcher } from '@/contents/api/fetcher';
+import type { DinoStatus } from '@/contents/api/types';
 
 type MeParams = {
   github_name: string;
 };
 
-export type MeResponse = string;
+export type MeResponse = {
+  status: DinoStatus | null;
+};
 
 /**
- *  GET /me
+ *  POST /me
  */
 export const get = (params: MeParams) =>
-  fetcher<MeResponse>('me', { method: 'GET', body: JSON.stringify(params) });
+  fetcher<MeResponse>('me', { method: 'POST', body: JSON.stringify(params) });

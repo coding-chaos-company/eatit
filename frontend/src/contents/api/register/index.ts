@@ -1,16 +1,12 @@
-import { fetcher } from '../fetcher';
+import { fetcher } from '@/contents/api/fetcher';
+import type { DinoStatus } from '@/contents/api/types';
 
 type RegisterParams = {
   github_name: string;
-  color: 'green';
+  color: DinoStatus['color'];
 };
 
-export type RegisterResponse = {
-  color: 'green';
-  kind: 'brachio';
-  level: 1;
-  loop: 1;
-};
+export type RegisterResponse = DinoStatus;
 
 /**
  *  POST /register
