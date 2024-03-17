@@ -1,6 +1,7 @@
 import type { PlasmoCSConfig, PlasmoGetInlineAnchor } from 'plasmo';
 import { Suspense, useEffect, useState } from 'react';
 import * as statusAPI from './api/status';
+import type { DinoStatus } from './api/types';
 import { Container, styleTextContainer } from './components/container';
 import { DinoHome, styleTextDinoHome } from './components/dino-home';
 import { DinoSelection, styleTextDinoSelection } from './components/dino-selection';
@@ -44,24 +45,45 @@ const githubUserName = getUserName();
  * Component
  */
 const Index = () => {
-  const [status, setStatus] = useState(null);
+  /**
+   * State
+   */
+  const [dinoStatus, setDinoStatus] = useState<DinoStatus | null>(null);
 
+  /**
+   * Handler
+   */
+  const handleChangeDinoStatus = (status: DinoStatus) => {
+    setDinoStatus((prev) => ({ ...prev, ...status }));
+  };
+
+  /**
+   * Life Cycle
+   */
   useEffect(() => {
-    const fetchMe = async () => {
+    const fetchStatus = async () => {
       const res = await statusAPI.post({ github_name: githubUserName });
 
-      setStatus(res.status);
+      setDinoStatus(res.status);
     };
 
-    fetchMe();
+    fetchStatus();
   }, []);
 
-  // 他人のユーザページで、そのユーザが未登録の場合は何も表示しない
-  if (!status && !isMe) {
+  // 他人のユーザページで、かつそのユーザが未登録の場合は何も表示しない
+  if (!dinoStatus && !isMe) {
     return;
   }
 
-  return <Container>{status ? <DinoHome isMe={isMe} /> : <DinoSelection />}</Container>;
+  return (
+    <Container>
+      {dinoStatus ? (
+        <DinoHome isMe={isMe} />
+      ) : (
+        <DinoSelection handleChangeDinoStatus={handleChangeDinoStatus} />
+      )}
+    </Container>
+  );
 };
 
 export default Index;

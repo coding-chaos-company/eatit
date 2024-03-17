@@ -6,7 +6,11 @@ import * as styles from './dino-selection.module.css';
 import { Egg } from './egg/egg';
 import { StartButton } from './start-button/start-button';
 
-export const DinoSelection = () => {
+type DinoSelectionProps = {
+  handleChangeDinoStatus: (status: DinoStatus) => void;
+};
+
+export const DinoSelection = ({ handleChangeDinoStatus }: DinoSelectionProps) => {
   /**
    * State
    */
@@ -20,7 +24,9 @@ export const DinoSelection = () => {
     try {
       setDisabled(true);
 
-      await registerAPI.post({ github_name: getUserName(), color });
+      const res = await registerAPI.post({ github_name: getUserName(), color });
+
+      handleChangeDinoStatus(res);
     } catch {
       /** エラーハンドリング */
     } finally {
