@@ -12,7 +12,10 @@ async def check_me(db: AsyncSession, github_name: str) -> status_schema.MeRespon
     )
     user = users.first()
 
-    return {"is_registered": True if user else False}
+    if user:
+        return {"status": user[0]}
+    else:
+        return {"status": None}
 
 
 async def register_user(

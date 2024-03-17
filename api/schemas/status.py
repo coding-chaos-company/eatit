@@ -14,7 +14,7 @@ class StatusResponse(BaseModel):
 
 
 class MeResponse(BaseModel):
-    is_registered: bool = Field(None, example=True, description="該当ユーザが既に登録しているかどうか")
+    status: Optional[StatusResponse] = None
 
     class Config:
         orm_mode = True
