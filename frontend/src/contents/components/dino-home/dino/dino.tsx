@@ -25,9 +25,7 @@ type DinoProps = ComponentPropsWithRef<'img'> &
 
 export const Dino = forwardRef<HTMLImageElement, DinoProps>(
   ({ state, kind, level, color, direction, animation, initialPos, onAnimationIteration }, ref) => {
-    const dinoImage = chrome.runtime.getURL(
-      `assets/dino/${state}-${kind}-${level}-${color}.gif`
-    );
+    const dinoImage = chrome.runtime.getURL(`assets/dino/${state}-${kind}-${level}-${color}.gif`);
 
     return (
       <img
