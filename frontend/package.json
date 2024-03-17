@@ -8,6 +8,8 @@
     "dev": "plasmo dev",
     "build": "plasmo build",
     "build-docker": "docker compose -f ../docker/vrt/docker-compose.yml run --rm vrt yarn build",
+    "dev:api": "docker compose -f ../docker-compose.yml up -d",
+    "db:migrate": "docker compose -f ../docker-compose.yml exec api python migrate_db.py",
     "package": "plasmo package",
     "ci": "biome ci .",
     "format": "biome format --write . && biome check --apply-unsafe .",
