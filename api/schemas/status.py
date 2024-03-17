@@ -14,7 +14,7 @@ class StatusResponse(BaseModel):
 
 
 class MeResponse(BaseModel):
-    status: Optional[StatusResponse] = None
+    status: Optional[StatusResponse] = Field(None, nullable=True)
 
     class Config:
         orm_mode = True
