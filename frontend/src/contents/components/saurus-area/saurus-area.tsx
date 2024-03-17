@@ -1,3 +1,4 @@
+import startButton from 'data-base64:~/../assets/start-button.png';
 import {
   type AnimationEventHandler,
   type CSSProperties,
@@ -62,7 +63,7 @@ export const SaurusArea = ({}: SaurusAreaProps) => {
   };
 
   return (
-    <div ref={areaRef} className={styles.area} data-testid="SaurusArea">
+    <div ref={areaRef} data-testid="SaurusArea">
       <Saurus
         ref={saurusRef}
         initialPos={initialPos}
@@ -72,11 +73,12 @@ export const SaurusArea = ({}: SaurusAreaProps) => {
       />
 
       <button
+        className={styles.startButton}
         type="button"
         onClick={onFeedButtonClickHandler}
         disabled={animationClass !== 'walking'}
       >
-        えさをあげる
+        <img src={startButton} alt="start" />
       </button>
 
       <FeedBowl isFull />

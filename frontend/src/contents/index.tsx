@@ -1,7 +1,8 @@
 import type { PlasmoCSConfig, PlasmoGetInlineAnchor } from 'plasmo';
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import * as feedAPI from './api/register';
-import { SaurusArea, styleText } from './components/saurus-area';
+import { Container, styleTextContainer } from './components/container';
+import { SaurusArea, styleTextSaurusArea } from './components/saurus-area';
 import { checkIfSelf } from './utils/check-if-self';
 
 /**
@@ -16,7 +17,7 @@ export const config: PlasmoCSConfig = {
  */
 export const getStyle = () => {
   const style = document.createElement('style');
-  style.textContent = `${styleText}`;
+  style.textContent = `${styleTextSaurusArea} ${styleTextContainer}`;
   return style;
 };
 
@@ -25,9 +26,7 @@ export const getStyle = () => {
  * 草が生えているエリアを取得する
  */
 export const getInlineAnchor: PlasmoGetInlineAnchor = async () =>
-  document.querySelector(
-    '#user-profile-frame > div > div:nth-child(3) > div > div.col-12.col-lg-10 > div.js-yearly-contributions > div:nth-child(1)'
-  );
+  document.querySelector('div.graph-before-activity-overview');
 
 /**
  * ログインユーザのページかどうかを判定する
@@ -38,25 +37,11 @@ const isMe = checkIfSelf();
  * Component
  */
 const Index = () => {
-  const [a, setA] = useState<feedAPI.RegisterResponse>();
-
-  useEffect(() => {
-    const fetchFeed = async () => {
-      const res = await feedAPI.post({
-        github_name: window.location.pathname.split('/')[1],
-        color: 'green'
-      });
-
-      setA(res);
-    };
-
-    fetchFeed();
-  }, []);
-
-  console.log(a);
-  console.log(window.location.pathname.split('/')[1]);
-
-  return <SaurusArea isMe={isMe} />;
+  return (
+    <Container>
+      <SaurusArea isMe={isMe} />
+    </Container>
+  );
 };
 
 export default Index;

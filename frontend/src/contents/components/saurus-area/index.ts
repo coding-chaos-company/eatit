@@ -3,7 +3,7 @@ import styleFeed from 'data-text:./feed/feed.module.css';
 import styleSaurusArea from 'data-text:./saurus-area.module.css';
 import styleSaurus from 'data-text:./saurus/saurus.module.css';
 
-export const styleText = `
+export const styleTextSaurusArea = `
 ${styleSaurusArea}
 ${styleFeedBowl}
 ${styleSaurus}
