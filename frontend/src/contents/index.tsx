@@ -49,7 +49,7 @@ const Index = () => {
     const fetchMe = async () => {
       const res = await statusAPI.post({ github_name: githubUserName });
 
-      setStatus(res);
+      setStatus(res.status);
     };
 
     fetchMe();
@@ -57,7 +57,7 @@ const Index = () => {
 
   // 他人のユーザページで、そのユーザが未登録の場合は何も表示しない
   if (!status && !isMe) {
-    return <></>;
+    return;
   }
 
   return <Container>{status ? <DinoHome isMe={isMe} /> : <DinoSelection />}</Container>;
