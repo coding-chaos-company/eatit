@@ -22,13 +22,15 @@
 					"--line-length=79"
 				],
 				"[python]": {
-					"editor.formatOnSave": true
+					"editor.defaultFormatter": "ms-python.black-formatter"
 				},
+				"editor.formatOnSave": true,
 				"runArgs": ["--platform=linux/amd64"]
 			},
 			"extensions": [
 				"ms-python.python",
 				"ms-python.vscode-pylance",
+				"ms-python.black-formatter",
 				"njpwerner.autodocstring"
 			]
 		}
