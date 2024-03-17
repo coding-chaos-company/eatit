@@ -1,4 +1,7 @@
+import * as feedAPI from '@/contents/api/feed';
 import type { DinoStatus } from '@/contents/api/types';
+import { getUserName } from '@/contents/utils/get-user-name';
+import { wait } from '@/contents/utils/wait';
 import {
   type AnimationEventHandler,
   type CSSProperties,
@@ -19,13 +22,13 @@ type DinoHomeProps = {
 };
 
 export type DinoBehavier = {
-  pos: CSSProperties['left'];
+  startPos: CSSProperties['left']; // アニメーションの開始位置
   direction: 'left' | 'right';
   animation: 'walking' | 'toWalking' | 'toBowl' | 'stop';
   state: 'eat' | 'bend' | 'walk';
 };
 
-export const DinoHome = ({ dinoStatus }: DinoHomeProps) => {
+export const DinoHome = ({ dinoStatus, handleChangeDinoStatus }: DinoHomeProps) => {
   /**
    * RefObjects
    * 親要素からの相対位置を取得するため2つ定義する
@@ -37,7 +40,7 @@ export const DinoHome = ({ dinoStatus }: DinoHomeProps) => {
    * States
    */
   const [dinoBehavier, setDinoBehavier] = useState<DinoBehavier>({
-    pos: 0,
+    startPos: 0,
     direction: 'right',
     animation: 'walking',
     state: 'walk',
@@ -48,7 +51,7 @@ export const DinoHome = ({ dinoStatus }: DinoHomeProps) => {
   /**
    * Handlers
    */
-  const handleChangeDinoAnimation = (dinoBehavier: Partial<DinoBehavier>) => {
+  const handleChangeDinoBehavier = (dinoBehavier: Partial<DinoBehavier>) => {
     setDinoBehavier((prev) => ({ ...prev, ...dinoBehavier }));
   };
 
@@ -56,18 +59,32 @@ export const DinoHome = ({ dinoStatus }: DinoHomeProps) => {
     const absolutePos =
       dinoRef.current.getBoundingClientRect().left - areaRef.current.getBoundingClientRect().left;
 
-    handleChangeDinoAnimation({ pos: absolutePos, direction: 'right', animation: 'toBowl' });
+    handleChangeDinoBehavier({ startPos: absolutePos, direction: 'right', animation: 'toBowl' });
   };
 
-  const onDinoAnimationIterationHandler: AnimationEventHandler<HTMLImageElement> = (e) => {
+  const onDinoAnimationIterationHandler: AnimationEventHandler<HTMLImageElement> = async (e) => {
     if (e.animationName.endsWith('walking')) {
-      handleChangeDinoAnimation(
+      handleChangeDinoBehavier(
         dinoBehavier.direction === 'right' ? { direction: 'left' } : { direction: 'right' }
       );
     }
 
     if (e.animationName.endsWith('toBowl')) {
-      handleChangeDinoAnimation({ pos: 'calc(100% - 160px)', animation: 'stop', state: 'eat' });
+      // animationを止める
+      handleChangeDinoBehavier({ startPos: 'calc(100% - 160px)', animation: 'stop', state: 'eat' });
+
+      // 3秒ご飯食べるのを待つ
+      await wait(3000);
+
+      const res = await feedAPI.put({ github_name: getUserName() });
+
+      handleChangeDinoStatus(res);
+
+      handleChangeDinoBehavier({ animation: 'toWalking', direction: 'left', state: 'walk' });
+    }
+
+    if (e.animationName.endsWith('toWalking')) {
+      handleChangeDinoBehavier({ animation: 'walking', direction: 'right', startPos: 0 });
     }
   };
 
@@ -78,7 +95,7 @@ export const DinoHome = ({ dinoStatus }: DinoHomeProps) => {
         className={`${styles.dino} ${styles[dinoBehavier.animation]}`}
         onAnimationIteration={onDinoAnimationIterationHandler}
         style={{
-          left: dinoBehavier.pos,
+          left: dinoBehavier.startPos,
           transform: dinoBehavier.direction === 'right' ? 'scaleX(-1)' : 'scaleX(1)',
         }}
       >

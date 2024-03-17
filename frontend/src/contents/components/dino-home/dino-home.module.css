@@ -43,7 +43,8 @@
   animation-name: toWalking;
   animation-duration: 10s;
   animation-timing-function: linear;
-  animation-iteration-count: 1;
+  animation-iteration-count: 2;
+  animation-direction: alternate;
 }
 
 @keyframes walking {
