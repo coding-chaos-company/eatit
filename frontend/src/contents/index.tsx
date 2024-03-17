@@ -2,7 +2,7 @@ import type { PlasmoCSConfig, PlasmoGetInlineAnchor } from 'plasmo';
 import { Suspense, useEffect, useState } from 'react';
 import * as feedAPI from './api/register';
 import { Container, styleTextContainer } from './components/container';
-import { SaurusArea, styleTextSaurusArea } from './components/saurus-area';
+import { DinoHome, styleTextDinoHome } from './components/dino-home';
 import { checkIfSelf } from './utils/check-if-self';
 
 /**
@@ -17,7 +17,7 @@ export const config: PlasmoCSConfig = {
  */
 export const getStyle = () => {
   const style = document.createElement('style');
-  style.textContent = `${styleTextSaurusArea} ${styleTextContainer}`;
+  style.textContent = `${styleTextDinoHome} ${styleTextContainer}`;
   return style;
 };
 
@@ -39,7 +39,7 @@ const isMe = checkIfSelf();
 const Index = () => {
   return (
     <Container>
-      <SaurusArea isMe={isMe} />
+      <DinoHome isMe={isMe} />
     </Container>
   );
 };

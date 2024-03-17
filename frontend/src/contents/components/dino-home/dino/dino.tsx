@@ -5,9 +5,9 @@ import {
   type RefObject,
   forwardRef,
 } from 'react';
-import * as styles from './saurus.module.css';
+import * as styles from './dino.module.css';
 
-export type SaurusType = {
+export type DinoType = {
   state: 'walk' | 'bend' | 'eat';
   kind: 'brachio';
   level: 1 | 2 | 3 | 4;
@@ -15,26 +15,26 @@ export type SaurusType = {
   direction: 'left' | 'right';
 };
 
-export type SaurusAnimationType = 'walking' | 'toWalking' | 'toBowl' | 'stop';
+export type DinoAnimationType = 'walking' | 'toWalking' | 'toBowl' | 'stop';
 
-type SaurusProps = ComponentPropsWithRef<'img'> &
-  SaurusType & {
-    animation: SaurusAnimationType;
+type DinoProps = ComponentPropsWithRef<'img'> &
+  DinoType & {
+    animation: DinoAnimationType;
     initialPos: CSSProperties['left'];
   };
 
-export const Saurus = forwardRef<HTMLImageElement, SaurusProps>(
+export const Dino = forwardRef<HTMLImageElement, DinoProps>(
   ({ state, kind, level, color, direction, animation, initialPos, onAnimationIteration }, ref) => {
-    const saurusImage = chrome.runtime.getURL(
-      `assets/saurus/${state}-${kind}-${level}-${color}.gif`
+    const dinoImage = chrome.runtime.getURL(
+      `assets/dino/${state}-${kind}-${level}-${color}.gif`
     );
 
     return (
       <img
         ref={ref}
-        className={`${styles.saurus} ${styles[animation]}`}
-        src={saurusImage}
-        alt="saurus walking"
+        className={`${styles.dino} ${styles[animation]}`}
+        src={dinoImage}
+        alt="dino walking"
         style={{
           left: initialPos,
           transform: direction === 'right' ? 'scaleX(-1)' : 'scaleX(1)',
@@ -45,4 +45,4 @@ export const Saurus = forwardRef<HTMLImageElement, SaurusProps>(
   }
 );
 
-Saurus.displayName = 'Saurus';
+Dino.displayName = 'Dino';

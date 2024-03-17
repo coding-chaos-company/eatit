@@ -6,50 +6,50 @@ import {
   useRef,
   useState,
 } from 'react';
+import * as styles from './dino-home.module.css';
+import { Dino, type DinoAnimationType, type DinoType } from './dino/dino';
 import { FeedBowl } from './feed-bowl/feed-bowl';
 import { Feed } from './feed/feed';
-import * as styles from './saurus-area.module.css';
-import { Saurus, type SaurusAnimationType, type SaurusType } from './saurus/saurus';
 
-type SaurusAreaProps = {
+type DinoHomeProps = {
   isMe: boolean;
 };
 
-export const SaurusArea = ({}: SaurusAreaProps) => {
+export const DinoHome = ({}: DinoHomeProps) => {
   /**
    * RefObjects
    * 親要素からの相対位置を取得するため2つ定義する
    */
   const areaRef = useRef<HTMLDivElement>(null);
-  const saurusRef = useRef<HTMLImageElement>(null);
+  const dinoRef = useRef<HTMLImageElement>(null);
 
   /**
    * States
    */
   const [initialPos, setInitialPos] = useState<CSSProperties['left']>(0);
-  const [saurusState, setSaurusState] = useState<SaurusType>({
+  const [dinoState, setDinoState] = useState<DinoType>({
     state: 'walk',
     level: 1,
     kind: 'brachio',
     color: 'green',
     direction: 'right',
   });
-  const [animationClass, setAnimationClass] = useState<SaurusAnimationType>('walking');
+  const [animationClass, setAnimationClass] = useState<DinoAnimationType>('walking');
 
   /**
    * Handlers
    */
   const onFeedButtonClickHandler: MouseEventHandler<HTMLButtonElement> = () => {
     const absolutePos =
-      saurusRef.current.getBoundingClientRect().left - areaRef.current.getBoundingClientRect().left;
+      dinoRef.current.getBoundingClientRect().left - areaRef.current.getBoundingClientRect().left;
 
     setAnimationClass('toBowl');
-    setSaurusState((prev) => ({ ...prev, direction: 'right' }));
+    setDinoState((prev) => ({ ...prev, direction: 'right' }));
     setInitialPos(absolutePos);
   };
-  const onSaurusAnimationIterationHandler: AnimationEventHandler<HTMLImageElement> = (e) => {
+  const onDinoAnimationIterationHandler: AnimationEventHandler<HTMLImageElement> = (e) => {
     if (e.animationName.endsWith('walking')) {
-      setSaurusState((prev) => ({
+      setDinoState((prev) => ({
         ...prev,
         direction: prev.direction === 'left' ? 'right' : 'left',
       }));
@@ -58,18 +58,18 @@ export const SaurusArea = ({}: SaurusAreaProps) => {
     if (e.animationName.endsWith('toBowl')) {
       setInitialPos('calc(100% - 160px)');
       setAnimationClass('stop');
-      setSaurusState((prev) => ({ ...prev, state: 'eat' }));
+      setDinoState((prev) => ({ ...prev, state: 'eat' }));
     }
   };
 
   return (
-    <div ref={areaRef} data-testid="SaurusArea">
-      <Saurus
-        ref={saurusRef}
+    <div ref={areaRef} data-testid="DinoHome">
+      <Dino
+        ref={dinoRef}
         initialPos={initialPos}
         animation={animationClass}
-        onAnimationIteration={onSaurusAnimationIterationHandler}
-        {...saurusState}
+        onAnimationIteration={onDinoAnimationIterationHandler}
+        {...dinoState}
       />
 
       <button
