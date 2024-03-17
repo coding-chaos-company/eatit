@@ -1,0 +1,16 @@
+.wrapper {
+  width: 100%;
+  height: 100%;
+}
+
+.egg {
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+}
+
+.button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

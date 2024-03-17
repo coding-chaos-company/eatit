@@ -2,6 +2,7 @@ import * as registerAPI from '@/contents/api/register';
 import type { DinoStatus } from '@/contents/api/types';
 import { getUserName } from '@/contents/utils/get-user-name';
 import { type MouseEventHandler, useState } from 'react';
+import * as styles from './dino-selection.module.css';
 import { Egg } from './egg/egg';
 import { StartButton } from './start-button/start-button';
 
@@ -28,9 +29,13 @@ export const DinoSelection = () => {
   };
 
   return (
-    <div>
-      <Egg color={color} />
-      <StartButton onClick={onClickStartButtonHandler} disabled={disabled} />
+    <div className={styles.wrapper}>
+      <div className={styles.egg}>
+        <Egg color={color} />
+      </div>
+      <div className={styles.button}>
+        <StartButton onClick={onClickStartButtonHandler} disabled={disabled} />
+      </div>
     </div>
   );
 };

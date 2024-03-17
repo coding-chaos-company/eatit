@@ -1,11 +1,5 @@
 .button {
-  position: absolute;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   height: 30px;
   width: 100px;
   background-color: green;
-  left: calc(50% - 50px);
-  bottom: 20px;
 }
