@@ -45,6 +45,7 @@ async def register_user(
         user.exp = 0
         user.level = 1
         user.color = status_register.color
+        user.commits_count = 1
         user.last_update = utils.what_time()
         await db.commit()
         await db.refresh(user)
@@ -68,6 +69,7 @@ async def feed_dino(db: AsyncSession, github_name: str) -> status_schema.StatusR
     user.langs = 3
     user.change_files = 3
     user.commits = 3
+    user.commits_count = 3
     user.last_update = current_time_jst
     user.loop = 3
 

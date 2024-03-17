@@ -15,5 +15,6 @@ class Users(Base):
     langs = Column(Integer, nullable=True)
     change_files = Column(Integer, nullable=True)
     commits = Column(Integer, nullable=True)
+    commits_count = Column(Integer, nullable=True)
     last_update = Column(DateTime, nullable=True)
     loop = Column(Integer, default=1)
