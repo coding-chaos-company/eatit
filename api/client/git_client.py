@@ -5,10 +5,12 @@ from typing import NamedTuple
 sys.path.append("../")
 from config import constants
 
+
 class Diff(NamedTuple):
     file_name: str
     additions: int
     delections: int
+
 
 class GitClient:
     def __init__(self, user_name: str):
@@ -22,7 +24,6 @@ class GitClient:
         else:
             print("対象ユーザのリポジトリが見つかりませんでした．:", self.user_name)
             return
-
 
     # リポジトリの全コミットを取得する
     def get_commits(self, repo_name: str):
@@ -43,7 +44,6 @@ class GitClient:
             print("対象ユーザの最新1コミットが見つかりませんでした．:", self.user_name)
             return
 
-
     # ユーザの最新1コミットのdiffを取得する
     def get_latest_commit_diff(self):
         repos_list = self.get_repos_list()
@@ -53,11 +53,12 @@ class GitClient:
             diffs = response.json()["files"]
             diff_list = []
             for diff in diffs:
-                diff_list.append(Diff(diff['filename'], diff['additions'], diff['deletions']))
+                diff_list.append(
+                    Diff(diff["filename"], diff["additions"], diff["deletions"])
+                )
             return diff_list
         else:
             print("対象コミットのdiffが取得できませんでした．:", latest_commit)
-
 
     # ユーザの前回更新時までのdiffを全て取得する
     def get_commits_diff(self, last_date: str, current_date: str):
@@ -88,7 +89,13 @@ class GitClient:
                         diffs = diff_response.json()["files"]
                         diff_list = []
                         for diff in diffs:
-                            diff_list.append(Diff(diff["filename"], diff["additions"], diff["deletions"]))
+                            diff_list.append(
+                                Diff(
+                                    diff["filename"],
+                                    diff["additions"],
+                                    diff["deletions"],
+                                )
+                            )
                         commit_list.append(diff_list)
                     else:
                         return

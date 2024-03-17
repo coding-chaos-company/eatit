@@ -6,6 +6,15 @@ import models.status as status_model
 import schemas.status as status_schema
 
 
+async def check_me(db: AsyncSession, github_name: str) -> status_schema.MeResponse:
+    users = await db.execute(
+        select(status_model.Users).filter(status_model.Users.github_name == github_name)
+    )
+    user = users.first()
+
+    return {"is_registered": True if user else False}
+
+
 async def register_user(
     db: AsyncSession, status_register: status_schema.StatusRegisterRequest
 ) -> status_schema.StatusResponse:
