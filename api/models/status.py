@@ -10,7 +10,7 @@ class Users(Base):
     level = Column(Integer, default=1)
     exp = Column(Integer, default=0)
     color = Column(String(32), nullable=True)
-    kind = Column(String(32), default="Brachiosaurus")
+    kind = Column(String(32), default="brachio")
     code_score = Column(Integer, nullable=True)
     change_files = Column(Integer, nullable=True)
     commits_count = Column(Integer, nullable=True)
