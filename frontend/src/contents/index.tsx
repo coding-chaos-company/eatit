@@ -1,8 +1,9 @@
 import type { PlasmoCSConfig, PlasmoGetInlineAnchor } from 'plasmo';
 import { Suspense, useEffect, useState } from 'react';
-import * as feedAPI from './api/register';
+import * as statusAPI from './api/status';
 import { Container, styleTextContainer } from './components/container';
 import { DinoHome, styleTextDinoHome } from './components/dino-home';
+import { DinoSelection, styleTextDinoSelection } from './components/dino-selection';
 import { checkIfSelf } from './utils/check-if-self';
 
 /**
@@ -17,7 +18,7 @@ export const config: PlasmoCSConfig = {
  */
 export const getStyle = () => {
   const style = document.createElement('style');
-  style.textContent = `${styleTextDinoHome} ${styleTextContainer}`;
+  style.textContent = `${styleTextDinoHome} ${styleTextContainer} ${styleTextDinoSelection}`;
   return style;
 };
 
@@ -34,14 +35,32 @@ export const getInlineAnchor: PlasmoGetInlineAnchor = async () =>
 const isMe = checkIfSelf();
 
 /**
+ * GitHubのユーザ名を取得する
+ */
+const githubUserName = window.location.pathname.split('/')[1];
+
+/**
  * Component
  */
 const Index = () => {
-  return (
-    <Container>
-      <DinoHome isMe={isMe} />
-    </Container>
-  );
+  const [status, setStatus] = useState(null);
+
+  useEffect(() => {
+    const fetchMe = async () => {
+      const res = await statusAPI.post({ github_name: githubUserName });
+
+      setStatus(res);
+    };
+
+    fetchMe();
+  }, []);
+
+  // 他人のユーザページで、そのユーザが未登録の場合は何も表示しない
+  if (!status && !isMe) {
+    return <></>;
+  }
+
+  return <Container>{status ? <DinoHome isMe={isMe} /> : <DinoSelection />}</Container>;
 };
 
 export default Index;
