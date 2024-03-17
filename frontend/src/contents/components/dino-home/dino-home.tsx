@@ -1,4 +1,3 @@
-import startButton from 'data-base64:~/../assets/start-button.png';
 import {
   type AnimationEventHandler,
   type CSSProperties,
@@ -39,7 +38,7 @@ export const DinoHome = ({}: DinoHomeProps) => {
   /**
    * Handlers
    */
-  const onFeedButtonClickHandler: MouseEventHandler<HTMLButtonElement> = () => {
+  const _onFeedButtonClickHandler: MouseEventHandler<HTMLButtonElement> = () => {
     const absolutePos =
       dinoRef.current.getBoundingClientRect().left - areaRef.current.getBoundingClientRect().left;
 
@@ -71,16 +70,6 @@ export const DinoHome = ({}: DinoHomeProps) => {
         onAnimationIteration={onDinoAnimationIterationHandler}
         {...dinoState}
       />
-
-      <button
-        className={styles.startButton}
-        type="button"
-        onClick={onFeedButtonClickHandler}
-        disabled={animationClass !== 'walking'}
-      >
-        <img src={startButton} alt="start" />
-      </button>
-
       <FeedBowl isFull />
       <Feed />
     </div>

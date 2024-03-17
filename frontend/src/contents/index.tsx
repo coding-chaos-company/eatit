@@ -5,6 +5,7 @@ import { Container, styleTextContainer } from './components/container';
 import { DinoHome, styleTextDinoHome } from './components/dino-home';
 import { DinoSelection, styleTextDinoSelection } from './components/dino-selection';
 import { checkIfSelf } from './utils/check-if-self';
+import { getUserName } from './utils/get-user-name';
 
 /**
  * Matches
@@ -37,7 +38,7 @@ const isMe = checkIfSelf();
 /**
  * GitHubのユーザ名を取得する
  */
-const githubUserName = window.location.pathname.split('/')[1];
+const githubUserName = getUserName();
 
 /**
  * Component
