@@ -8,7 +8,7 @@ services:
     volumes:
       - ./api:/works/app:cached
       - ./scripts:/works/scripts:cached
-    working_dir: /works/scripts
-    command: bash -c "./run.sh"
+    working_dir: /works/app
+    command: bash -c "../scripts/run.sh"
     ports:
       - 8080:8080

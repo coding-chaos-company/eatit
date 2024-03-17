@@ -1,17 +1,77 @@
-.dino {
-  position: absolute;
-  box-sizing: border-box;
-  bottom: 0;
+.area {
+  width: 100%;
+  height: 100%;
 }
 
-.startButton {
+.dino {
   position: absolute;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 30px;
-  width: 100px;
-  background-color: green;
-  left: calc(50% - 50px);
-  bottom: 20px;
+  bottom: 0;
+  z-index: 10;
+}
+
+.feed {
+  position: absolute;
+  top: 0;
+  right: 50px;
+  z-index: 10;
+}
+
+.bowl {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+
+/* animation */
+.walking {
+  animation-name: walking;
+  animation-duration: 18s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+.toBowl {
+  animation-name: toBowl;
+  animation-duration: 3s;
+  animation-timing-function: linear;
+  animation-iteration-count: 2;
+  animation-direction: alternate;
+}
+
+.toWalking {
+  animation-name: toWalking;
+  animation-duration: 10s;
+  animation-timing-function: linear;
+  animation-iteration-count: 1;
+}
+
+@keyframes walking {
+  0% {
+    left: 0;
+  }
+
+  100% {
+    left: calc(100% - 250px);
+  }
+}
+
+@keyframes toBowl {
+  50% {
+    left: calc(100% - 160px);
+  }
+
+  100% {
+    left: calc(100% - 160px);
+  }
+}
+
+@keyframes toWalking {
+  0% {
+    left: calk(100% - 160px);
+  }
+
+  100% {
+    left: 0;
+  }
 }

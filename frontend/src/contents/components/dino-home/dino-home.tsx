@@ -1,4 +1,4 @@
-import startButton from 'data-base64:~/../assets/start-button.png';
+import type { DinoStatus } from '@/contents/api/types';
 import {
   type AnimationEventHandler,
   type CSSProperties,
@@ -7,15 +7,25 @@ import {
   useState,
 } from 'react';
 import * as styles from './dino-home.module.css';
-import { Dino, type DinoAnimationType, type DinoType } from './dino/dino';
+import { Dino } from './dino/dino';
 import { FeedBowl } from './feed-bowl/feed-bowl';
+import { FeedButton } from './feed-button/feed-button';
 import { Feed } from './feed/feed';
 
 type DinoHomeProps = {
   isMe: boolean;
+  dinoStatus: DinoStatus;
+  handleChangeDinoStatus: (status: DinoStatus) => void;
 };
 
-export const DinoHome = ({}: DinoHomeProps) => {
+export type DinoBehavier = {
+  pos: CSSProperties['left'];
+  direction: 'left' | 'right';
+  animation: 'walking' | 'toWalking' | 'toBowl' | 'stop';
+  state: 'eat' | 'bend' | 'walk';
+};
+
+export const DinoHome = ({ dinoStatus }: DinoHomeProps) => {
   /**
    * RefObjects
    * 親要素からの相対位置を取得するため2つ定義する
@@ -26,63 +36,62 @@ export const DinoHome = ({}: DinoHomeProps) => {
   /**
    * States
    */
-  const [initialPos, setInitialPos] = useState<CSSProperties['left']>(0);
-  const [dinoState, setDinoState] = useState<DinoType>({
-    state: 'walk',
-    level: 1,
-    kind: 'brachio',
-    color: 'green',
+  const [dinoBehavier, setDinoBehavier] = useState<DinoBehavier>({
+    pos: 0,
     direction: 'right',
+    animation: 'walking',
+    state: 'walk',
   });
-  const [animationClass, setAnimationClass] = useState<DinoAnimationType>('walking');
+  const [isFull, _setIsFull] = useState(true);
+  const [disabled, _setIsDisabled] = useState(false);
 
   /**
    * Handlers
    */
+  const handleChangeDinoAnimation = (dinoBehavier: Partial<DinoBehavier>) => {
+    setDinoBehavier((prev) => ({ ...prev, ...dinoBehavier }));
+  };
+
   const onFeedButtonClickHandler: MouseEventHandler<HTMLButtonElement> = () => {
     const absolutePos =
       dinoRef.current.getBoundingClientRect().left - areaRef.current.getBoundingClientRect().left;
 
-    setAnimationClass('toBowl');
-    setDinoState((prev) => ({ ...prev, direction: 'right' }));
-    setInitialPos(absolutePos);
+    handleChangeDinoAnimation({ pos: absolutePos, direction: 'right', animation: 'toBowl' });
   };
+
   const onDinoAnimationIterationHandler: AnimationEventHandler<HTMLImageElement> = (e) => {
     if (e.animationName.endsWith('walking')) {
-      setDinoState((prev) => ({
-        ...prev,
-        direction: prev.direction === 'left' ? 'right' : 'left',
-      }));
+      handleChangeDinoAnimation(
+        dinoBehavier.direction === 'right' ? { direction: 'left' } : { direction: 'right' }
+      );
     }
 
     if (e.animationName.endsWith('toBowl')) {
-      setInitialPos('calc(100% - 160px)');
-      setAnimationClass('stop');
-      setDinoState((prev) => ({ ...prev, state: 'eat' }));
+      handleChangeDinoAnimation({ pos: 'calc(100% - 160px)', animation: 'stop', state: 'eat' });
     }
   };
 
   return (
-    <div ref={areaRef} data-testid="DinoHome">
-      <Dino
+    <div ref={areaRef} data-testid="DinoHome" className={styles.area}>
+      <div
         ref={dinoRef}
-        initialPos={initialPos}
-        animation={animationClass}
+        className={`${styles.dino} ${styles[dinoBehavier.animation]}`}
         onAnimationIteration={onDinoAnimationIterationHandler}
-        {...dinoState}
-      />
-
-      <button
-        className={styles.startButton}
-        type="button"
-        onClick={onFeedButtonClickHandler}
-        disabled={animationClass !== 'walking'}
+        style={{
+          left: dinoBehavier.pos,
+          transform: dinoBehavier.direction === 'right' ? 'scaleX(-1)' : 'scaleX(1)',
+        }}
       >
-        <img src={startButton} alt="start" />
-      </button>
+        <Dino dinoBehavier={dinoBehavier} dinoStatus={dinoStatus} />
+      </div>
+      <div className={styles.bowl}>
+        <FeedBowl isFull={isFull} />
+      </div>
+      <div className={styles.feed}>
+        <Feed />
+      </div>
 
-      <FeedBowl isFull />
-      <Feed />
+      <FeedButton onClick={onFeedButtonClickHandler} disabled={disabled} />
     </div>
   );
 };

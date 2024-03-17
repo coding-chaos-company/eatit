@@ -1,9 +1,47 @@
+import * as registerAPI from '@/contents/api/register';
+import type { DinoStatus } from '@/contents/api/types';
+import { getUserName } from '@/contents/utils/get-user-name';
+import { type MouseEventHandler, useState } from 'react';
+import * as styles from './dino-selection.module.css';
 import { Egg } from './egg/egg';
+import { StartButton } from './start-button/start-button';
 
-export const DinoSelection = () => {
+type DinoSelectionProps = {
+  handleChangeDinoStatus: (status: Partial<DinoStatus>) => void;
+};
+
+export const DinoSelection = ({ handleChangeDinoStatus }: DinoSelectionProps) => {
+  /**
+   * State
+   */
+  const [disabled, setDisabled] = useState(false);
+  const [color, _setColor] = useState<DinoStatus['color']>('green');
+
+  /**
+   * Handler
+   */
+  const onClickStartButtonHandler: MouseEventHandler<HTMLButtonElement> = async () => {
+    try {
+      setDisabled(true);
+
+      const res = await registerAPI.post({ github_name: getUserName(), color });
+
+      handleChangeDinoStatus(res);
+    } catch {
+      /** エラーハンドリング */
+    } finally {
+      setDisabled(false);
+    }
+  };
+
   return (
-    <div>
-      <Egg />
+    <div className={styles.wrapper}>
+      <div className={styles.egg}>
+        <Egg color={color} />
+      </div>
+      <div className={styles.button}>
+        <StartButton onClick={onClickStartButtonHandler} disabled={disabled} />
+      </div>
     </div>
   );
 };
