@@ -1,12 +1,6 @@
 import type { DinoStatus } from '@/contents/api/types';
-import {
-  type AnimationEventHandler,
-  type CSSProperties,
-  type ComponentPropsWithRef,
-  type RefObject,
-  forwardRef,
-} from 'react';
 import type { DinoBehavier } from '../dino-home';
+
 type DinoProps = {
   dinoBehavier: DinoBehavier;
   dinoStatus: DinoStatus;
