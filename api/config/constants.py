@@ -1,3 +1,5 @@
+import json
+
 # URL
 GIT_BASE_URL = "https://api.github.com/"
 
@@ -9,6 +11,9 @@ def GIT_REPOS_URL(user_name: str):
 def GIT_COMMITS_URL(user_name: str, repo_name: str):
     return GIT_BASE_URL + "repos/" + user_name + "/" + repo_name + "/commits"
 
+# ファイル
+__json_data = open('extensions.json')
+EXTENSIONS = json.load(__json_data)
 
 # スコア
 CODE_BASE_SCORE = 60

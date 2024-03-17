@@ -10,8 +10,11 @@ from config import constants
 class Metrics(NamedTuple):
     commit_len: int
     file_exp: int
+    change_files: int
     code_exp: int
+    code_score: int
     lang_exp: int
+
 
 
 class MetricsManager:
