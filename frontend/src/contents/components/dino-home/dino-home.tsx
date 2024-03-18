@@ -32,8 +32,8 @@ export const DinoHome = ({ dinoStatus, handleChangeDinoStatus }: DinoHomeProps) 
    * RefObjects
    * 親要素からの相対位置を取得するため2つ定義する
    */
-  const areaRef = useRef<HTMLDivElement | null>(null);
-  const dinoRef = useRef<HTMLImageElement | null>(null);
+  const areaRef = useRef<HTMLDivElement>(null);
+  const dinoRef = useRef<HTMLImageElement>(null);
 
   /**
    * States
@@ -73,8 +73,18 @@ export const DinoHome = ({ dinoStatus, handleChangeDinoStatus }: DinoHomeProps) 
     }
 
     if (e.animationName.endsWith('toBowl')) {
-      // animationを止める
-      handleChangeDinoBehavier({ startPos: 'calc(100% - 160px)', animation: 'stop', state: 'eat' });
+      // animationを止めて、bend状態にする
+      handleChangeDinoBehavier({
+        startPos: 'calc(100% - 160px)',
+        animation: 'stop',
+        state: 'bend',
+      });
+
+      // bendのgifアニメーションを待つ
+      await wait(1800);
+
+      // eatアニメーションを流す
+      handleChangeDinoBehavier({ state: 'eat' });
 
       // 3秒ご飯食べるのを待つ
       await wait(3000);

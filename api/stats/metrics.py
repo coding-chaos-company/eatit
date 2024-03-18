@@ -42,12 +42,12 @@ class MetricsManager:
         self.user_name = user_name
 
     # メトリクスを算出
-    def calc_metrics(self, current_met=None):
+    def calc_metrics(self, current_met=None) -> Metrics:
         git_client = GitClient(self.user_name)
+        current_date = what_time()
 
         # feedの処理
         if current_met:
-            current_date = what_time()
             diffs = git_client.get_commits_diff(current_met.last_date, current_date)
 
             current_level = current_met.level
@@ -79,6 +79,7 @@ class MetricsManager:
                         commits_count=commits_count,
                         code_score=code_score,
                         change_files=change_files,
+                        current_date=current_date
                     )
         # registerの処理
         else:
@@ -90,11 +91,12 @@ class MetricsManager:
             )
 
             return Metrics(
-                commit_len=1,
+                commits_count=1,
                 level=1,
                 exp=total_exp,
                 change_files=f_met.file_len,
                 code_score=f_met.code_score,
+                current_date=current_date
             )
 
     # レベルが上がったどうかを判定
@@ -125,7 +127,7 @@ class MetricsManager:
         return round(constants.CHANGE_FILES_BASE_SCORE * rate)
 
     # 1コミット分のメトリクスを取得
-    def __get_files_metrics(files: list) -> FilesMetrics:
+    def __get_files_metrics(self, files: list) -> FilesMetrics:
         file_len = len(files)
         lang_weight = 0
         additions = 0
@@ -135,11 +137,11 @@ class MetricsManager:
             additions += file.additions
             delections += file.delections
             extension = extract_extension(file_name)
-            if constants.EXTENSIONS[extension]:
+            if extension in constants.EXTENSIONS:
                 if lang_weight < constants.EXTENSIONS[extension]:
                     lang_weight = constants.EXTENSIONS[extension]
         code_score = (
-            delections * constants.DEL_WEIGHT + additions * constants.ADD_WEIGHT
+            (delections * constants.DEL_WEIGHT) / len(files) + (additions * constants.ADD_WEIGHT) / len(files)
         )
 
         return FilesMetrics(file_len, lang_weight, code_score)

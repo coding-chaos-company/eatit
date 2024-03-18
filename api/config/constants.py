@@ -17,10 +17,10 @@ def GIT_COMMITS_URL(user_name: str, repo_name: str):
 
 
 # ファイル
-# __json_data = open("extensions.json")
-# EXTENSIONS = json.load(__json_data)
+__json_data = open("config/extensions.json", "r", encoding="utf-8-sig")
+EXTENSIONS = json.load(__json_data)
 
-# スコア
+# 基準スコア
 CODE_BASE_SCORE = 60
 LANGS_BASE_SCORE = 10
 CHANGE_FILES_BASE_SCORE = 30
@@ -33,8 +33,8 @@ def EXP(level: int):
     return EXP_DICT[level]
 
 # 重み
-DEL_WEIGHT = 0.5
-ADD_WEIGHT = 1.5
+DEL_WEIGHT = 0.2
+ADD_WEIGHT = 1.2
 
 #アクセストークン
 ACCESS_TOKEN = os.environ['ACCESS_TOKEN']

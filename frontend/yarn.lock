@@ -821,7 +821,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@jest/globals@npm:29.7.0, @jest/globals@npm:^29.7.0":
+"@jest/globals@npm:^29.7.0":
   version: 29.7.0
   resolution: "@jest/globals@npm:29.7.0"
   dependencies:
@@ -6260,7 +6260,6 @@ __metadata:
   resolution: "intarnet-avengers@workspace:."
   dependencies:
     "@biomejs/biome": "npm:1.6.0"
-    "@jest/globals": "npm:29.7.0"
     "@playwright/test": "npm:1.42.1"
     "@testing-library/jest-dom": "npm:6.4.2"
     "@testing-library/react": "npm:14.2.1"

@@ -2,6 +2,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from utils import utils, log_info
 from client.git_client import GitClient
+from stats import MetricsManager
 
 import models.status as status_model
 import schemas.status as status_schema
@@ -52,18 +53,24 @@ async def register_user(
     )
     user = users.first()
     if user is None:
+        mm = MetricsManager(status_register.github_name)
+        metrics = mm.calc_metrics()
         status = status_model.Users(**status_register.dict())
-        # status.last_update = utils.what_time()
-        status.last_update = datetime.datetime(2024, 3, 7, 0, 0, 0, 0) # サンプルコードあとで消せ
+        status.last_update = metrics.current_date
+        status.code_score = metrics.code_score
+        status.change_files = metrics.change_files
+        status.commits_count = metrics.commits_count
+        status.level = metrics.level
+        status.exp = metrics.exp
         db.add(status)
         await db.commit()
         await db.refresh(status)
         return {
             "status": {
                 "color": status.color,
-            "kind": status.kind,
-            "level": status.level,
-            "loop": status.loop
+                "kind": status.kind,
+                "level": status.level,
+                "loop": status.loop
             }
         }
     else:
