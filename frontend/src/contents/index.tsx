@@ -77,7 +77,7 @@ const Index = () => {
 
   return (
     <Container>
-      {dinoStatus ? (
+      {dinoStatus && dinoStatus.level > 0 ? (
         <DinoHome
           isMe={isMe}
           dinoStatus={dinoStatus}
