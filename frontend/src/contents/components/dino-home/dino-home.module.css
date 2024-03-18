@@ -64,7 +64,7 @@
 
 .toWalking {
   animation-name: toWalking;
-  animation-duration: 10s;
+  animation-duration: 18s;
   animation-timing-function: linear;
   animation-iteration-count: 2;
   animation-direction: alternate;

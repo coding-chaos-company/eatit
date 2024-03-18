@@ -2,7 +2,7 @@
   position: relative;
   width: 100%;
   overflow: hidden;
-  height: 250px;
+  height: 236px;
   border-right: var(--borderWidth-thin, max(1px, 0.0625rem)) solid
     var(--color-border-default);
   border-left: var(--borderWidth-thin, max(1px, 0.0625rem)) solid
@@ -21,4 +21,5 @@
   position: absolute;
   bottom: 0;
   z-index: 100;
+  width: 900px;
 }
