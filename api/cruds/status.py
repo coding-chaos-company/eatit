@@ -6,10 +6,11 @@ from stats import MetricsManager
 
 import models.status as status_model
 import schemas.status as status_schema
-import datetime # あとで消す
 
 
-async def check_status(db: AsyncSession, github_name: str) -> status_schema.StatusResponse:
+async def check_status(
+    db: AsyncSession, github_name: str
+) -> status_schema.StatusResponse:
     log_info("Status check.")
     users = await db.execute(
         select(status_model.Users).filter(status_model.Users.github_name == github_name)
@@ -17,8 +18,10 @@ async def check_status(db: AsyncSession, github_name: str) -> status_schema.Stat
     user = users.first()
     if user:
         git_client = GitClient(github_name)
-        if git_client.exist_5days_commits(last_date=user[0].last_update, current_date=utils.what_time()):
-            return {"status": user[0]} 
+        if git_client.exist_5days_commits(
+            last_date=user[0].last_update, current_date=utils.what_time()
+        ):
+            return {"status": user[0]}
         else:
             user = user[0]
             user.color = None
@@ -27,19 +30,23 @@ async def check_status(db: AsyncSession, github_name: str) -> status_schema.Stat
             user.loop = 1
             await db.commit()
             await db.refresh(user)
-            return {"status": {
-                "color": user.color,
-                "kind": "brachio",
-                "level": -1,
-                "loop": user.loop,
-            }}
+            return {
+                "status": {
+                    "color": user.color,
+                    "kind": "brachio",
+                    "level": -1,
+                    "loop": user.loop,
+                }
+            }
     else:
-        return {"status": {
-            "color": "green",
-            "kind": "brachio",
-            "level": 0,
-            "loop": 1,
-        }}
+        return {
+            "status": {
+                "color": "green",
+                "kind": "brachio",
+                "level": 0,
+                "loop": 1,
+            }
+        }
 
 
 async def register_user(
@@ -70,7 +77,8 @@ async def register_user(
                 "color": status.color,
                 "kind": status.kind,
                 "level": status.level,
-                "loop": status.loop
+                "loop": status.loop,
+                "exp": status.exp,
             }
         }
     else:
@@ -84,11 +92,11 @@ async def register_user(
         await db.refresh(user)
         return {
             "status": {
-
-            "color": user.color,
-            "kind": user.kind,
-            "level": user.level,
-            "loop": user.loop,
+                "color": user.color,
+                "kind": user.kind,
+                "level": user.level,
+                "loop": user.loop,
+                "exp": user.exp,
             }
         }
 
@@ -112,11 +120,11 @@ async def feed_dino(db: AsyncSession, github_name: str) -> status_schema.StatusR
     await db.refresh(user)
     return {
         "status": {
-
-        "color": user.color,
-        "kind": user.kind,
-        "level": user.level,
-        "loop": user.loop,
+            "color": user.color,
+            "kind": user.kind,
+            "level": user.level,
+            "loop": user.loop,
+            "exp": user.exp,
         }
     }
 
@@ -139,10 +147,10 @@ async def kill_dino(db: AsyncSession, github_name: str) -> status_schema.StatusR
     await db.refresh(user)
     return {
         "status": {
-
-        "color": user.color,
-        "kind": user.kind,
-        "level": user.level,
-        "loop": user.loop,
+            "color": user.color,
+            "kind": user.kind,
+            "level": user.level,
+            "loop": user.loop,
+            "exp": user.exp,
         }
     }

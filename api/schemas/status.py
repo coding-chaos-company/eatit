@@ -8,6 +8,7 @@ class BaseResponse(BaseModel):
     kind: str = Field(None, description="恐竜の状態")
     level: int = Field(None, example=1, description="恐竜のレベル")
     loop: int = Field(None, example=1, description="何周目の育成か")
+    exp: int = Field(None, example=0, description="現在の経験値")
 
     class Config:
         orm_mode = True
