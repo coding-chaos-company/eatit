@@ -1,17 +1,24 @@
 .container {
   position: relative;
   width: 100%;
-  height: 200px;
+  overflow: hidden;
+  height: 250px;
   border-right: var(--borderWidth-thin, max(1px, 0.0625rem)) solid
     var(--color-border-default);
   border-left: var(--borderWidth-thin, max(1px, 0.0625rem)) solid
     var(--color-border-default);
   border-bottom: var(--borderWidth-thin, max(1px, 0.0625rem)) solid
     var(--color-border-default);
-  overflow: hidden;
+}
+
+.field {
+  position: relative;
+  width: 100%;
+  height: 200px;
 }
 
 .fence {
   position: absolute;
   bottom: 0;
+  z-index: 100;
 }
