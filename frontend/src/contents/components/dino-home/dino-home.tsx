@@ -45,7 +45,7 @@ export const DinoHome = ({ dinoStatus, handleChangeDinoStatus }: DinoHomeProps) 
     animation: 'walking',
     state: 'walk',
   });
-  const [isFull, _setIsFull] = useState(true);
+  const [serving, setServing] = useState(false);
   const [disabled, _setIsDisabled] = useState(false);
 
   /**
@@ -55,9 +55,12 @@ export const DinoHome = ({ dinoStatus, handleChangeDinoStatus }: DinoHomeProps) 
     setDinoBehavier((prev) => ({ ...prev, ...dinoBehavier }));
   };
 
-  const onFeedButtonClickHandler: MouseEventHandler<HTMLButtonElement> = () => {
+  const onFeedButtonClickHandler: MouseEventHandler<HTMLButtonElement> = async () => {
     const absolutePos =
       dinoRef.current.getBoundingClientRect().left - areaRef.current.getBoundingClientRect().left;
+
+    // ご飯を落とす
+    setServing(true);
 
     handleChangeDinoBehavier({ startPos: absolutePos, direction: 'right', animation: 'toBowl' });
   };
@@ -78,8 +81,8 @@ export const DinoHome = ({ dinoStatus, handleChangeDinoStatus }: DinoHomeProps) 
 
       const res = await feedAPI.put({ github_name: getUserName() });
 
+      setServing(false);
       handleChangeDinoStatus(res);
-
       handleChangeDinoBehavier({ animation: 'toWalking', direction: 'left', state: 'walk' });
     }
 
@@ -102,9 +105,9 @@ export const DinoHome = ({ dinoStatus, handleChangeDinoStatus }: DinoHomeProps) 
         <Dino dinoBehavier={dinoBehavier} dinoStatus={dinoStatus} />
       </div>
       <div className={styles.bowl}>
-        <FeedBowl isFull={isFull} />
+        <FeedBowl />
       </div>
-      <div className={styles.feed}>
+      <div className={serving ? styles.feed : styles.hidden}>
         <Feed />
       </div>
 

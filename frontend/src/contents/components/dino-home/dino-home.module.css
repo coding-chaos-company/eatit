@@ -11,9 +11,13 @@
 
 .feed {
   position: absolute;
-  top: 0;
-  right: 50px;
+  top: calc(100% - 30px);
+  right: 56px;
   z-index: 10;
+  animation-name: feed;
+  animation-duration: 0.7s;
+  animation-timing-function: linear;
+  animation-iteration-count: 1;
 }
 
 .bowl {
@@ -22,7 +26,22 @@
   right: 0;
 }
 
-/* animation */
+.hidden {
+  display: none;
+}
+
+/* feed animation */
+@keyframes feed {
+  0% {
+    top: 0;
+  }
+
+  100% {
+    top: calc(100% - 30px);
+  }
+}
+
+/* dino animation */
 .walking {
   animation-name: walking;
   animation-duration: 18s;
