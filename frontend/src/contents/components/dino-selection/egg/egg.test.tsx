@@ -3,15 +3,13 @@ import { render, screen } from '@testing-library/react';
 import { Egg } from './egg';
 
 describe('Egg', () => {
-  test('colorに応じたaltが付与される', () => {
+  test('表示確認', () => {
     render(<Egg color="green" />);
 
+    // colorに応じたaltが付与される
     expect(screen.getByRole('img')).toHaveAttribute('alt', 'green egg');
-  });
 
-  test('colorに応じたgifファイルを表示する', () => {
-    render(<Egg color="green" />);
-
+    // colorに応じたgifファイルを表示する
     expect(chrome.runtime.getURL).toHaveBeenCalledWith('assets/eggs/egg-green.gif');
     expect(screen.getByRole('img')).toHaveAttribute(
       'src',

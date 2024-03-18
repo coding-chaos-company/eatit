@@ -10,5 +10,9 @@
   "dinoHome_startButton": {
     "message": "Start",
     "description": "start button at DinoHome component"
+  },
+  "dinoSelection_feedButton": {
+    "message": "feed",
+    "description": "feed button at DinoSelection component"
   }
 }

@@ -10,5 +10,9 @@
   "dinoHome_startButton": {
     "message": "Start",
     "description": "DinoHomeコンポーネントのスタートボタン"
+  },
+  "dinoSelection_feedButton": {
+    "message": "えさをやる",
+    "description": "DinoSelectionコンポーネントのえさをあげるボタン"
   }
 }
