@@ -32,8 +32,8 @@ export const DinoHome = ({ dinoStatus, handleChangeDinoStatus }: DinoHomeProps) 
    * RefObjects
    * 親要素からの相対位置を取得するため2つ定義する
    */
-  const areaRef = useRef<HTMLDivElement | null>(null);
-  const dinoRef = useRef<HTMLImageElement | null>(null);
+  const areaRef = useRef<HTMLDivElement>(null);
+  const dinoRef = useRef<HTMLImageElement>(null);
 
   /**
    * States

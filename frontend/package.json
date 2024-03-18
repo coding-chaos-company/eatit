@@ -24,7 +24,6 @@
   },
   "devDependencies": {
     "@biomejs/biome": "1.6.0",
-    "@jest/globals": "29.7.0",
     "@playwright/test": "1.42.1",
     "@testing-library/jest-dom": "6.4.2",
     "@testing-library/react": "14.2.1",
@@ -46,12 +45,20 @@
     "typescript": "5.4.2"
   },
   "manifest": {
-    "host_permissions": ["https://*/*"],
-    "permissions": ["tabs"],
+    "host_permissions": [
+      "https://*/*"
+    ],
+    "permissions": [
+      "tabs"
+    ],
     "web_accessible_resources": [
       {
-        "resources": ["assets/**/*"],
-        "matches": ["https://*/*"]
+        "resources": [
+          "assets/**/*"
+        ],
+        "matches": [
+          "https://*/*"
+        ]
       }
     ]
   },
