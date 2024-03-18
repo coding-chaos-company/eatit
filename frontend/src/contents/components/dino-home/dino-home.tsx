@@ -81,7 +81,7 @@ export const DinoHome = ({ dinoStatus, handleChangeDinoStatus }: DinoHomeProps) 
       });
 
       // bendのgifアニメーションを待つ
-      await wait(1800);
+      await wait(1790);
 
       // eatアニメーションを流す
       handleChangeDinoBehavier({ state: 'eat' });
