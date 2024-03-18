@@ -1,17 +1,17 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
-from utils import utils
+from utils import utils, log_info
 
 import models.status as status_model
 import schemas.status as status_schema
 
 
 async def check_status(db: AsyncSession, github_name: str) -> status_schema.StatusResponse:
+    log_info("Status check.")
     users = await db.execute(
         select(status_model.Users).filter(status_model.Users.github_name == github_name)
     )
     user = users.first()
-
     if user:
         return {"status": user[0]}
     else:
@@ -26,6 +26,7 @@ async def check_status(db: AsyncSession, github_name: str) -> status_schema.Stat
 async def register_user(
     db: AsyncSession, status_register: status_schema.StatusRegisterRequest
 ) -> status_schema.StatusResponse:
+    log_info("Register user.")
     users = await db.execute(
         select(status_model.Users).filter(
             status_model.Users.github_name == status_register.github_name
@@ -67,6 +68,7 @@ async def register_user(
 
 
 async def feed_dino(db: AsyncSession, github_name: str) -> status_schema.StatusResponse:
+    log_info("Feed dino.")
     current_time_jst = utils.what_time()
     users = await db.execute(
         select(status_model.Users).filter(status_model.Users.github_name == github_name)
@@ -94,6 +96,7 @@ async def feed_dino(db: AsyncSession, github_name: str) -> status_schema.StatusR
 
 
 async def kill_dino(db: AsyncSession, github_name: str) -> status_schema.StatusResponse:
+    log_info("Kill dino.")
     current_time_jst = utils.what_time()
     users = await db.execute(
         select(status_model.Users).filter(status_model.Users.github_name == github_name)
