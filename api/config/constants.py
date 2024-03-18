@@ -1,4 +1,8 @@
 import json
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # URL
 GIT_BASE_URL = "https://api.github.com/"
@@ -28,7 +32,9 @@ EXP_DICT = {1: 3000, 2: 4500, 3: 6000}
 def EXP(level: int):
     return EXP_DICT[level]
 
-
 # 重み
 DEL_WEIGHT = 0.2
 ADD_WEIGHT = 1.2
+
+#アクセストークン
+ACCESS_TOKEN = os.environ['ACCESS_TOKEN']

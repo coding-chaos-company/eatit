@@ -1,10 +1,12 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from utils import utils, log_info
+from client.git_client import GitClient
 from stats import MetricsManager
 
 import models.status as status_model
 import schemas.status as status_schema
+import datetime # あとで消す
 
 
 async def check_status(db: AsyncSession, github_name: str) -> status_schema.StatusResponse:
@@ -14,7 +16,23 @@ async def check_status(db: AsyncSession, github_name: str) -> status_schema.Stat
     )
     user = users.first()
     if user:
-        return {"status": user[0]}
+        git_client = GitClient(github_name)
+        if git_client.exist_5days_commits(last_date=user[0].last_update, current_date=utils.what_time()):
+            return {"status": user[0]} 
+        else:
+            user = user[0]
+            user.color = None
+            user.exp = 0
+            user.level = 1
+            user.loop = 1
+            await db.commit()
+            await db.refresh(user)
+            return {"status": {
+                "color": user.color,
+                "kind": "brachio",
+                "level": -1,
+                "loop": user.loop,
+            }}
     else:
         return {"status": {
             "color": "green",
