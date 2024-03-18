@@ -4,6 +4,7 @@ import type { DinoStatus } from '@/contents/api/types';
 type RegisterParams = {
   github_name: string;
   color: DinoStatus['color'];
+  level: DinoStatus['level'];
 };
 
 export type RegisterResponse = {

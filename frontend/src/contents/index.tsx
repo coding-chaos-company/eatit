@@ -83,7 +83,7 @@ const Index = () => {
           handleChangeDinoStatus={handleChangeDinoStatus}
         />
       ) : (
-        <DinoSelection handleChangeDinoStatus={handleChangeDinoStatus} />
+        <DinoSelection dinoStatus={dinoStatus} handleChangeDinoStatus={handleChangeDinoStatus} />
       )}
     </Container>
   );

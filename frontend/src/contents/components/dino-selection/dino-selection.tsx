@@ -7,10 +7,11 @@ import { Egg } from './egg/egg';
 import { StartButton } from './start-button/start-button';
 
 type DinoSelectionProps = {
+  dinoStatus: DinoStatus;
   handleChangeDinoStatus: (status: Partial<DinoStatus>) => void;
 };
 
-export const DinoSelection = ({ handleChangeDinoStatus }: DinoSelectionProps) => {
+export const DinoSelection = ({ dinoStatus, handleChangeDinoStatus }: DinoSelectionProps) => {
   /**
    * State
    */
@@ -24,7 +25,11 @@ export const DinoSelection = ({ handleChangeDinoStatus }: DinoSelectionProps) =>
     try {
       setDisabled(true);
 
-      const res = await registerAPI.post({ github_name: getUserName(), color });
+      const res = await registerAPI.post({
+        github_name: getUserName(),
+        color,
+        level: dinoStatus.level,
+      });
 
       handleChangeDinoStatus(res.status);
     } catch {
