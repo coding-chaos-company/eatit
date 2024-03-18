@@ -69,8 +69,8 @@ const Index = () => {
     fetchStatus();
   }, []);
 
-  // 他人のユーザページで、かつそのユーザが未登録の場合は何も表示しない
-  if (!dinoStatus && !isMe) {
+  // 他人のユーザページで、かつそのユーザが未登録または死んでる場合は何も表示しない
+  if ((!dinoStatus || dinoStatus.level <= 0) && !isMe) {
     return;
   }
 
