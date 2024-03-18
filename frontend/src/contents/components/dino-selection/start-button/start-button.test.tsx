@@ -3,9 +3,12 @@ import { render, screen } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { StartButton } from './start-button';
 
-jest.mock('startImage');
-
 describe('StartButton', () => {
+  test('指定の文言が表示されている', () => {
+    render(<StartButton onClick={jest.fn()} disabled={false} />);
+
+    expect(screen.getByRole('button')).toHaveTextContent('dafsd');
+  });
   test('クリックするとコールバックが実行される', () => {
     const onClickMock = jest.fn();
 

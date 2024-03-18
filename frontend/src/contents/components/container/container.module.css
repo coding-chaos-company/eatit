@@ -8,4 +8,10 @@
     var(--color-border-default);
   border-bottom: var(--borderWidth-thin, max(1px, 0.0625rem)) solid
     var(--color-border-default);
+  overflow: hidden;
+}
+
+.fence {
+  position: absolute;
+  bottom: 0;
 }

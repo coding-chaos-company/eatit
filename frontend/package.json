@@ -1,6 +1,7 @@
 {
   "name": "intarnet-avengers",
-  "displayName": "インターネットアベンジャーズ",
+  "displayName": "__MSG_extensionName__",
+  "description": "__MSG_extensionDescription__",
   "private": true,
   "packageManager": "yarn@4.1.1",
   "version": "0.0.1",
@@ -45,8 +46,10 @@
     "typescript": "5.4.2"
   },
   "manifest": {
+    "name": "__MSG_extensionName__",
     "host_permissions": ["https://*/*"],
     "permissions": ["tabs"],
+    "default_locale": "ja",
     "web_accessible_resources": [
       {
         "resources": ["assets/**/*"],

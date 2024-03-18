@@ -1,0 +1,14 @@
+{
+  "extensionName": {
+    "message": "eatit（イーティット）",
+    "description": "拡張機能の名前"
+  },
+  "extensionDescription": {
+    "message": "草食恐竜をGitHubの草で育成するゲーム",
+    "description": "Description of the extension."
+  },
+  "dinoHome_startButton": {
+    "message": "Start",
+    "description": "DinoHomeコンポーネントのスタートボタン"
+  }
+}
