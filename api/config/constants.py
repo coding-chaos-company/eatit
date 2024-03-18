@@ -1,4 +1,8 @@
 import json
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # URL
 GIT_BASE_URL = "https://api.github.com/"
@@ -13,8 +17,8 @@ def GIT_COMMITS_URL(user_name: str, repo_name: str):
 
 
 # ファイル
-__json_data = open("extensions.json")
-EXTENSIONS = json.load(__json_data)
+# __json_data = open("extensions.json")
+# EXTENSIONS = json.load(__json_data)
 
 # スコア
 CODE_BASE_SCORE = 60
@@ -28,7 +32,9 @@ EXP_DICT = {1: 3000, 2: 4500, 3: 6000}
 def EXP(level: int):
     return EXP_DICT[level]
 
-
 # 重み
 DEL_WEIGHT = 0.5
 ADD_WEIGHT = 1.5
+
+#アクセストークン
+ACCESS_TOKEN = os.environ['ACCESS_TOKEN']
