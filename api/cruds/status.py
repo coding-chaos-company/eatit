@@ -6,7 +6,7 @@ import models.status as status_model
 import schemas.status as status_schema
 
 
-async def check_status(db: AsyncSession, github_name: str) -> status_schema.MeResponse:
+async def check_status(db: AsyncSession, github_name: str) -> status_schema.StatusResponse:
     users = await db.execute(
         select(status_model.Users).filter(status_model.Users.github_name == github_name)
     )
@@ -15,7 +15,12 @@ async def check_status(db: AsyncSession, github_name: str) -> status_schema.MeRe
     if user:
         return {"status": user[0]}
     else:
-        return {"status": None}
+        return {"status": {
+            "color": "green",
+            "kind": "brachio",
+            "level": 0,
+            "loop": 1,
+        }}
 
 
 async def register_user(
@@ -34,10 +39,12 @@ async def register_user(
         await db.commit()
         await db.refresh(status)
         return {
-            "color": status.color,
+            "status": {
+                "color": status.color,
             "kind": status.kind,
             "level": status.level,
-            "loop": status.loop,
+            "loop": status.loop
+            }
         }
     else:
         user = user[0]
@@ -49,10 +56,13 @@ async def register_user(
         await db.commit()
         await db.refresh(user)
         return {
+            "status": {
+
             "color": user.color,
             "kind": user.kind,
             "level": user.level,
             "loop": user.loop,
+            }
         }
 
 
@@ -73,10 +83,13 @@ async def feed_dino(db: AsyncSession, github_name: str) -> status_schema.StatusR
     await db.commit()
     await db.refresh(user)
     return {
+        "status": {
+
         "color": user.color,
         "kind": user.kind,
         "level": user.level,
         "loop": user.loop,
+        }
     }
 
 
@@ -96,8 +109,11 @@ async def kill_dino(db: AsyncSession, github_name: str) -> status_schema.StatusR
     await db.commit()
     await db.refresh(user)
     return {
+        "status": {
+
         "color": user.color,
         "kind": user.kind,
         "level": user.level,
         "loop": user.loop,
+        }
     }

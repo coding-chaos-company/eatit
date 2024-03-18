@@ -9,7 +9,7 @@ from database import get_db
 router = APIRouter()
 
 
-@router.post("/status", response_model=status_schema.MeResponse)
+@router.post("/status", response_model=status_schema.StatusResponse)
 async def check_status(
     me_body: status_schema.FeedRequest, db: AsyncSession = Depends(get_db)
 ):

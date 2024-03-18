@@ -3,7 +3,7 @@ from typing import Optional, List
 from pydantic import BaseModel, Field
 
 
-class StatusResponse(BaseModel):
+class BaseResponse(BaseModel):
     color: str = Field(None, example="green", description="恐竜の色")
     kind: str = Field(None, description="恐竜の状態")
     level: int = Field(None, example=1, description="恐竜のレベル")
@@ -13,8 +13,8 @@ class StatusResponse(BaseModel):
         orm_mode = True
 
 
-class MeResponse(BaseModel):
-    status: Optional[StatusResponse] = Field(None, nullable=True)
+class StatusResponse(BaseModel):
+    status: Optional[BaseResponse] = Field(None)
 
     class Config:
         orm_mode = True
