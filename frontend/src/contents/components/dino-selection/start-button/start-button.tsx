@@ -1,5 +1,4 @@
 import startImage from 'data-base64:~/../assets/start-button.png';
-import { getUserName } from '@/contents/utils/get-user-name';
 import type { MouseEventHandler } from 'react';
 import * as styles from './start-button.module.css';
 

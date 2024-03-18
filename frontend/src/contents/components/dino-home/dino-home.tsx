@@ -1,7 +1,6 @@
 import * as feedAPI from '@/contents/api/feed';
 import type { DinoStatus } from '@/contents/api/types';
-import { getUserName } from '@/contents/utils/get-user-name';
-import { wait } from '@/contents/utils/wait';
+import { getCurrentDinoPosition, getUserName, wait } from '@/contents/utils';
 import {
   type AnimationEventHandler,
   type CSSProperties,
@@ -33,8 +32,8 @@ export const DinoHome = ({ dinoStatus, handleChangeDinoStatus }: DinoHomeProps) 
    * RefObjects
    * 親要素からの相対位置を取得するため2つ定義する
    */
-  const areaRef = useRef<HTMLDivElement>(null);
-  const dinoRef = useRef<HTMLImageElement>(null);
+  const areaRef = useRef<HTMLDivElement | null>(null);
+  const dinoRef = useRef<HTMLImageElement | null>(null);
 
   /**
    * States
@@ -55,14 +54,15 @@ export const DinoHome = ({ dinoStatus, handleChangeDinoStatus }: DinoHomeProps) 
     setDinoBehavier((prev) => ({ ...prev, ...dinoBehavier }));
   };
 
-  const onFeedButtonClickHandler: MouseEventHandler<HTMLButtonElement> = async () => {
-    const absolutePos =
-      dinoRef.current.getBoundingClientRect().left - areaRef.current.getBoundingClientRect().left;
-
+  const onFeedButtonClickHandler: MouseEventHandler<HTMLButtonElement> = () => {
     // ご飯を落とす
     setServing(true);
 
-    handleChangeDinoBehavier({ startPos: absolutePos, direction: 'right', animation: 'toBowl' });
+    handleChangeDinoBehavier({
+      startPos: getCurrentDinoPosition(areaRef, dinoRef),
+      direction: 'right',
+      animation: 'toBowl',
+    });
   };
 
   const onDinoAnimationIterationHandler: AnimationEventHandler<HTMLImageElement> = async (e) => {

@@ -1,3 +1,4 @@
+import { checkIfSelf, getUserName } from '@/contents/utils';
 import type { PlasmoCSConfig, PlasmoGetInlineAnchor } from 'plasmo';
 import { Suspense, useEffect, useState } from 'react';
 import * as statusAPI from './api/status';
@@ -5,8 +6,6 @@ import type { DinoStatus } from './api/types';
 import { Container, styleTextContainer } from './components/container';
 import { DinoHome, styleTextDinoHome } from './components/dino-home';
 import { DinoSelection, styleTextDinoSelection } from './components/dino-selection';
-import { checkIfSelf } from './utils/check-if-self';
-import { getUserName } from './utils/get-user-name';
 
 /**
  * Matches

@@ -11,5 +11,5 @@ export const Dino = ({ dinoBehavier, dinoStatus }: DinoProps) => {
     `assets/dinos/${dinoBehavier.state}-${dinoStatus.kind}-${dinoStatus.level}-${dinoStatus.color}.gif`
   );
 
-  return <img src={dinoImage} alt="dino walking" />;
+  return <img src={dinoImage} alt={`dino ${dinoBehavier.state}ing`} />;
 };

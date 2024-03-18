@@ -1,6 +1,6 @@
 import * as registerAPI from '@/contents/api/register';
 import type { DinoStatus } from '@/contents/api/types';
-import { getUserName } from '@/contents/utils/get-user-name';
+import { getUserName } from '@/contents/utils';
 import { type MouseEventHandler, useState } from 'react';
 import * as styles from './dino-selection.module.css';
 import { Egg } from './egg/egg';
