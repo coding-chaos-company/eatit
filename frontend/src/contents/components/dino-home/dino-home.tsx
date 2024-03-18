@@ -82,7 +82,7 @@ export const DinoHome = ({ dinoStatus, handleChangeDinoStatus }: DinoHomeProps) 
       const res = await feedAPI.put({ github_name: getUserName() });
 
       setServing(false);
-      handleChangeDinoStatus(res);
+      handleChangeDinoStatus(res.status);
       handleChangeDinoBehavier({ animation: 'toWalking', direction: 'left', state: 'walk' });
     }
 

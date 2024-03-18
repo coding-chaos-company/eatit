@@ -5,7 +5,9 @@ type FeedParams = {
   github_name: string;
 };
 
-export type FeedResponse = DinoStatus;
+export type FeedResponse = {
+  status: DinoStatus;
+};
 
 /**
  *  PUT /feed

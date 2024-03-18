@@ -26,7 +26,7 @@ export const DinoSelection = ({ handleChangeDinoStatus }: DinoSelectionProps) =>
 
       const res = await registerAPI.post({ github_name: getUserName(), color });
 
-      handleChangeDinoStatus(res);
+      handleChangeDinoStatus(res.status);
     } catch {
       /** エラーハンドリング */
     } finally {

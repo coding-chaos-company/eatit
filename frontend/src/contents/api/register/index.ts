@@ -6,7 +6,9 @@ type RegisterParams = {
   color: DinoStatus['color'];
 };
 
-export type RegisterResponse = DinoStatus;
+export type RegisterResponse = {
+  status: DinoStatus;
+};
 
 /**
  *  POST /register
