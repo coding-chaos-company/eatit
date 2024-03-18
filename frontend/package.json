@@ -45,20 +45,12 @@
     "typescript": "5.4.2"
   },
   "manifest": {
-    "host_permissions": [
-      "https://*/*"
-    ],
-    "permissions": [
-      "tabs"
-    ],
+    "host_permissions": ["https://*/*"],
+    "permissions": ["tabs"],
     "web_accessible_resources": [
       {
-        "resources": [
-          "assets/**/*"
-        ],
-        "matches": [
-          "https://*/*"
-        ]
+        "resources": ["assets/**/*"],
+        "matches": ["https://*/*"]
       }
     ]
   },
