@@ -2,9 +2,8 @@ import * as registerAPI from '@/contents/api/register';
 import type { DinoStatus } from '@/contents/api/types';
 import { getUserName } from '@/contents/utils';
 import { type MouseEventHandler, useState } from 'react';
+import { Egg, StartButton } from './components';
 import * as styles from './dino-selection.module.css';
-import { Egg } from './egg/egg';
-import { StartButton } from './start-button/start-button';
 
 type DinoSelectionProps = {
   dinoStatus: DinoStatus;
