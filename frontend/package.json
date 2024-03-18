@@ -13,7 +13,7 @@
     "package": "plasmo package",
     "ci": "biome ci .",
     "format": "biome format --write . && biome check --apply-unsafe .",
-    "test:unit": "jest src",
+    "test:unit": "NODE_ENV=test jest src",
     "test:vrt": "playwright test tests/vrt",
     "test:vrt-docker": "yarn build-docker && docker compose -f ../docker/vrt/docker-compose.yml run --rm vrt yarn test:vrt"
   },
