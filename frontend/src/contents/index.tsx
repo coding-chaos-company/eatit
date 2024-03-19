@@ -6,6 +6,7 @@ import type { DinoStatus } from './api/types';
 import { Container, styleTextContainer } from './components/container';
 import { DinoHome, styleTextDinoHome } from './components/dino-home';
 import { DinoSelection, styleTextDinoSelection } from './components/dino-selection';
+import { Loading } from './components/loading/loading';
 
 /**
  * Matches
@@ -76,14 +77,23 @@ const Index = () => {
 
   return (
     <Container>
-      {dinoStatus && dinoStatus.level > 0 ? (
-        <DinoHome
-          isMe={isMe}
-          dinoStatus={dinoStatus}
-          handleChangeDinoStatus={handleChangeDinoStatus}
-        />
+      {!dinoStatus ? (
+        <Loading />
       ) : (
-        <DinoSelection dinoStatus={dinoStatus} handleChangeDinoStatus={handleChangeDinoStatus} />
+        <>
+          {dinoStatus.level > 0 ? (
+            <DinoHome
+              isMe={isMe}
+              dinoStatus={dinoStatus}
+              handleChangeDinoStatus={handleChangeDinoStatus}
+            />
+          ) : (
+            <DinoSelection
+              dinoStatus={dinoStatus}
+              handleChangeDinoStatus={handleChangeDinoStatus}
+            />
+          )}
+        </>
       )}
     </Container>
   );

@@ -2839,6 +2839,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@plasmohq/storage@npm:1.9.3":
+  version: 1.9.3
+  resolution: "@plasmohq/storage@npm:1.9.3"
+  dependencies:
+    pify: "npm:6.1.0"
+  peerDependencies:
+    react: ^16.8.6 || ^17 || ^18
+  peerDependenciesMeta:
+    react:
+      optional: true
+  checksum: 10c0/f8493ac0a466a0eb4e3fa9f8ad7ccef11b2cc67d14464e083abd5797baf9fe48fcb0dd7f94a730efd6b16923cd274d8a346a9e29dbf2430ce38e957c3ae56b49
+  languageName: node
+  linkType: hard
+
 "@playwright/test@npm:1.42.1":
   version: 1.42.1
   resolution: "@playwright/test@npm:1.42.1"
@@ -6267,6 +6281,7 @@ __metadata:
   resolution: "intarnet-avengers@workspace:."
   dependencies:
     "@biomejs/biome": "npm:1.6.0"
+    "@plasmohq/storage": "npm:1.9.3"
     "@playwright/test": "npm:1.42.1"
     "@testing-library/jest-dom": "npm:6.4.2"
     "@testing-library/react": "npm:14.2.1"
@@ -8616,6 +8631,13 @@ __metadata:
   version: 2.3.1
   resolution: "picomatch@npm:2.3.1"
   checksum: 10c0/26c02b8d06f03206fc2ab8d16f19960f2ff9e81a658f831ecb656d8f17d9edc799e8364b1f4a7873e89d9702dff96204be0fa26fe4181f6843f040f819dac4be
+  languageName: node
+  linkType: hard
+
+"pify@npm:6.1.0":
+  version: 6.1.0
+  resolution: "pify@npm:6.1.0"
+  checksum: 10c0/5744905e271d821ce1c96a615aecc857bfc0154a2f55cfd773e0a27478c1e1457dd69c932f2196cfa0d298cc4a2847edaf42b1ba600b95022ba5225c079443a6
   languageName: node
   linkType: hard
 
