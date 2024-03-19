@@ -1,10 +1,10 @@
 import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
-import { Egg } from './egg';
+import { EggSplit } from './egg-split';
 
-describe('Egg', () => {
+describe('SplitEgg', () => {
   test('表示確認', () => {
-    render(<Egg color="green" />);
+    render(<EggSplit color="green" />);
 
     // colorに応じたaltが付与される
     expect(screen.getByRole('img')).toHaveAttribute('alt', 'green egg');
