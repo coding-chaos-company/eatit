@@ -62,6 +62,7 @@ async def register_user(
     )
     user = users.first()
     if user is None:
+        log_info("ユーザを登録しました")
         mm = MetricsManager(status_register.github_name)
         metrics = mm.calc_metrics()
         status = status_model.Users(**status_register.dict())
@@ -83,14 +84,24 @@ async def register_user(
                 "exp": status.exp,
             }
         }
-    elif user[0].level == 0:
+    elif status_register.level == -1:
+        log_info("新たな恐竜が生まれました")
         user = user[0]
         user.color = status_register.color
-        status.last_update = metrics.current_date
+        user.last_update = utils.what_time()
         user.loop = 1
         user.level = 1
         await db.commit()
         await db.refresh(user)
+        return {
+            "status": {
+                "color": user.color,
+                "kind": user.kind,
+                "level": user.level,
+                "loop": user.loop,
+                "exp": user.exp,
+            }
+        }
     else:
         user = user[0]
         user.loop += 1
@@ -98,6 +109,7 @@ async def register_user(
         user.level = 1
         user.color = status_register.color
         user.last_update = utils.what_time()
+        log_info(str(user.loop) + "周目に突入します")
         await db.commit()
         await db.refresh(user)
         return {
