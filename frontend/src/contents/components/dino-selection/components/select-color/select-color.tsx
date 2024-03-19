@@ -29,7 +29,7 @@ export const SelectColor = ({ onChangeColorHandler }: SelectColorProps) => {
             defaultChecked={radio.default}
           />
           <label className={styles.label} htmlFor={radio.label}>
-            <img src={radio.img} alt={`${radio.label} egg`} />
+            <img src={radio.img} alt={`${radio.label} egg`} className={styles.img} />
           </label>
         </>
       ))}
