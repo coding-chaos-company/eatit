@@ -1,6 +1,7 @@
 {
   "name": "monitoring",
   "version": "0.0.0",
+  "packageManager": "yarn@4.1.1",
   "scripts": {
     "build": "node build.js && cp appsscript.json dist/",
     "push": "yarn build && clasp push"
