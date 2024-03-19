@@ -21,7 +21,12 @@ export const config: PlasmoCSConfig = {
  */
 export const getStyle = () => {
   const style = document.createElement('style');
-  style.textContent = `${styleTextDinoHome} ${styleTextContainer} ${styleTextDinoSelection} ${styleTextLoading} ${styleTextDeadDino}`;
+  style.textContent =
+    styleTextDinoHome +
+    styleTextContainer +
+    styleTextDinoSelection +
+    styleTextLoading +
+    styleTextDeadDino;
   return style;
 };
 

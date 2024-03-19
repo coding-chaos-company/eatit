@@ -1,9 +1,9 @@
 {
   "status": {
     "status": {
-      "color": "pink",
+      "color": "green",
       "kind": "brachio",
-      "level": -1,
+      "level": 1,
       "loop": 1,
       "exp": 100
     }
@@ -21,7 +21,7 @@
     "status": {
       "color": "green",
       "kind": "brachio",
-      "level": 2,
+      "level": 3,
       "loop": 1,
       "exp": 10
     }

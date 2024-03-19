@@ -3,7 +3,7 @@ module.exports = (req, _res, next) => {
     req.method = 'GET';
   }
 
-  setTimeout(() => {
-    next();
-  }, 3000);
+  // setTimeout(() => {
+  next();
+  // }, 3000);
 };
