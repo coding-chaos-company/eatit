@@ -13,7 +13,7 @@
 
 .feed {
   position: absolute;
-  top: calc(100% - 32px);
+  top: calc(100% - 28px);
   right: 56px;
   z-index: 10;
   animation-name: feed;
@@ -24,7 +24,7 @@
 
 .bowl {
   position: absolute;
-  bottom: 0;
+  bottom: -4px;
   right: 34px;
   display: flex;
   align-items: end;
@@ -41,7 +41,7 @@
   }
 
   100% {
-    top: calc(100% - 32px);
+    top: calc(100% - 28px);
   }
 }
 
