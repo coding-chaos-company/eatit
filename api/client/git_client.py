@@ -2,6 +2,8 @@ import requests
 import sys
 import datetime
 import time
+import base64
+from typing import NamedTuple
 from typing import NamedTuple, Optional
 from utils import log_info, log_debug
 
@@ -158,3 +160,27 @@ class GitClient:
                 return False
         log_info("恐竜は生存中です")
         return True
+    
+    
+    def get_file_contents(self, owner, repo, path, commit_sha_bef, commit_sha_aft):
+
+        url_aft = f'https://api.github.com/repos/{owner}/{repo}/contents/{path}?ref={commit_sha_aft}'
+        url_bef = f'https://api.github.com/repos/{owner}/{repo}/contents/{path}?ref={commit_sha_bef}'
+        
+        response_aft = requests.get(url_aft, headers=self.__headers)
+        response_bef = requests.get(url_bef, headers=self.__headers)
+        if response_aft.status_code == 200 and response_bef.status_code == 200:
+            content_aft = response_aft.json().get('content')
+            content_bef = response_bef.json().get('content')
+            decoded_content_aft= base64.b64decode(content_aft).decode('utf-8')
+            decoded_content_bef= base64.b64decode(content_bef).decode('utf-8')
+            return decoded_content_aft, decoded_content_bef
+        
+        elif response_aft.status_code == 200:
+            content_aft = response_aft.json().get('content')
+            decoded_content_aft= base64.b64decode(content_aft).decode('utf-8')
+            return decoded_content_aft
+        
+        else:
+            return "Error"
+
