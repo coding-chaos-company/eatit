@@ -6,7 +6,7 @@ type StatusParams = {
 };
 
 export type StatusResponse = {
-  status: DinoStatus;
+  status: DinoStatus | null;
 };
 
 /**
