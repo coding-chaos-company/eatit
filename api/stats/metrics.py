@@ -133,13 +133,16 @@ class MetricsManager:
         additions = 0
         delections = 0
         for file in files:
+            weight = 0
             file_name = file.file_name
-            additions += file.additions
-            delections += file.delections
             extension = extract_extension(file_name)
             if extension in constants.EXTENSIONS:
+                weight = constants.EXTENSIONS[extension]
                 if lang_weight < constants.EXTENSIONS[extension]:
                     lang_weight = constants.EXTENSIONS[extension]
+
+            additions += file.additions * weight
+            delections += file.delections * weight
         code_score = (
             (delections * constants.DEL_WEIGHT) / len(files) + (additions * constants.ADD_WEIGHT) / len(files)
         )
