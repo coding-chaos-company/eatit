@@ -1,6 +1,7 @@
 {
   "name": "intarnet-avengers",
-  "displayName": "インターネットアベンジャーズ",
+  "displayName": "__MSG_extensionName__",
+  "description": "__MSG_extensionDescription__",
   "private": true,
   "packageManager": "yarn@4.1.1",
   "version": "0.0.1",
@@ -13,14 +14,16 @@
     "package": "plasmo package",
     "ci": "biome ci .",
     "format": "biome format --write . && biome check --apply-unsafe .",
-    "test:unit": "jest src",
+    "test:unit": "NODE_ENV=test jest src",
     "test:vrt": "playwright test tests/vrt",
     "test:vrt-docker": "yarn build-docker && docker compose -f ../docker/vrt/docker-compose.yml run --rm vrt yarn test:vrt"
   },
   "dependencies": {
+    "immer": "10.0.4",
     "plasmo": "0.85.0",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "zustand": "4.5.2"
   },
   "devDependencies": {
     "@biomejs/biome": "1.6.0",
@@ -45,8 +48,10 @@
     "typescript": "5.4.2"
   },
   "manifest": {
+    "name": "__MSG_extensionName__",
     "host_permissions": ["https://*/*"],
     "permissions": ["tabs"],
+    "default_locale": "ja",
     "web_accessible_resources": [
       {
         "resources": ["assets/**/*"],

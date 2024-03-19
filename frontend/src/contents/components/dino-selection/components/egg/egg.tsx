@@ -6,5 +6,5 @@ type EggProps = {
 
 export const Egg = ({ color }: EggProps) => {
   const eggImage = chrome.runtime.getURL(`assets/eggs/egg-${color}.gif`);
-  return <img src={eggImage} alt="egg" />;
+  return <img src={eggImage} alt={`${color} egg`} />;
 };

@@ -1,5 +1,5 @@
 import type { DinoStatus } from '@/contents/api/types';
-import type { DinoBehavier } from '../dino-home';
+import type { DinoBehavier } from '../../dino-home';
 
 type DinoProps = {
   dinoBehavier: DinoBehavier;

@@ -8,11 +8,8 @@ import {
   useRef,
   useState,
 } from 'react';
+import { Dino, Feed, FeedBowl, FeedButton } from './components';
 import * as styles from './dino-home.module.css';
-import { Dino } from './dino/dino';
-import { FeedBowl } from './feed-bowl/feed-bowl';
-import { FeedButton } from './feed-button/feed-button';
-import { Feed } from './feed/feed';
 
 type DinoHomeProps = {
   isMe: boolean;
@@ -81,7 +78,7 @@ export const DinoHome = ({ dinoStatus, handleChangeDinoStatus }: DinoHomeProps) 
       });
 
       // bendのgifアニメーションを待つ
-      await wait(1800);
+      await wait(1790);
 
       // eatアニメーションを流す
       handleChangeDinoBehavier({ state: 'eat' });

@@ -1,0 +1,18 @@
+{
+  "extensionName": {
+    "message": "eatit",
+    "description": "Name of the extension."
+  },
+  "extensionDescription": {
+    "message": "Dinosaurus caring game using github grass.",
+    "description": "Description of the extension."
+  },
+  "dinoHome_startButton": {
+    "message": "Start",
+    "description": "start button at DinoHome component"
+  },
+  "dinoSelection_feedButton": {
+    "message": "feed",
+    "description": "feed button at DinoSelection component"
+  }
+}

@@ -8,7 +8,7 @@ type FeedButtonProps = {
 export const FeedButton = ({ onClick, disabled }: FeedButtonProps) => {
   return (
     <button type="button" disabled={disabled} onClick={onClick}>
-      えさをやる
+      {chrome.i18n.getMessage('dinoSelection_feedButton')}
     </button>
   );
 };
