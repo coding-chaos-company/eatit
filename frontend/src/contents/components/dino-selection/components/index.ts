@@ -5,4 +5,4 @@ import styleEggSplit from 'data-text:./egg-split/egg-split.module.css';
 import styleSelectColor from 'data-text:./select-color/select-color.module.css';
 import styleStartButton from 'data-text:./start-button/start-button.module.css';
 
-export const styleText = `${styleSelectColor} ${styleStartButton} ${styleEggSplit}`;
+export const styleText = styleSelectColor + styleStartButton + styleEggSplit;

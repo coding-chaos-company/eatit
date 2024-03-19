@@ -1,6 +1,6 @@
 import { checkIfSelf, getUserName } from '@/contents/utils';
 import type { PlasmoCSConfig, PlasmoGetInlineAnchor } from 'plasmo';
-import { useEffect, useState } from 'react';
+import { type MouseEventHandler, useEffect, useState } from 'react';
 import * as statusAPI from './api/status';
 import type { DinoStatus } from './api/types';
 import { Container, styleTextContainer } from './components/container';
@@ -21,7 +21,12 @@ export const config: PlasmoCSConfig = {
  */
 export const getStyle = () => {
   const style = document.createElement('style');
-  style.textContent = `${styleTextDinoHome} ${styleTextContainer} ${styleTextDinoSelection} ${styleTextLoading} ${styleTextDeadDino}`;
+  style.textContent =
+    styleTextDinoHome +
+    styleTextContainer +
+    styleTextDinoSelection +
+    styleTextLoading +
+    styleTextDeadDino;
   return style;
 };
 
@@ -50,12 +55,16 @@ const Index = () => {
    * State
    */
   const [dinoStatus, setDinoStatus] = useState<DinoStatus | null>(null);
+  const [isRestarted, setIsRestarted] = useState(false);
 
   /**
    * Handler
    */
   const handleChangeDinoStatus = (status: DinoStatus) => {
     setDinoStatus((prev) => ({ ...prev, ...status }));
+  };
+  const onClickRestartButton: MouseEventHandler<HTMLButtonElement> = () => {
+    setIsRestarted(true);
   };
 
   /**
@@ -88,11 +97,15 @@ const Index = () => {
     );
   }
 
-  // 死んでる時は遺影を表示する
+  // 死んでる時は遺影を表示する（リスタートボタンを押したら選択画面に変える）
   if (dinoStatus.level === -1) {
     return (
       <Container>
-        <DeadDino />
+        {!isRestarted ? (
+          <DeadDino onClick={onClickRestartButton} />
+        ) : (
+          <DinoSelection dinoStatus={dinoStatus} handleChangeDinoStatus={handleChangeDinoStatus} />
+        )}
       </Container>
     );
   }

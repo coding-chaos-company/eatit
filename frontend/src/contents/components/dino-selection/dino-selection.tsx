@@ -29,14 +29,18 @@ export const DinoSelection = ({ dinoStatus, handleChangeDinoStatus }: DinoSelect
     try {
       setSplitting(true);
 
+      const start = performance.now();
+
       const res = await registerAPI.post({
         github_name: getUserName(),
         color,
         level: dinoStatus.level,
       });
 
-      // 割れるアニメーションを待つ
-      await wait(7200);
+      const end = performance.now();
+
+      // 卵が割れるのを待つ
+      await wait(9400 - (end - start));
 
       handleChangeDinoStatus(res.status);
     } catch {
