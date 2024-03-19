@@ -142,6 +142,7 @@ class GitClient:
                 continue
 
         sorted_date_list = sorted(date_list, key=lambda x: x)
+        sorted_date_list.insert(0, last_date)
         sorted_date_list.append(current_date)
         for first, second in zip(sorted_date_list[:-1], sorted_date_list[1:]):
             delta = abs(second - first)

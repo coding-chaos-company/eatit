@@ -36,6 +36,7 @@ async def check_status(
                     "kind": "brachio",
                     "level": -1,
                     "loop": user.loop,
+                    "exp": user.exp,
                 }
             }
     else:
@@ -45,6 +46,7 @@ async def check_status(
                 "kind": "brachio",
                 "level": 0,
                 "loop": 1,
+                "exp": 0,
             }
         }
 
@@ -81,6 +83,14 @@ async def register_user(
                 "exp": status.exp,
             }
         }
+    elif user[0].level == 0:
+        user = user[0]
+        user.color = status_register.color
+        status.last_update = metrics.current_date
+        user.loop = 1
+        user.level = 1
+        await db.commit()
+        await db.refresh(user)
     else:
         user = user[0]
         user.loop += 1
