@@ -1,8 +1,8 @@
 import * as registerAPI from '@/contents/api/register';
 import type { DinoStatus } from '@/contents/api/types';
-import { getUserName } from '@/contents/utils';
+import { getUserName, wait } from '@/contents/utils';
 import { type ChangeEventHandler, type MouseEventHandler, useState } from 'react';
-import { StartButton } from './components';
+import { EggSplit, StartButton } from './components';
 import { SelectColor } from './components/select-color/select-color';
 import * as styles from './dino-selection.module.css';
 
@@ -15,7 +15,7 @@ export const DinoSelection = ({ dinoStatus, handleChangeDinoStatus }: DinoSelect
   /**
    * State
    */
-  const [disabled, setDisabled] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [color, setColor] = useState<DinoStatus['color']>('green');
 
   /**
@@ -27,7 +27,7 @@ export const DinoSelection = ({ dinoStatus, handleChangeDinoStatus }: DinoSelect
   };
   const onClickStartButtonHandler: MouseEventHandler<HTMLButtonElement> = async () => {
     try {
-      setDisabled(true);
+      setLoading(true);
 
       const res = await registerAPI.post({
         github_name: getUserName(),
@@ -35,22 +35,33 @@ export const DinoSelection = ({ dinoStatus, handleChangeDinoStatus }: DinoSelect
         level: dinoStatus.level,
       });
 
+      // 割れるアニメーションを待つ
+      await wait(7200);
+
       handleChangeDinoStatus(res.status);
     } catch {
       /** エラーハンドリング */
     } finally {
-      setDisabled(false);
+      setLoading(false);
     }
   };
 
   return (
     <div className={styles.wrapper}>
       <div className={styles.egg}>
-        <SelectColor onChangeColorHandler={onChangeColorHandler} />
+        {loading ? (
+          <div className={styles.eggSplit}>
+            <EggSplit color={color} />
+          </div>
+        ) : (
+          <SelectColor onChangeColorHandler={onChangeColorHandler} />
+        )}
       </div>
-      <div className={styles.button}>
-        <StartButton onClick={onClickStartButtonHandler} disabled={disabled} />
-      </div>
+      {!loading && (
+        <div className={styles.button}>
+          <StartButton onClick={onClickStartButtonHandler} disabled={loading} />
+        </div>
+      )}
     </div>
   );
 };

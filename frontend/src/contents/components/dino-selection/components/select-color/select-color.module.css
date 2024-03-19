@@ -21,7 +21,6 @@
 }
 
 .input:checked + .label > .img {
-  /* background: #b54a4a; */
   width: 100px;
 }
 
