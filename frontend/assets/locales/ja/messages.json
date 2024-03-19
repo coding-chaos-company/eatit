@@ -11,6 +11,10 @@
     "message": "Start",
     "description": "DinoHomeコンポーネントのスタートボタン"
   },
+  "dinoHome_feedBowl_tooltip": {
+    "message": "exp",
+    "description": "DinoHomeコンポーネントのツールチップで表示される経験値ラベル"
+  },
   "dinoSelection_feedButton": {
     "message": "えさをやる",
     "description": "DinoSelectionコンポーネントのえさをあげるボタン"

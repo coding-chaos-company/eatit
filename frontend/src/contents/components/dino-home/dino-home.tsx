@@ -112,7 +112,7 @@ export const DinoHome = ({ dinoStatus, handleChangeDinoStatus }: DinoHomeProps) 
         <Dino dinoBehavier={dinoBehavier} dinoStatus={dinoStatus} />
       </div>
       <div className={styles.bowl}>
-        <FeedBowl />
+        <FeedBowl exp={dinoStatus.exp} />
       </div>
       <div className={serving ? styles.feed : styles.hidden}>
         <Feed />

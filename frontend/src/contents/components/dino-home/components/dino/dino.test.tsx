@@ -10,7 +10,7 @@ describe('Dino', () => {
       state: 'walk',
       animation: 'walking',
     } as const;
-    const status = { color: 'green', kind: 'brachio', level: 1, loop: 1 } as const;
+    const status = { color: 'green', kind: 'brachio', level: 1, loop: 1, exp: 1 } as const;
 
     render(<Dino dinoBehavier={behavier} dinoStatus={status} />);
 

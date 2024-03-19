@@ -11,6 +11,10 @@
     "message": "Start",
     "description": "start button at DinoHome component"
   },
+  "dinoHome_feedBowl_tooltip": {
+    "message": "exp",
+    "description": "exp label at FeedBowl component"
+  },
   "dinoSelection_feedButton": {
     "message": "feed",
     "description": "feed button at DinoSelection component"

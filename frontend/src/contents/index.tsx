@@ -1,6 +1,6 @@
 import { checkIfSelf, getUserName } from '@/contents/utils';
 import type { PlasmoCSConfig, PlasmoGetInlineAnchor } from 'plasmo';
-import { Suspense, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import * as statusAPI from './api/status';
 import type { DinoStatus } from './api/types';
 import { Container, styleTextContainer } from './components/container';
