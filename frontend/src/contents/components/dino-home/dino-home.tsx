@@ -42,7 +42,6 @@ export const DinoHome = ({ dinoStatus, handleChangeDinoStatus }: DinoHomeProps) 
     state: 'walk',
   });
   const [serving, setServing] = useState(false);
-  const [disabled, _setIsDisabled] = useState(false);
 
   /**
    * Handlers
@@ -77,20 +76,24 @@ export const DinoHome = ({ dinoStatus, handleChangeDinoStatus }: DinoHomeProps) 
         state: 'bend',
       });
 
-      // bendのgifアニメーションを待つ
-      await wait(1790);
+      try {
+        // bendのgifアニメーションを待つ
+        await wait(1790);
 
-      // eatアニメーションを流す
-      handleChangeDinoBehavier({ state: 'eat' });
+        // eatアニメーションを流す
+        handleChangeDinoBehavier({ state: 'eat' });
 
-      // 3秒ご飯食べるのを待つ
-      await wait(3000);
+        // 3秒ご飯食べるのを待つ
+        await wait(3000);
 
-      const res = await feedAPI.put({ github_name: getUserName() });
+        const res = await feedAPI.put({ github_name: getUserName() });
 
-      setServing(false);
-      handleChangeDinoStatus(res.status);
-      handleChangeDinoBehavier({ animation: 'toWalking', direction: 'left', state: 'walk' });
+        setServing(false);
+        handleChangeDinoStatus(res.status);
+        handleChangeDinoBehavier({ animation: 'toWalking', direction: 'left', state: 'walk' });
+      } catch {
+        /** エラーハンドリング */
+      }
     }
 
     if (e.animationName.endsWith('toWalking')) {
@@ -118,7 +121,7 @@ export const DinoHome = ({ dinoStatus, handleChangeDinoStatus }: DinoHomeProps) 
         <Feed />
       </div>
 
-      <FeedButton onClick={onFeedButtonClickHandler} disabled={disabled} />
+      <FeedButton onClick={onFeedButtonClickHandler} disabled={serving} />
     </div>
   );
 };
