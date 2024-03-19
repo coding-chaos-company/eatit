@@ -9,7 +9,7 @@ export const fetcher = async <Response>(
   const { headers, ...args } = init;
 
   try {
-    const res = await fetch(`http://localhost:8080/${path}`, {
+    const res = await fetch(`${process.env.PLASMO_PUBLIC_API_BASE_URL}/${path}`, {
       mode: 'cors',
       headers: new Headers({
         ...(headers ?? {}),
