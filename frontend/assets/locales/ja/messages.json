@@ -18,5 +18,9 @@
   "dinoSelection_feedButton": {
     "message": "えさをやる",
     "description": "DinoSelectionコンポーネントのえさをあげるボタン"
+  },
+  "deadDino_reStartButton": {
+    "message": "もう一度",
+    "description": "DeadDinoコンポーネントのリスタートボタン"
   }
 }
