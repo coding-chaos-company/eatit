@@ -15,7 +15,7 @@ export const DinoSelection = ({ dinoStatus, handleChangeDinoStatus }: DinoSelect
   /**
    * State
    */
-  const [loading, setLoading] = useState(false);
+  const [splitting, setSplitting] = useState(false);
   const [color, setColor] = useState<DinoStatus['color']>('green');
 
   /**
@@ -27,7 +27,7 @@ export const DinoSelection = ({ dinoStatus, handleChangeDinoStatus }: DinoSelect
   };
   const onClickStartButtonHandler: MouseEventHandler<HTMLButtonElement> = async () => {
     try {
-      setLoading(true);
+      setSplitting(true);
 
       const res = await registerAPI.post({
         github_name: getUserName(),
@@ -42,14 +42,14 @@ export const DinoSelection = ({ dinoStatus, handleChangeDinoStatus }: DinoSelect
     } catch {
       /** エラーハンドリング */
     } finally {
-      setLoading(false);
+      setSplitting(false);
     }
   };
 
   return (
     <div className={styles.wrapper}>
       <div className={styles.egg}>
-        {loading ? (
+        {splitting ? (
           <div className={styles.eggSplit}>
             <EggSplit color={color} />
           </div>
@@ -57,9 +57,9 @@ export const DinoSelection = ({ dinoStatus, handleChangeDinoStatus }: DinoSelect
           <SelectColor onChangeColorHandler={onChangeColorHandler} />
         )}
       </div>
-      {!loading && (
+      {!splitting && (
         <div className={styles.button}>
-          <StartButton onClick={onClickStartButtonHandler} disabled={loading} />
+          <StartButton onClick={onClickStartButtonHandler} disabled={splitting} />
         </div>
       )}
     </div>
