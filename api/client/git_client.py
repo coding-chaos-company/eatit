@@ -116,7 +116,6 @@ class GitClient:
         repos_list = self.get_repos_list()
         date_list = []
         for repo in repos_list:
-            log_info(repo["name"])
             repo_name = repo["name"]
             params = {
                 "since": last_date.isoformat(),
@@ -150,6 +149,7 @@ class GitClient:
             if int(delta_days) < 5:
                 continue
             else:
-                log_info(delta_days)
+                log_info(str(delta_days) + "日間餌がなかったので恐竜は死にました")
                 return False
+        log_info("恐竜は生存中です")
         return True
