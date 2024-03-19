@@ -3,10 +3,19 @@ from sqlalchemy import select
 from utils import utils, log_info
 from client.git_client import GitClient
 from stats import MetricsManager
+import datetime
+from typing import NamedTuple
 
 import models.status as status_model
 import schemas.status as status_schema
 
+class CurrentMetrics(NamedTuple):
+    level: int
+    exp: int
+    code_score: float
+    change_files: float
+    commits_count: int
+    last_date: str
 
 async def check_status(
     db: AsyncSession, github_name: str
@@ -126,20 +135,29 @@ async def register_user(
 async def feed_dino(db: AsyncSession, github_name: str) -> status_schema.StatusResponse:
     log_info("Feed dino.")
     current_time_jst = utils.what_time()
+    mm = MetricsManager('hyphen-o')
     users = await db.execute(
         select(status_model.Users).filter(status_model.Users.github_name == github_name)
     )
     user = users.first()[0]
-    user.level = 3
-    user.exp = 3
-    user.code_score = 3
-    user.change_files = 3
-    user.commits_count = 3
-    user.last_update = current_time_jst
-    user.loop = 3
+    metrics = mm.calc_metrics(CurrentMetrics(
+        level=user.level,
+        exp=user.exp,
+        code_score=user.code_score,
+        change_files=user.change_files,
+        commits_count=user.commits_count,
+        last_date=user.last_update
+    ))
+    if metrics:
+        user.level = metrics.level
+        user.exp = metrics.exp
+        user.code_score = metrics.code_score
+        user.change_files = metrics.change_files
+        user.commits_count = metrics.commits_count
+        user.last_update = metrics.current_date
 
-    await db.commit()
-    await db.refresh(user)
+        await db.commit()
+        await db.refresh(user)
     return {
         "status": {
             "color": user.color,

@@ -1,4 +1,5 @@
 from typing import NamedTuple
+import datetime
 import sys
 
 sys.path.append("../")
@@ -21,6 +22,7 @@ class FilesMetrics(NamedTuple):
     file_len: int
     lang_weight: int
     code_score: float
+    date: datetime
 
 
 class CurrentMetrics(NamedTuple):
@@ -49,13 +51,13 @@ class MetricsManager:
         # feedの処理
         if current_met:
             diffs = git_client.get_commits_diff(current_met.last_date, current_date)
-
             current_level = current_met.level
             current_exp = current_met.exp
             code_score = current_met.code_score * current_met.commits_count
             change_files = current_met.change_files * current_met.commits_count
+            sorted_diffs = sorted(diffs, key=lambda x: x[0].date)
 
-            for index, files in enumerate(diffs):
+            for index, files in enumerate(sorted_diffs):
                 f_met = self.__get_files_metrics(files)
                 total_exp = self.__calc_total_exp(f_met, current_met)
                 current_exp += total_exp
@@ -79,7 +81,7 @@ class MetricsManager:
                         commits_count=commits_count,
                         code_score=code_score,
                         change_files=change_files,
-                        current_date=current_date
+                        current_date=f_met.date
                     )
         # registerの処理
         else:
@@ -146,5 +148,7 @@ class MetricsManager:
         code_score = (
             (delections * constants.DEL_WEIGHT) / len(files) + (additions * constants.ADD_WEIGHT) / len(files)
         )
+        if len(files) > 0:
+            date = files[0].date
 
-        return FilesMetrics(file_len, lang_weight, code_score)
+        return FilesMetrics(file_len, lang_weight, code_score, date)

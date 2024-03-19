@@ -2,7 +2,7 @@ import requests
 import sys
 import datetime
 import time
-from typing import NamedTuple
+from typing import NamedTuple, Optional
 from utils import log_info, log_debug
 
 sys.path.append("../")
@@ -13,6 +13,7 @@ class Diff(NamedTuple):
     file_name: str
     additions: int
     delections: int
+    date: str
 
 
 class GitClient:
@@ -61,7 +62,7 @@ class GitClient:
             diff_list = []
             for diff in diffs:
                 diff_list.append(
-                    Diff(diff["filename"], diff["additions"], diff["deletions"])
+                    Diff(diff["filename"], diff["additions"], diff["deletions"], "")
                 )
             return diff_list
         else:
@@ -91,6 +92,9 @@ class GitClient:
                 commit_list = []
                 for commit in commits_data:
                     commit["url"]
+                    utc_date_str = commit["commit"]["author"]["date"]
+                    utc_date = datetime.datetime.strptime(utc_date_str, '%Y-%m-%dT%H:%M:%SZ')
+                    jst_offset = datetime.timedelta(hours=9)
                     diff_response = requests.get(commit["url"], headers=self.__headers)
                     if diff_response.status_code == 200:
                         diffs = diff_response.json()["files"]
@@ -101,6 +105,7 @@ class GitClient:
                                     diff["filename"],
                                     diff["additions"],
                                     diff["deletions"],
+                                    utc_date + jst_offset
                                 )
                             )
                         commit_list.append(diff_list)
