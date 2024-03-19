@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import * as statusAPI from './api/status';
 import type { DinoStatus } from './api/types';
 import { Container, styleTextContainer } from './components/container';
+import { DeadDino, styleTextDeadDino } from './components/dead-dino';
 import { DinoHome, styleTextDinoHome } from './components/dino-home';
 import { DinoSelection, styleTextDinoSelection } from './components/dino-selection';
 import { Loading, styleTextLoading } from './components/loading';
@@ -20,7 +21,7 @@ export const config: PlasmoCSConfig = {
  */
 export const getStyle = () => {
   const style = document.createElement('style');
-  style.textContent = `${styleTextDinoHome} ${styleTextContainer} ${styleTextDinoSelection} ${styleTextLoading}`;
+  style.textContent = `${styleTextDinoHome} ${styleTextContainer} ${styleTextDinoSelection} ${styleTextLoading} ${styleTextDeadDino}`;
   return style;
 };
 
@@ -70,30 +71,42 @@ const Index = () => {
     fetchStatus();
   }, []);
 
+  /**
+   * Rendering
+   */
   // 他人のユーザページで、かつそのユーザが未登録または死んでる場合は何も表示しない
   if ((!dinoStatus || dinoStatus.level <= 0) && !isMe) {
     return;
   }
 
+  // ステータスが返ってくるまではローディングを表示する
+  if (!dinoStatus) {
+    return (
+      <Container>
+        <Loading />
+      </Container>
+    );
+  }
+
+  // 死んでる時は遺影を表示する
+  if (dinoStatus.level === -1) {
+    return (
+      <Container>
+        <DeadDino />
+      </Container>
+    );
+  }
+
   return (
     <Container>
-      {!dinoStatus ? (
-        <Loading />
+      {dinoStatus.level > 0 ? (
+        <DinoHome
+          isMe={isMe}
+          dinoStatus={dinoStatus}
+          handleChangeDinoStatus={handleChangeDinoStatus}
+        />
       ) : (
-        <>
-          {dinoStatus.level > 0 ? (
-            <DinoHome
-              isMe={isMe}
-              dinoStatus={dinoStatus}
-              handleChangeDinoStatus={handleChangeDinoStatus}
-            />
-          ) : (
-            <DinoSelection
-              dinoStatus={dinoStatus}
-              handleChangeDinoStatus={handleChangeDinoStatus}
-            />
-          )}
-        </>
+        <DinoSelection dinoStatus={dinoStatus} handleChangeDinoStatus={handleChangeDinoStatus} />
       )}
     </Container>
   );
