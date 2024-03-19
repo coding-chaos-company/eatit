@@ -1,0 +1,19 @@
+{
+  "c": true,
+  "cpp": true,
+  "cs": true,
+  "css": true,
+  "go": true,
+  "java": true,
+  "js": true,
+  "ml": true,
+  "php": true,
+  "py": true,
+  "r": true,
+  "rb": true,
+  "rs": true,
+  "ts": true,
+  "yml": true,
+  "yaml": true,
+  "xml": true
+}

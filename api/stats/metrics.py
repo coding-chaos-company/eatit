@@ -6,7 +6,8 @@ sys.path.append("../")
 
 from client import GitClient
 from config import constants
-from utils import extract_extension, what_time
+from utils import extract_extension, what_time, log_info
+from libs import gumtree
 
 
 class Metrics(NamedTuple):
@@ -38,6 +39,10 @@ class CurrentGrowth(NamedTuple):
     level: int
     exp: int
 
+class DiffContents(NamedTuple):
+  file_path: str
+  after_content: str
+  before_content: str
 
 class MetricsManager:
     def __init__(self, user_name: str):
@@ -134,6 +139,8 @@ class MetricsManager:
         lang_weight = 0
         additions = 0
         delections = 0
+        max_score = 0
+        max_file = None
         for file in files:
             weight = 0
             file_name = file.file_name
@@ -145,9 +152,26 @@ class MetricsManager:
 
             additions += file.additions * weight
             delections += file.delections * weight
+            if max_score < delections * constants.DEL_WEIGHT + additions * constants.ADD_WEIGHT and weight:
+                max_score = delections * constants.DEL_WEIGHT + additions * constants.ADD_WEIGHT
+                max_file = file
         code_score = (
             (delections * constants.DEL_WEIGHT) / len(files) + (additions * constants.ADD_WEIGHT) / len(files)
         )
+
+        if max_file:
+            git_client = GitClient(self.user_name)
+            contents = git_client.get_file_contents(max_file.repo_name, file.file_name, file.current_hash, file.parent_hash)
+            if len(contents) > 1:
+                log_info(code_score)
+                code_score *= gumtree.exec_gumtree(DiffContents(
+                    max_file.file_name,
+                    contents[0],
+                    contents[1]
+                ))
+                log_info(code_score)
+
+
         if len(files) > 0:
             date = files[0].date
 

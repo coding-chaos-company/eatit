@@ -16,6 +16,9 @@ class Diff(NamedTuple):
     additions: int
     delections: int
     date: str
+    current_hash: str
+    parent_hash: str
+    repo_name: str
 
 
 class GitClient:
@@ -58,13 +61,19 @@ class GitClient:
     def get_latest_commit_diff(self):
         repos_list = self.get_repos_list()
         latest_commit = self.get_latest_commit(repos_list)
+
+        parent_hash = ""
+        if len(latest_commit["parents"]) > 0:
+            parent_hash = latest_commit["parents"][0]["sha"]
+
         response = requests.get(latest_commit["url"], headers=self.__headers)
         if response.status_code == 200:
             diffs = response.json()["files"]
             diff_list = []
             for diff in diffs:
+                repo_name = diff["blob_url"].replace(f'https://github.com/{self.user_name}/', "").split('/')[0]
                 diff_list.append(
-                    Diff(diff["filename"], diff["additions"], diff["deletions"], "")
+                    Diff(diff["filename"], diff["additions"], diff["deletions"], "", latest_commit["sha"], parent_hash, repo_name)
                 )
             return diff_list
         else:
@@ -93,21 +102,29 @@ class GitClient:
 
                 commit_list = []
                 for commit in commits_data:
-                    commit["url"]
                     utc_date_str = commit["commit"]["author"]["date"]
                     utc_date = datetime.datetime.strptime(utc_date_str, '%Y-%m-%dT%H:%M:%SZ')
                     jst_offset = datetime.timedelta(hours=9)
+
+                    parent_hash = ""
+                    if len(commit["parents"]) > 0:
+                        parent_hash= commit["parents"][0]["sha"]
+
                     diff_response = requests.get(commit["url"], headers=self.__headers)
                     if diff_response.status_code == 200:
                         diffs = diff_response.json()["files"]
                         diff_list = []
                         for diff in diffs:
+                            repo_name = diff["blob_url"].replace(f'https://github.com/{self.user_name}/', "").split('/')[0]
                             diff_list.append(
                                 Diff(
                                     diff["filename"],
                                     diff["additions"],
                                     diff["deletions"],
-                                    utc_date + jst_offset
+                                    utc_date + jst_offset,
+                                    commit["sha"],
+                                    parent_hash,
+                                    repo_name
                                 )
                             )
                         commit_list.append(diff_list)
@@ -160,13 +177,13 @@ class GitClient:
                 return False
         log_info("恐竜は生存中です")
         return True
-    
-    
-    def get_file_contents(self, owner, repo, path, commit_sha_bef, commit_sha_aft):
 
-        url_aft = f'https://api.github.com/repos/{owner}/{repo}/contents/{path}?ref={commit_sha_aft}'
-        url_bef = f'https://api.github.com/repos/{owner}/{repo}/contents/{path}?ref={commit_sha_bef}'
-        
+
+    def get_file_contents(self, repo, path, commit_sha_bef, commit_sha_aft):
+
+        url_aft = constants.GIT_CONTENTS_URL(self.user_name, repo, path, commit_sha_aft)
+        url_bef = constants.GIT_CONTENTS_URL(self.user_name, repo, path, commit_sha_bef)
+
         response_aft = requests.get(url_aft, headers=self.__headers)
         response_bef = requests.get(url_bef, headers=self.__headers)
         if response_aft.status_code == 200 and response_bef.status_code == 200:
@@ -175,12 +192,11 @@ class GitClient:
             decoded_content_aft= base64.b64decode(content_aft).decode('utf-8')
             decoded_content_bef= base64.b64decode(content_bef).decode('utf-8')
             return decoded_content_aft, decoded_content_bef
-        
+
         elif response_aft.status_code == 200:
             content_aft = response_aft.json().get('content')
             decoded_content_aft= base64.b64decode(content_aft).decode('utf-8')
             return decoded_content_aft
-        
+
         else:
             return "Error"
-

@@ -15,10 +15,16 @@ def GIT_REPOS_URL(user_name: str):
 def GIT_COMMITS_URL(user_name: str, repo_name: str):
     return GIT_BASE_URL + "repos/" + user_name + "/" + repo_name + "/commits"
 
+def GIT_CONTENTS_URL(user_name: str, repo_name: str, path: str, commit_hash: str):
+    return GIT_BASE_URL + "repos/" + user_name + "/" + repo_name + "/contents/" + path + "?ref=" + commit_hash
+
 
 # ファイル
-__json_data = open("config/extensions.json", "r", encoding="utf-8-sig")
-EXTENSIONS = json.load(__json_data)
+__json_extensions_data = open("config/extensions.json", "r", encoding="utf-8-sig")
+EXTENSIONS = json.load(__json_extensions_data)
+
+__json_gumtree_data = open("config/gumtree.json", "r", encoding="utf-8-sig")
+GUMTREES = json.load(__json_gumtree_data)
 
 # 基準スコア
 CODE_BASE_SCORE = 60
