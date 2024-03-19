@@ -6,7 +6,7 @@ import type { DinoStatus } from './api/types';
 import { Container, styleTextContainer } from './components/container';
 import { DinoHome, styleTextDinoHome } from './components/dino-home';
 import { DinoSelection, styleTextDinoSelection } from './components/dino-selection';
-import { Loading } from './components/loading/loading';
+import { Loading, styleTextLoading } from './components/loading';
 
 /**
  * Matches
@@ -20,7 +20,7 @@ export const config: PlasmoCSConfig = {
  */
 export const getStyle = () => {
   const style = document.createElement('style');
-  style.textContent = `${styleTextDinoHome} ${styleTextContainer} ${styleTextDinoSelection}`;
+  style.textContent = `${styleTextDinoHome} ${styleTextContainer} ${styleTextDinoSelection} ${styleTextLoading}`;
   return style;
 };
 
