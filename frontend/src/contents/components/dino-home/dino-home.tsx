@@ -86,11 +86,13 @@ export const DinoHome = ({ dinoStatus, handleChangeDinoStatus }: DinoHomeProps) 
         // 3秒ご飯食べるのを待つ
         await wait(3000);
 
+        // requestを送る前にご飯食べるのやめる
+        handleChangeDinoBehavier({ animation: 'toWalking', direction: 'left', state: 'walk' });
+
         const res = await feedAPI.put({ github_name: getUserName() });
 
         setServing(false);
         handleChangeDinoStatus(res.status);
-        handleChangeDinoBehavier({ animation: 'toWalking', direction: 'left', state: 'walk' });
       } catch {
         /** エラーハンドリング */
       }
