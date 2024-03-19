@@ -1,8 +1,9 @@
 import * as registerAPI from '@/contents/api/register';
 import type { DinoStatus } from '@/contents/api/types';
 import { getUserName } from '@/contents/utils';
-import { type MouseEventHandler, useState } from 'react';
-import { Egg, StartButton } from './components';
+import { type ChangeEventHandler, type MouseEventHandler, useState } from 'react';
+import { StartButton } from './components';
+import { SelectColor } from './components/select-color/select-color';
 import * as styles from './dino-selection.module.css';
 
 type DinoSelectionProps = {
@@ -15,11 +16,15 @@ export const DinoSelection = ({ dinoStatus, handleChangeDinoStatus }: DinoSelect
    * State
    */
   const [disabled, setDisabled] = useState(false);
-  const [color, _setColor] = useState<DinoStatus['color']>('green');
+  const [color, setColor] = useState<DinoStatus['color']>('green');
 
   /**
    * Handler
    */
+  const onChangeColorHandler: ChangeEventHandler<HTMLInputElement> = (e) => {
+    const color = e.target.value as DinoStatus['color'];
+    setColor(color);
+  };
   const onClickStartButtonHandler: MouseEventHandler<HTMLButtonElement> = async () => {
     try {
       setDisabled(true);
@@ -41,7 +46,7 @@ export const DinoSelection = ({ dinoStatus, handleChangeDinoStatus }: DinoSelect
   return (
     <div className={styles.wrapper}>
       <div className={styles.egg}>
-        <Egg color={color} />
+        <SelectColor onChangeColorHandler={onChangeColorHandler} />
       </div>
       <div className={styles.button}>
         <StartButton onClick={onClickStartButtonHandler} disabled={disabled} />
