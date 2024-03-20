@@ -3,11 +3,11 @@ from sqlalchemy import select
 from utils import utils, log_info
 from client.git_client import GitClient
 from stats import MetricsManager
-import datetime
 from typing import NamedTuple
 
 import models.status as status_model
 import schemas.status as status_schema
+
 
 class CurrentMetrics(NamedTuple):
     level: int
@@ -17,6 +17,8 @@ class CurrentMetrics(NamedTuple):
     commits_count: int
     last_date: str
 
+
+# 恐竜のステータスを確認
 async def check_status(
     db: AsyncSession, github_name: str
 ) -> status_schema.StatusResponse:
@@ -60,6 +62,7 @@ async def check_status(
         }
 
 
+# 恐竜の初期化
 async def register_user(
     db: AsyncSession, status_register: status_schema.StatusRegisterRequest
 ) -> status_schema.StatusResponse:
@@ -132,22 +135,24 @@ async def register_user(
         }
 
 
+# 恐竜の経験値獲得
 async def feed_dino(db: AsyncSession, github_name: str) -> status_schema.StatusResponse:
     log_info("Feed dino.")
-    current_time_jst = utils.what_time()
-    mm = MetricsManager('hyphen-o')
     users = await db.execute(
         select(status_model.Users).filter(status_model.Users.github_name == github_name)
     )
+    mm = MetricsManager(github_name)
     user = users.first()[0]
-    metrics = mm.calc_metrics(CurrentMetrics(
-        level=user.level,
-        exp=user.exp,
-        code_score=user.code_score,
-        change_files=user.change_files,
-        commits_count=user.commits_count,
-        last_date=user.last_update
-    ))
+    metrics = mm.calc_metrics(
+        CurrentMetrics(
+            level=user.level,
+            exp=user.exp,
+            code_score=user.code_score,
+            change_files=user.change_files,
+            commits_count=user.commits_count,
+            last_date=user.last_update,
+        )
+    )
     if metrics:
         user.level = metrics.level
         user.exp = metrics.exp
