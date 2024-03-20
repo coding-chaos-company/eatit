@@ -6,7 +6,7 @@ sys.path.append("../")
 
 from client import GitClient
 from config import constants
-from utils import extract_extension, what_time, log_info
+from utils import extract_extension, what_time
 from libs import gumtree
 
 
@@ -39,10 +39,12 @@ class CurrentGrowth(NamedTuple):
     level: int
     exp: int
 
+
 class DiffContents(NamedTuple):
-  file_path: str
-  after_content: str
-  before_content: str
+    file_path: str
+    after_content: str
+    before_content: str
+
 
 class MetricsManager:
     def __init__(self, user_name: str):
@@ -86,7 +88,7 @@ class MetricsManager:
                         commits_count=commits_count,
                         code_score=code_score,
                         change_files=change_files,
-                        current_date=f_met.date
+                        current_date=f_met.date,
                     )
         # registerの処理
         else:
@@ -103,7 +105,7 @@ class MetricsManager:
                 exp=total_exp,
                 change_files=f_met.file_len,
                 code_score=f_met.code_score,
-                current_date=current_date
+                current_date=current_date,
             )
 
     # レベルが上がったどうかを判定
@@ -152,25 +154,32 @@ class MetricsManager:
 
             additions += file.additions * weight
             delections += file.delections * weight
-            if max_score < delections * constants.DEL_WEIGHT + additions * constants.ADD_WEIGHT and weight:
-                max_score = delections * constants.DEL_WEIGHT + additions * constants.ADD_WEIGHT
+            if (
+                max_score
+                < delections * constants.DEL_WEIGHT + additions * constants.ADD_WEIGHT
+            ) and weight > 0:
+                max_score = (
+                    delections * constants.DEL_WEIGHT + additions * constants.ADD_WEIGHT
+                )
                 max_file = file
-        code_score = (
-            (delections * constants.DEL_WEIGHT) / len(files) + (additions * constants.ADD_WEIGHT) / len(files)
-        )
+        code_score = (delections * constants.DEL_WEIGHT) / len(files) + (
+            additions * constants.ADD_WEIGHT
+        ) / len(files)
 
+        # Gumtreeで重み計測
         if max_file:
-            git_client = GitClient(self.user_name)
-            contents = git_client.get_file_contents(max_file.repo_name, file.file_name, file.current_hash, file.parent_hash)
-            if len(contents) > 1:
-                log_info(code_score)
-                code_score *= gumtree.exec_gumtree(DiffContents(
-                    max_file.file_name,
-                    contents[0],
-                    contents[1]
-                ))
-                log_info(code_score)
-
+            if extract_extension(max_file.file_name) in constants.GUMTREES:
+                git_client = GitClient(self.user_name)
+                contents = git_client.get_file_contents(
+                    max_file.repo_name,
+                    file.file_name,
+                    file.current_hash,
+                    file.parent_hash,
+                )
+                if contents:
+                    code_score *= gumtree.exec_gumtree(
+                        DiffContents(max_file.file_name, contents[0], contents[1])
+                    )
 
         if len(files) > 0:
             date = files[0].date

@@ -15,8 +15,19 @@ def GIT_REPOS_URL(user_name: str):
 def GIT_COMMITS_URL(user_name: str, repo_name: str):
     return GIT_BASE_URL + "repos/" + user_name + "/" + repo_name + "/commits"
 
+
 def GIT_CONTENTS_URL(user_name: str, repo_name: str, path: str, commit_hash: str):
-    return GIT_BASE_URL + "repos/" + user_name + "/" + repo_name + "/contents/" + path + "?ref=" + commit_hash
+    return (
+        GIT_BASE_URL
+        + "repos/"
+        + user_name
+        + "/"
+        + repo_name
+        + "/contents/"
+        + path
+        + "?ref="
+        + commit_hash
+    )
 
 
 # ファイル
@@ -38,9 +49,10 @@ EXP_DICT = {1: 3000, 2: 4500, 3: 6000}
 def EXP(level: int):
     return EXP_DICT[level]
 
+
 # 重み
 DEL_WEIGHT = 0.2
 ADD_WEIGHT = 1.2
 
-#アクセストークン
-ACCESS_TOKEN = os.environ['ACCESS_TOKEN']
+# Githubアクセストークン
+ACCESS_TOKEN = os.environ["ACCESS_TOKEN"]
