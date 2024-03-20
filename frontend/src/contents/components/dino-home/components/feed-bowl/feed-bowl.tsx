@@ -10,7 +10,7 @@ export const FeedBowl = ({ exp }: FeedBowlProps) => {
   return (
     <div className={styles.feedBowl}>
       <img className={styles.img} src={bowl} alt="feed bowl" />
-      <span className={styles.tooltip}>
+      <span className={styles.tooltip} data-testid="tooltip">
         <span className={styles.text}>
           {chrome.i18n.getMessage('dinoHome_feedBowl_tooltip')} : {exp}
         </span>
