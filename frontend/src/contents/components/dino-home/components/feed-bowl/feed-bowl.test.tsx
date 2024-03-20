@@ -10,6 +10,8 @@ describe('FeedBowl', () => {
     expect(screen.getByRole('img')).toHaveAttribute('alt', 'feed bowl');
 
     // expが表示されている
-    expect(screen.getByTestId('tooltip')).toHaveTextContent('Translated<dinoHome_feedBowl_tooltip> : 1');
+    expect(screen.getByTestId('tooltip')).toHaveTextContent(
+      'Translated<dinoHome_feedBowl_tooltip> : 1'
+    );
   });
 });

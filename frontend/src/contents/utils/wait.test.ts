@@ -2,10 +2,9 @@
  * @jest-environment node
  */
 
-import { wait } from "./wait";
+import { wait } from './wait';
 
 describe('wait', () => {
-
   test('指定の秒数でsetTimeoutが呼び出される', async () => {
     const setTimeoutMock = jest.spyOn(global, 'setTimeout');
 
@@ -15,5 +14,5 @@ describe('wait', () => {
 
     expect(setTimeoutMock).toHaveBeenCalledTimes(1);
     expect(setTimeoutMock).toHaveBeenLastCalledWith(expect.any(Function), delay);
-  })
-})
+  });
+});

@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react';
-import { getUserName } from './get-user-name';
 import { RefObject } from 'react';
+import { getUserName } from './get-user-name';
 
 describe('getUserName', () => {
   beforeEach(() => {
