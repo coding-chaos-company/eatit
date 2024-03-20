@@ -18,5 +18,9 @@
   "dinoSelection_feedButton": {
     "message": "feed",
     "description": "feed button at DinoSelection component"
+  },
+  "deadDino_reStartButton": {
+    "message": "restart",
+    "description": "restart button at DeadDino component"
   }
 }

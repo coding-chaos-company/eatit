@@ -1,7 +1,6 @@
-from typing import Union
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from routers import status  # from app.routerにすると動きませんでした
+from routers import status
 
 app = FastAPI()
 app.include_router(status.router)

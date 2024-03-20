@@ -1,0 +1,15 @@
+{
+  "name": "monitoring",
+  "version": "0.0.0",
+  "packageManager": "yarn@4.1.1",
+  "scripts": {
+    "build": "node build.js && cp appsscript.json dist/",
+    "push": "yarn build && clasp push"
+  },
+  "devDependencies": {
+    "@google/clasp": "2.4.2",
+    "@types/google-apps-script": "1.0.77",
+    "esbuild": "0.19.6",
+    "esbuild-gas-plugin": "0.8.0"
+  }
+}

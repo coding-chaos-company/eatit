@@ -9,6 +9,10 @@
   align-items: baseline;
 }
 
+.eggSplit {
+  margin-top: 32px;
+}
+
 .button {
   margin-top: 16px;
   display: flex;

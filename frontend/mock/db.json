@@ -1,0 +1,29 @@
+{
+  "status": {
+    "status": {
+      "color": "green",
+      "kind": "brachio",
+      "level": 2,
+      "loop": 1,
+      "exp": 100
+    }
+  },
+  "register": {
+    "status": {
+      "color": "green",
+      "kind": "brachio",
+      "level": 1,
+      "loop": 1,
+      "exp": 0
+    }
+  },
+  "feed": {
+    "status": {
+      "color": "green",
+      "kind": "brachio",
+      "level": 3,
+      "loop": 1,
+      "exp": 10
+    }
+  }
+}

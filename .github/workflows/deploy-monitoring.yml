@@ -1,0 +1,47 @@
+name: Build & Deploy Eatit Monitoring
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - monitoring/**
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: monitoring
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 20.11.1
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.11.1'
+
+      - name: Install Packages
+        run: |
+          corepack enable
+          yarn install
+
+      - name: Create .clasprc.json
+        run: |
+          echo "${{ secrets.GO3KE_BASE64 }}" | base64 --decode > ~/.clasprc.json
+
+      - name: Create .clasp.json
+        run: |
+          cat > .clasp.json <<EOF
+          {
+            "scriptId": "${{ secrets.EATIT_MONITORING_SCRIPT_ID }}",
+            "rootDir": "./dist"
+          }
+          EOF
+
+      - name: Build & Deploy
+        run: |
+          yarn push

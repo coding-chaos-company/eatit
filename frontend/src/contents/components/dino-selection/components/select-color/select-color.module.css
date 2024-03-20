@@ -1,0 +1,30 @@
+.group {
+  border: none;
+  padding: 0;
+  margin: 12px 0 0 0;
+  text-align: center;
+}
+
+.input {
+  cursor: pointer;
+  clip: rect(1px, 1px, 1px, 1px);
+  position: absolute !important;
+}
+
+.label {
+  position: relative;
+  cursor: pointer;
+  display: inline-block;
+  transition: all 0.2s;
+  margin-right: 16px;
+  padding: 8px;
+}
+
+.input:checked + .label > .img {
+  width: 100px;
+}
+
+.input:focus + .label > .img {
+  width: 100px;
+  outline-style: none;
+}
