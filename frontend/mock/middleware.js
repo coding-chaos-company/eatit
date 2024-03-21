@@ -5,5 +5,5 @@ module.exports = (req, _res, next) => {
 
   setTimeout(() => {
     next();
-  }, 2000);
+  }, 1000);
 };
