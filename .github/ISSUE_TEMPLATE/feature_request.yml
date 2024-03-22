@@ -4,15 +4,11 @@ labels: [feature request]
 body:
   - type: textarea
     attributes:
-      label: 提案・要望
+      label: ご意見・要望
       description: 提案や要望の内容を記載してください。
     validations:
       required: true
-  - type: textarea
-    attributes:
-      label: 背景
-      description: 困っていることや不便なことがあれば記載してください。
   - type: input
     attributes:
       label: 関連
-      description: 関連するIssueがあれば記載してください。
+      description: 関連するIssueがあればIssueの番号を記載してください
