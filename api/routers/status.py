@@ -9,6 +9,11 @@ from database import get_db
 router = APIRouter()
 
 
+@router.get("/hc")
+def read_root():
+    return {"msg": "Health good"}
+
+
 @router.post("/status", response_model=status_schema.StatusResponse)
 async def check_status(
     me_body: status_schema.FeedRequest, db: AsyncSession = Depends(get_db)
@@ -28,10 +33,3 @@ async def make_feed(
     feed_body: status_schema.FeedRequest, db: AsyncSession = Depends(get_db)
 ):
     return await status_crud.feed_dino(db, feed_body.github_name)
-
-
-@router.delete("/bye", response_model=None)
-async def kill_dino(
-    feed_body: status_schema.FeedRequest, db: AsyncSession = Depends(get_db)
-):
-    return await status_crud.kill_dino(db, feed_body.github_name)

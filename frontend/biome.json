@@ -39,7 +39,7 @@
       "lineWidth": 100,
       "quoteProperties": "asNeeded"
     },
-    "globals": ["chrome", "expect", "describe", "test", "jest"]
+    "globals": ["chrome", "expect", "describe", "test", "jest", "beforeEach"]
   },
   "linter": {
     "enabled": true,

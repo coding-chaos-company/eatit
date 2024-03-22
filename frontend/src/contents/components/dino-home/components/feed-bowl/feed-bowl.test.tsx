@@ -8,7 +8,10 @@ describe('FeedBowl', () => {
 
     // altが付与されている
     expect(screen.getByRole('img')).toHaveAttribute('alt', 'feed bowl');
-  });
 
-  test.todo('expの表示確認');
+    // expが表示されている
+    expect(screen.getByTestId('tooltip')).toHaveTextContent(
+      'Translated<dinoHome_feedBowl_tooltip> : 1'
+    );
+  });
 });

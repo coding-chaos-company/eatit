@@ -3,9 +3,9 @@
     "status": {
       "color": "green",
       "kind": "brachio",
-      "level": 2,
+      "level": 0,
       "loop": 1,
-      "exp": 100
+      "exp": 0
     }
   },
   "register": {
@@ -23,7 +23,7 @@
       "kind": "brachio",
       "level": 3,
       "loop": 1,
-      "exp": 10
+      "exp": 100
     }
   }
 }

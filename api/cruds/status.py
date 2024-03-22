@@ -172,30 +172,3 @@ async def feed_dino(db: AsyncSession, github_name: str) -> status_schema.StatusR
             "exp": user.exp,
         }
     }
-
-
-async def kill_dino(db: AsyncSession, github_name: str) -> status_schema.StatusResponse:
-    log_info("Kill dino.")
-    current_time_jst = utils.what_time()
-    users = await db.execute(
-        select(status_model.Users).filter(status_model.Users.github_name == github_name)
-    )
-    user = users.first()[0]
-    user.level = 1
-    user.exp = 0
-    user.color = None
-    user.kind = None
-    user.last_update = current_time_jst
-    user.loop = 1
-
-    await db.commit()
-    await db.refresh(user)
-    return {
-        "status": {
-            "color": user.color,
-            "kind": user.kind,
-            "level": user.level,
-            "loop": user.loop,
-            "exp": user.exp,
-        }
-    }
