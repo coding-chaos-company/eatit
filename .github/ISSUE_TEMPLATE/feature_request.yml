@@ -1,6 +1,6 @@
 name: Feature request
 description: 機能リクエスト
-labels: [Feature request]
+labels: [feature request]
 body:
   - type: textarea
     attributes:
