@@ -23,7 +23,7 @@ class StatusResponse(BaseModel):
 
 class StatusRegisterRequest(BaseModel):
     github_name: str = Field(None, example="Brachiosaurus", description="ユーザの名前")
-    color: str = Field(None, example="red", description="恐竜の色")
+    color: str = Field(None, example="green", description="恐竜の色")
     level: int = Field(None, example=1, description="恐竜のレベル")
 
     class Config:

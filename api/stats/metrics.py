@@ -7,7 +7,6 @@ sys.path.append("../")
 from client import GitClient
 from config import constants
 from utils import extract_extension, what_time
-from libs import gumtree
 
 
 class Metrics(NamedTuple):
@@ -142,7 +141,6 @@ class MetricsManager:
         additions = 0
         delections = 0
         max_score = 0
-        max_file = None
         for file in files:
             weight = 0
             file_name = file.file_name
@@ -161,25 +159,9 @@ class MetricsManager:
                 max_score = (
                     delections * constants.DEL_WEIGHT + additions * constants.ADD_WEIGHT
                 )
-                max_file = file
         code_score = (delections * constants.DEL_WEIGHT) / len(files) + (
             additions * constants.ADD_WEIGHT
         ) / len(files)
-
-        # Gumtreeで重み計測
-        if max_file:
-            if extract_extension(max_file.file_name) in constants.GUMTREES:
-                git_client = GitClient(self.user_name)
-                contents = git_client.get_file_contents(
-                    max_file.repo_name,
-                    file.file_name,
-                    file.current_hash,
-                    file.parent_hash,
-                )
-                if contents:
-                    code_score *= gumtree.exec_gumtree(
-                        DiffContents(max_file.file_name, contents[0], contents[1])
-                    )
 
         if len(files) > 0:
             date = files[0].date

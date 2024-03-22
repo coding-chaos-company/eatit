@@ -17,7 +17,6 @@ class Diff(NamedTuple):
     date: str
     current_hash: str
     parent_hash: str
-    repo_name: str
 
 
 class GitClient:
@@ -74,11 +73,6 @@ class GitClient:
             diffs = response.json()["files"]
             diff_list = []
             for diff in diffs:
-                repo_name = (
-                    diff["blob_url"]
-                    .replace(f"https://github.com/{self.user_name}/", "")
-                    .split("/")[0]
-                )
                 diff_list.append(
                     Diff(
                         diff["filename"],
@@ -87,7 +81,6 @@ class GitClient:
                         "",
                         latest_commit["sha"],
                         parent_hash,
-                        repo_name,
                     )
                 )
             return diff_list
@@ -135,11 +128,6 @@ class GitClient:
                         diffs = diff_response.json()["files"]
                         diff_list = []
                         for diff in diffs:
-                            repo_name = (
-                                diff["blob_url"]
-                                .replace(f"https://github.com/{self.user_name}/", "")
-                                .split("/")[0]
-                            )
                             diff_list.append(
                                 Diff(
                                     diff["filename"],
@@ -148,7 +136,6 @@ class GitClient:
                                     utc_date + jst_offset,
                                     commit["sha"],
                                     parent_hash,
-                                    repo_name,
                                 )
                             )
                         commit_list.append(diff_list)
@@ -206,22 +193,3 @@ class GitClient:
                 return False
         log_info("恐竜は生存中です")
         return True
-
-    def get_file_contents(
-        self, repo, path, commit_sha_bef, commit_sha_aft
-    ) -> tuple | bool:
-
-        url_aft = constants.GIT_CONTENTS_URL(self.user_name, repo, path, commit_sha_aft)
-        url_bef = constants.GIT_CONTENTS_URL(self.user_name, repo, path, commit_sha_bef)
-
-        response_aft = requests.get(url_aft, headers=self.__headers)
-        response_bef = requests.get(url_bef, headers=self.__headers)
-
-        if response_aft.status_code == 200 and response_bef.status_code == 200:
-            content_aft = response_aft.json().get("content")
-            content_bef = response_bef.json().get("content")
-            decoded_content_aft = base64.b64decode(content_aft).decode("utf-8")
-            decoded_content_bef = base64.b64decode(content_bef).decode("utf-8")
-            return decoded_content_aft, decoded_content_bef
-        else:
-            return False

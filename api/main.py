@@ -12,8 +12,3 @@ app.add_middleware(
     allow_methods=["GET", "POST", "PUT", "DELETE"],
     allow_headers=["*"],
 )
-
-
-@app.get("/hc")
-def read_root():
-    return {"msg": "Health good"}
