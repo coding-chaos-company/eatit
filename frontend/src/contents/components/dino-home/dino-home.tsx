@@ -5,6 +5,7 @@ import {
   type AnimationEventHandler,
   type CSSProperties,
   type MouseEventHandler,
+  useEffect,
   useRef,
   useState,
 } from 'react';
@@ -101,6 +102,36 @@ export const DinoHome = ({ dinoStatus, handleChangeDinoStatus }: DinoHomeProps) 
       handleChangeDinoBehavier({ animation: 'walking', direction: 'right', startPos: 0 });
     }
   };
+
+  /**
+   * Life Cycle
+   */
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      console.log(document.visibilityState);
+
+      if (document.visibilityState === 'hidden') {
+        handleChangeDinoBehavier({
+          animation: 'stop',
+        });
+      } else {
+        handleChangeDinoBehavier({
+          startPos: 0,
+          direction: 'right',
+          animation: 'walking',
+          state: 'walk',
+        });
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, []);
 
   return (
     <div ref={areaRef} data-testid="DinoHome" className={styles.area}>
