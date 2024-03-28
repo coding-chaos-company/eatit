@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, DateTime, Float
+from sqlalchemy import Column, Integer, String, DateTime, Float, Boolean
 from database import Base
 
 
@@ -14,5 +14,6 @@ class Users(Base):
     code_score = Column(Float, nullable=True)
     change_files = Column(Float, nullable=True)
     commits_count = Column(Integer, nullable=True)
-    last_update = Column(DateTime, nullable=True)
+    last_updated = Column(DateTime, nullable=True)
     loop = Column(Integer, default=1)
+    is_arrived = Column(Boolean, default=True)
