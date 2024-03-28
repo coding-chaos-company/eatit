@@ -114,7 +114,7 @@ export const DinoHome = ({ dinoStatus, handleChangeDinoStatus }: DinoHomeProps) 
         handleChangeDinoBehavier({
           animation: 'stop',
         });
-      } else {
+      } else if (document.visibilityState === 'visible') {
         handleChangeDinoBehavier({
           startPos: 0,
           direction: 'right',
