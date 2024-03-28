@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - prod
+    paths:
+      - frontend/**
   workflow_dispatch:
 
 jobs:
@@ -12,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: monitoring
+        working-directory: frontend
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -21,6 +23,11 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20.11.1'
+
+      - name: Create dot env file
+        run: |
+          touch .env.production
+          echo "PLASMO_PUBLIC_API_BASE_URL=${{ secrets.PLASMO_PUBLIC_API_BASE_URL }}" >> .env.production
 
       - name: Install Packages
         run: |
