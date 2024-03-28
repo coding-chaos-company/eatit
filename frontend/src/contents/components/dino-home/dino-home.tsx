@@ -110,8 +110,6 @@ export const DinoHome = ({ dinoStatus, handleChangeDinoStatus }: DinoHomeProps) 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     const handleVisibilityChange = () => {
-      console.log(document.visibilityState);
-
       if (document.visibilityState === 'hidden') {
         handleChangeDinoBehavier({
           animation: 'stop',
