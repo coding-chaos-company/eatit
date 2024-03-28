@@ -33,12 +33,9 @@ jobs:
         with:
           args: zip -qq -r release.zip build/chrome-mv3-prod
 
-      - name: Upload to Chrome Web Store
-        uses: mobilefirstllc/cws-publish@latest
+      - name: Browser Platform Publish
+        uses: PlasmoHQ/bpp@v3
         with:
-          action: publish
-          client_id: ${{ secrets.CLIENT_ID }}
-          client_secret: ${{ secrets.CLIENT_SECRET }}
-          refresh_token: ${{ secrets.REFRESH_TOKEN }}
-          extension_id: ${{ secrets.EXTENSION_ID }}
-          zip_file: 'release.zip'
+          keys: ${{ secrets.BPP_KEYS }}
+          chrome-file: "release.zip"
+          verbose: true
