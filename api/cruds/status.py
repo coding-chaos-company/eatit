@@ -1,14 +1,11 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from utils import utils, log_info
-from client.git_client import GitClient
 from stats import MetricsManager
 from typing import NamedTuple
 
 import models.status as status_model
 import schemas.status as status_schema
-from database import get_db
-from fastapi import Depends
 
 
 class CurrentMetrics(NamedTuple):
