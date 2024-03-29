@@ -40,7 +40,7 @@ jobs:
 
       - name: Zip output
         run: zip -qq -r release.zip *
-        working-directory: build/chrome-mv3-prod
+        working-directory: frontend/build/chrome-mv3-prod
 
       - name: Upload to Chrome Web Store
         uses: mobilefirstllc/cws-publish@latest
