@@ -32,7 +32,7 @@ jobs:
       - name: Monorepo install
         uses: ./.github/actions/yarn-nm-install
         with:
-          cwd: 'frontend'
+          cwd: './frontend'
           enable-corepack: true
           cache-node-modules: false
           cache-install-state: false
