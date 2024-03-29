@@ -1,0 +1,14 @@
+name: Feature request
+description: 機能リクエスト
+labels: [feature request]
+body:
+  - type: textarea
+    attributes:
+      label: ご意見・要望
+      description: 提案や要望の内容を記載してください。
+    validations:
+      required: true
+  - type: input
+    attributes:
+      label: 関連
+      description: 関連するIssueがあればIssueの番号を記載してください

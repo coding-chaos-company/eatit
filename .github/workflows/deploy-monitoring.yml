@@ -3,7 +3,7 @@ name: Build & Deploy Eatit Monitoring
 on:
   push:
     branches:
-      - main
+      - prod
     paths:
       - monitoring/**
   workflow_dispatch:

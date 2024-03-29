@@ -1,0 +1,14 @@
+name: Bug report
+description: バグ報告
+labels: [bug]
+body:
+  - type: textarea
+    attributes:
+      label: 事象
+      description: 発生した事象を記載してください。
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: 発生した画面のスクリーンショット
+      description: 可能であれば、発生時の画面のスクリーンショット（または動画）を添付してください。
