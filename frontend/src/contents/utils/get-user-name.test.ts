@@ -1,5 +1,3 @@
-import { render } from '@testing-library/react';
-import { RefObject } from 'react';
 import { getUserName } from './get-user-name';
 
 describe('getUserName', () => {

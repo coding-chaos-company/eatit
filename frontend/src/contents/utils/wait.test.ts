@@ -1,7 +1,3 @@
-/**
- * @jest-environment node
- */
-
 import { wait } from './wait';
 
 describe('wait', () => {
