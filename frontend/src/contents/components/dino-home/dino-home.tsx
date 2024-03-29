@@ -1,18 +1,10 @@
-import * as feedAPI from '@/contents/api/feed';
-import type { DinoStatus } from '@/contents/api/types';
 import { usePageStore } from '@/contents/store/use-page-store';
-import { getCurrentDinoPosition, getUserName, wait } from '@/contents/utils';
-import {
-  type AnimationEventHandler,
-  type CSSProperties,
-  type MouseEventHandler,
-  useEffect,
-  useRef,
-} from 'react';
+import { type CSSProperties, useEffect, useRef } from 'react';
 import { useShallow } from 'zustand/react/shallow';
 import { Loading } from '../loading';
 import { Dino, Feed, FeedBowl, FeedButton } from './components';
 import * as styles from './dino-home.module.css';
+import { useDinoHomeHandler } from './hooks/use-dino-home-handler';
 
 export type DinoBehavier = {
   startPos: CSSProperties['left']; // アニメーションの開始位置
@@ -32,16 +24,7 @@ export const DinoHome = () => {
   /**
    * States
    */
-  const {
-    serving,
-    dinoBehavier,
-    dinoStatus,
-    visiblity,
-    setServing,
-    setDinoBehavier,
-    setDinoStatus,
-    setVisiblity,
-  } = usePageStore(
+  const store = usePageStore(
     useShallow((state) => ({
       serving: state.serving,
       dinoBehavier: state.dinoBehavier,
@@ -53,61 +36,15 @@ export const DinoHome = () => {
       setVisiblity: state.setVisiblity,
     }))
   );
+  const { serving, dinoBehavier, dinoStatus, visiblity, setDinoBehavier, setVisiblity } = store;
 
   /**
    * Handlers
    */
-  const onFeedButtonClickHandler: MouseEventHandler<HTMLButtonElement> = () => {
-    // ご飯を落とす
-    setServing(true);
-
-    setDinoBehavier({
-      startPos: getCurrentDinoPosition(areaRef, dinoRef),
-      direction: 'right',
-      animation: 'toBowl',
-    });
-  };
-
-  const onDinoAnimationIterationHandler: AnimationEventHandler<HTMLImageElement> = async (e) => {
-    if (e.animationName.endsWith('walking')) {
-      setDinoBehavier(
-        dinoBehavier.direction === 'right' ? { direction: 'left' } : { direction: 'right' }
-      );
-    }
-
-    if (e.animationName.endsWith('toBowl')) {
-      // animationを止めて、bend状態にする
-      setDinoBehavier({
-        startPos: 'calc(100% - 160px)',
-        animation: 'stop',
-        state: 'bend',
-      });
-
-      try {
-        // bendのgifアニメーションを待つ
-        await wait(2000);
-
-        // eatアニメーションを流す
-        setDinoBehavier({ state: 'eat' });
-
-        // 3秒ご飯食べるのを待つ
-        await wait(3000);
-
-        // requestを送る前にご飯食べるのやめる
-        setDinoBehavier({ animation: 'toWalking', direction: 'left', state: 'walk' });
-        setServing(false);
-
-        const res = await feedAPI.put({ github_name: getUserName() });
-        setDinoStatus(res.status);
-      } catch {
-        /** エラーハンドリング */
-      }
-    }
-
-    if (e.animationName.endsWith('toWalking')) {
-      setDinoBehavier({ animation: 'walking', direction: 'right', startPos: 0 });
-    }
-  };
+  const { handleClickFeedButton, handleDinoAnimationIteration } = useDinoHomeHandler(
+    { areaRef, dinoRef, dinoBehavier },
+    store
+  );
 
   /**
    * Life Cycle
@@ -148,7 +85,7 @@ export const DinoHome = () => {
           <div
             ref={dinoRef}
             className={`${styles.dino} ${styles[dinoBehavier.animation]}`}
-            onAnimationIteration={onDinoAnimationIterationHandler}
+            onAnimationIteration={handleDinoAnimationIteration}
             style={{
               left: dinoBehavier.startPos,
               transform: dinoBehavier.direction === 'right' ? 'scaleX(-1)' : 'scaleX(1)',
@@ -163,7 +100,7 @@ export const DinoHome = () => {
             <Feed />
           </div>
 
-          <FeedButton onClick={onFeedButtonClickHandler} disabled={serving} />
+          <FeedButton onClick={handleClickFeedButton} disabled={serving} />
         </>
       )}
     </div>
