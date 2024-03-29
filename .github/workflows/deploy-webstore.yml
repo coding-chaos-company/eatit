@@ -29,11 +29,16 @@ jobs:
           touch .env.production
           echo "PLASMO_PUBLIC_API_BASE_URL=${{ secrets.PLASMO_PUBLIC_API_BASE_URL }}" >> .env.production
 
-      - name: Install Packages
-        run: |
-          corepack enable
-          yarn install
-          yarn build
+      - name: Monorepo install
+        uses: ./.github/actions/yarn-nm-install
+        with:
+          cwd: 'frontend'
+          enable-corepack: true
+          cache-node-modules: false
+          cache-install-state: false
+
+      - name: Build
+        run: yarn build
 
       - name: Zip dist
         uses: montudor/action-zip@v1

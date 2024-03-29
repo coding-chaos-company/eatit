@@ -1,0 +1,33 @@
+# https://github.com/peaceiris/actions-gh-pages#%EF%B8%8F-react-and-next
+
+name: CI
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  ci:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node.js 20.11.1
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.11.1'
+
+      - name: Monorepo install
+        uses: ./.github/actions/yarn-nm-install
+        with:
+          cwd: 'frontend'
+          enable-corepack: true
+          cache-node-modules: false
+          cache-install-state: false
+
+      - name: Lint, Test and Build Check
+        run: |
+          yarn ci
+          yarn test:unit
+          yarn build

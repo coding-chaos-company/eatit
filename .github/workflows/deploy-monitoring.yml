@@ -24,10 +24,13 @@ jobs:
         with:
           node-version: '20.11.1'
 
-      - name: Install Packages
-        run: |
-          corepack enable
-          yarn install
+      - name: Monorepo install
+        uses: ./.github/actions/yarn-nm-install
+        with:
+          cwd: 'frontend'
+          enable-corepack: true
+          cache-node-modules: false
+          cache-install-state: false
 
       - name: Create .clasprc.json
         run: |
