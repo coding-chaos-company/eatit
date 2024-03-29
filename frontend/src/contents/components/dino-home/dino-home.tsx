@@ -1,5 +1,6 @@
 import * as feedAPI from '@/contents/api/feed';
 import type { DinoStatus } from '@/contents/api/types';
+import { usePageStore } from '@/contents/store/use-page-store';
 import { getCurrentDinoPosition, getUserName, wait } from '@/contents/utils';
 import {
   type AnimationEventHandler,
@@ -7,17 +8,11 @@ import {
   type MouseEventHandler,
   useEffect,
   useRef,
-  useState,
 } from 'react';
+import { useShallow } from 'zustand/react/shallow';
 import { Loading } from '../loading';
 import { Dino, Feed, FeedBowl, FeedButton } from './components';
 import * as styles from './dino-home.module.css';
-
-type DinoHomeProps = {
-  isMe: boolean;
-  dinoStatus: DinoStatus;
-  handleChangeDinoStatus: (status: DinoStatus) => void;
-};
 
 export type DinoBehavier = {
   startPos: CSSProperties['left']; // アニメーションの開始位置
@@ -26,7 +21,7 @@ export type DinoBehavier = {
   state: 'eat' | 'bend' | 'walk';
 };
 
-export const DinoHome = ({ dinoStatus, handleChangeDinoStatus }: DinoHomeProps) => {
+export const DinoHome = () => {
   /**
    * RefObjects
    * 親要素からの相対位置を取得するため2つ定義する
@@ -37,27 +32,36 @@ export const DinoHome = ({ dinoStatus, handleChangeDinoStatus }: DinoHomeProps) 
   /**
    * States
    */
-  const [dinoBehavier, setDinoBehavier] = useState<DinoBehavier>({
-    startPos: 0,
-    direction: 'right',
-    animation: 'walking',
-    state: 'walk',
-  });
-  const [serving, setServing] = useState(false);
-  const [hidden, setHidden] = useState(false);
+  const {
+    serving,
+    dinoBehavier,
+    dinoStatus,
+    visiblity,
+    setServing,
+    setDinoBehavier,
+    setDinoStatus,
+    setVisiblity,
+  } = usePageStore(
+    useShallow((state) => ({
+      serving: state.serving,
+      dinoBehavier: state.dinoBehavier,
+      dinoStatus: state.dinoStatus,
+      visiblity: state.visiblity,
+      setServing: state.setServing,
+      setDinoBehavier: state.setDinoBehavier,
+      setDinoStatus: state.setDinoStatus,
+      setVisiblity: state.setVisiblity,
+    }))
+  );
 
   /**
    * Handlers
    */
-  const handleChangeDinoBehavier = (dinoBehavier: Partial<DinoBehavier>) => {
-    setDinoBehavier((prev) => ({ ...prev, ...dinoBehavier }));
-  };
-
   const onFeedButtonClickHandler: MouseEventHandler<HTMLButtonElement> = () => {
     // ご飯を落とす
     setServing(true);
 
-    handleChangeDinoBehavier({
+    setDinoBehavier({
       startPos: getCurrentDinoPosition(areaRef, dinoRef),
       direction: 'right',
       animation: 'toBowl',
@@ -66,14 +70,14 @@ export const DinoHome = ({ dinoStatus, handleChangeDinoStatus }: DinoHomeProps) 
 
   const onDinoAnimationIterationHandler: AnimationEventHandler<HTMLImageElement> = async (e) => {
     if (e.animationName.endsWith('walking')) {
-      handleChangeDinoBehavier(
+      setDinoBehavier(
         dinoBehavier.direction === 'right' ? { direction: 'left' } : { direction: 'right' }
       );
     }
 
     if (e.animationName.endsWith('toBowl')) {
       // animationを止めて、bend状態にする
-      handleChangeDinoBehavier({
+      setDinoBehavier({
         startPos: 'calc(100% - 160px)',
         animation: 'stop',
         state: 'bend',
@@ -84,24 +88,24 @@ export const DinoHome = ({ dinoStatus, handleChangeDinoStatus }: DinoHomeProps) 
         await wait(2000);
 
         // eatアニメーションを流す
-        handleChangeDinoBehavier({ state: 'eat' });
+        setDinoBehavier({ state: 'eat' });
 
         // 3秒ご飯食べるのを待つ
         await wait(3000);
 
         // requestを送る前にご飯食べるのやめる
-        handleChangeDinoBehavier({ animation: 'toWalking', direction: 'left', state: 'walk' });
+        setDinoBehavier({ animation: 'toWalking', direction: 'left', state: 'walk' });
         setServing(false);
 
         const res = await feedAPI.put({ github_name: getUserName() });
-        handleChangeDinoStatus(res.status);
+        setDinoStatus(res.status);
       } catch {
         /** エラーハンドリング */
       }
     }
 
     if (e.animationName.endsWith('toWalking')) {
-      handleChangeDinoBehavier({ animation: 'walking', direction: 'right', startPos: 0 });
+      setDinoBehavier({ animation: 'walking', direction: 'right', startPos: 0 });
     }
   };
 
@@ -113,16 +117,18 @@ export const DinoHome = ({ dinoStatus, handleChangeDinoStatus }: DinoHomeProps) 
   useEffect(() => {
     const handleVisibilityChange = () => {
       if (document.visibilityState === 'hidden') {
-        setHidden(true);
-        handleChangeDinoBehavier({ animation: 'stop' });
+        setVisiblity('hidden');
+        setDinoBehavier({
+          animation: 'stop',
+        });
       } else if (document.visibilityState === 'visible') {
-        handleChangeDinoBehavier({
+        setDinoBehavier({
           startPos: 0,
           direction: 'right',
           animation: 'walking',
           state: 'walk',
         });
-        setHidden(false);
+        setVisiblity('visible');
       }
     };
 
@@ -135,7 +141,7 @@ export const DinoHome = ({ dinoStatus, handleChangeDinoStatus }: DinoHomeProps) 
 
   return (
     <div ref={areaRef} data-testid="DinoHome" className={styles.area}>
-      {hidden ? (
+      {visiblity === 'hidden' ? (
         <Loading />
       ) : (
         <>

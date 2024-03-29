@@ -1,22 +1,27 @@
 import * as registerAPI from '@/contents/api/register';
 import type { DinoStatus } from '@/contents/api/types';
+import { usePageStore } from '@/contents/store/use-page-store';
 import { getUserName, wait } from '@/contents/utils';
-import { type ChangeEventHandler, type MouseEventHandler, useState } from 'react';
+import type { ChangeEventHandler, MouseEventHandler } from 'react';
+import { useShallow } from 'zustand/react/shallow';
 import { EggSplit, StartButton } from './components';
 import { SelectColor } from './components/select-color/select-color';
 import * as styles from './dino-selection.module.css';
 
-type DinoSelectionProps = {
-  dinoStatus: DinoStatus;
-  handleChangeDinoStatus: (status: Partial<DinoStatus>) => void;
-};
-
-export const DinoSelection = ({ dinoStatus, handleChangeDinoStatus }: DinoSelectionProps) => {
+export const DinoSelection = () => {
   /**
    * State
    */
-  const [splitting, setSplitting] = useState(false);
-  const [color, setColor] = useState<DinoStatus['color']>('green');
+  const { color, splitting, dinoStatus, setColor, setSplitting, setDinoStatus } = usePageStore(
+    useShallow((state) => ({
+      color: state.color,
+      splitting: state.splitting,
+      dinoStatus: state.dinoStatus,
+      setColor: state.setColor,
+      setSplitting: state.setSplitting,
+      setDinoStatus: state.setDinoStatus,
+    }))
+  );
 
   /**
    * Handler
@@ -42,7 +47,7 @@ export const DinoSelection = ({ dinoStatus, handleChangeDinoStatus }: DinoSelect
       // 卵が割れるのを待つ
       await wait(9400 - (end - start));
 
-      handleChangeDinoStatus(res.status);
+      setDinoStatus(res.status);
     } catch {
       /** エラーハンドリング */
     } finally {
