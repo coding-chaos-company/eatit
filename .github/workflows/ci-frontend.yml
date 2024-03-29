@@ -34,4 +34,5 @@ jobs:
       - name: Lint, Test and Build Check
         run: |
           yarn ci
+          yarn test:unit
           yarn build
