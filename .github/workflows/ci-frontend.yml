@@ -4,6 +4,8 @@ name: CI
 
 on:
   push:
+    paths:
+      - frontend/**
   workflow_dispatch:
 
 jobs:
