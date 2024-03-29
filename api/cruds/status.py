@@ -1,7 +1,6 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from utils import utils, log_info
-from client.git_client import GitClient
 from stats import MetricsManager
 from typing import NamedTuple
 
@@ -28,10 +27,7 @@ async def check_status(
     )
     user = users.first()
     if user:
-        git_client = GitClient(github_name)
-        if git_client.exist_5days_commits(
-            last_date=user[0].last_update, current_date=utils.what_time()
-        ):
+        if user[0].is_arrived:
             return {"status": user[0]}
         else:
             user = user[0]
@@ -78,7 +74,7 @@ async def register_user(
         mm = MetricsManager(status_register.github_name)
         metrics = mm.calc_metrics()
         status = status_model.Users(**status_register.dict())
-        status.last_update = metrics.current_date
+        status.last_updated = metrics.current_date
         status.code_score = metrics.code_score
         status.change_files = metrics.change_files
         status.commits_count = metrics.commits_count
@@ -100,9 +96,10 @@ async def register_user(
         log_info("新たな恐竜が生まれました")
         user = user[0]
         user.color = status_register.color
-        user.last_update = utils.what_time()
+        user.last_updated = utils.what_time()
         user.loop = 1
         user.level = 1
+        user.is_arrived = True
         await db.commit()
         await db.refresh(user)
         return {
@@ -120,7 +117,7 @@ async def register_user(
         user.exp = 0
         user.level = 1
         user.color = status_register.color
-        user.last_update = utils.what_time()
+        user.last_updated = utils.what_time()
         log_info(str(user.loop) + "周目に突入します")
         await db.commit()
         await db.refresh(user)
@@ -150,7 +147,7 @@ async def feed_dino(db: AsyncSession, github_name: str) -> status_schema.StatusR
             code_score=user.code_score,
             change_files=user.change_files,
             commits_count=user.commits_count,
-            last_date=user.last_update,
+            last_date=user.last_updated,
         )
     )
     if metrics:
@@ -159,7 +156,7 @@ async def feed_dino(db: AsyncSession, github_name: str) -> status_schema.StatusR
         user.code_score = metrics.code_score
         user.change_files = metrics.change_files
         user.commits_count = metrics.commits_count
-        user.last_update = metrics.current_date
+        user.last_updated = metrics.current_date
 
         await db.commit()
         await db.refresh(user)

@@ -40,14 +40,19 @@ jobs:
       - name: Build
         run: yarn build
 
-      - name: Zip dist
-        uses: montudor/action-zip@v1
-        with:
-          args: zip -qq -r release.zip build/chrome-mv3-prod
+      - name: Install zip
+        uses: montudor/action-zip@v0.1.1
 
-      - name: Browser Platform Publish
-        uses: PlasmoHQ/bpp@v3
+      - name: Zip output
+        run: zip -qq -r release.zip *
+        working-directory: frontend/build/chrome-mv3-prod
+
+      - name: Upload to Chrome Web Store
+        uses: mobilefirstllc/cws-publish@latest
         with:
-          keys: ${{ secrets.BPP_KEYS }}
-          chrome-file: "release.zip"
-          verbose: true
+          action: publish
+          client_id: ${{ secrets.CLIENT_ID }}
+          client_secret: ${{ secrets.CLIENT_SECRET }}
+          refresh_token: ${{ secrets.REFRESH_TOKEN }}
+          extension_id: ${{ secrets.EXTENSION_ID }}
+          zip_file: './frontend/build/chrome-mv3-prod/release.zip'
