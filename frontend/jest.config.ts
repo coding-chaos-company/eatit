@@ -1,8 +1,6 @@
-/**
- * @type {import('@jest/types').Config.InitialOptions}
- */
+import type { Config } from '@jest/types';
 
-const config = {
+const config: Config.InitialOptions = {
   setupFiles: ['jest-webextension-mock'],
   clearMocks: true,
   extensionsToTreatAsEsm: ['.ts', '.tsx'],
