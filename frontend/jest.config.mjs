@@ -4,6 +4,7 @@
 
 const config = {
   setupFiles: ['jest-webextension-mock'],
+  clearMocks: true,
   extensionsToTreatAsEsm: ['.ts', '.tsx'],
   testRegex: ['^.+\\.test.tsx?$'],
   moduleDirectories: ['node_modules', '<rootDir>/src/', '<rootDir>/tests/unit/'],
