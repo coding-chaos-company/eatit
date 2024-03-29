@@ -4,11 +4,11 @@
   overflow: hidden;
   height: 236px;
   border-right: var(--borderWidth-thin, max(1px, 0.0625rem)) solid
-    var(--color-border-default);
+    var(--borderColor-default, var(--color-border-default));
   border-left: var(--borderWidth-thin, max(1px, 0.0625rem)) solid
-    var(--color-border-default);
+    var(--borderColor-default, var(--color-border-default));
   border-bottom: var(--borderWidth-thin, max(1px, 0.0625rem)) solid
-    var(--color-border-default);
+    var(--borderColor-default, var(--color-border-default));
 }
 
 .field {
