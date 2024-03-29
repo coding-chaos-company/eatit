@@ -1,6 +1,6 @@
 import { checkIfSelf, getUserName } from '@/contents/utils';
 import type { PlasmoCSConfig, PlasmoGetInlineAnchor } from 'plasmo';
-import { type MouseEventHandler, useEffect, useState } from 'react';
+import { type MouseEventHandler, useEffect, useMemo, useState } from 'react';
 import * as statusAPI from './api/status';
 import type { DinoStatus } from './api/types';
 import { Container, styleTextContainer } from './components/container';
@@ -38,11 +38,6 @@ export const getInlineAnchor: PlasmoGetInlineAnchor = async () =>
   document.querySelector('div.graph-before-activity-overview');
 
 /**
- * ログインユーザのページかどうかを判定する
- */
-const isMe = checkIfSelf();
-
-/**
  * GitHubのユーザ名を取得する
  */
 const githubUserName = getUserName();
@@ -51,6 +46,11 @@ const githubUserName = getUserName();
  * Component
  */
 const Index = () => {
+  /**
+   * ログインユーザのページかどうかを判定する
+   */
+  const isMe = useMemo(() => checkIfSelf(), []);
+
   /**
    * State
    */

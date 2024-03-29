@@ -1,0 +1,48 @@
+name: Deploy to Chrome web store
+
+on:
+  push:
+    branches:
+      - prod
+    paths:
+      - frontend/**
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 20.11.1
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.11.1'
+
+      - name: Create dot env file
+        run: |
+          touch .env.production
+          echo "PLASMO_PUBLIC_API_BASE_URL=${{ secrets.PLASMO_PUBLIC_API_BASE_URL }}" >> .env.production
+
+      - name: Install Packages
+        run: |
+          corepack enable
+          yarn install
+          yarn build
+
+      - name: Zip dist
+        uses: montudor/action-zip@v1
+        with:
+          args: zip -qq -r release.zip build/chrome-mv3-prod
+
+      - name: Browser Platform Publish
+        uses: PlasmoHQ/bpp@v3
+        with:
+          keys: ${{ secrets.BPP_KEYS }}
+          chrome-file: "release.zip"
+          verbose: true
