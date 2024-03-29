@@ -38,7 +38,7 @@ jobs:
       - name: Zip dist
         uses: montudor/action-zip@v1
         with:
-          args: zip -qq -r release.zip . -i build/chrome-mv3-prod
+          args: cd build/chrome-mv3-prod && zip -qq -r release.zip *
 
       - name: Upload to Chrome Web Store
         uses: mobilefirstllc/cws-publish@latest
@@ -48,4 +48,4 @@ jobs:
           client_secret: ${{ secrets.CLIENT_SECRET }}
           refresh_token: ${{ secrets.REFRESH_TOKEN }}
           extension_id: ${{ secrets.EXTENSION_ID }}
-          zip_file: './frontend/release.zip'
+          zip_file: 'build/chrome-mv3-prod/release.zip'
