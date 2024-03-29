@@ -50,4 +50,4 @@ jobs:
           client_secret: ${{ secrets.CLIENT_SECRET }}
           refresh_token: ${{ secrets.REFRESH_TOKEN }}
           extension_id: ${{ secrets.EXTENSION_ID }}
-          zip_file: 'build/chrome-mv3-prod/release.zip'
+          zip_file: './frontend/build/chrome-mv3-prod/release.zip'
