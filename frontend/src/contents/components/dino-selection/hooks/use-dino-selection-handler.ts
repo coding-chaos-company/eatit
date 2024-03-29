@@ -42,7 +42,7 @@ export const useDinoSelectionHandler = (
 
       setDinoStatus({
         color,
-        level,
+        level: level <= 0 ? 1 : level,
       });
     } catch {
       /** エラーハンドリング */
