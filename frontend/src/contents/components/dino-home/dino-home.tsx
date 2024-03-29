@@ -114,17 +114,15 @@ export const DinoHome = ({ dinoStatus, handleChangeDinoStatus }: DinoHomeProps) 
     const handleVisibilityChange = () => {
       if (document.visibilityState === 'hidden') {
         setHidden(true);
-        handleChangeDinoBehavier({
-          animation: 'stop',
-        });
+        handleChangeDinoBehavier({ animation: 'stop' });
       } else if (document.visibilityState === 'visible') {
-        setHidden(false);
         handleChangeDinoBehavier({
           startPos: 0,
-          direction: dinoBehavier.direction,
+          direction: 'right',
           animation: 'walking',
           state: 'walk',
         });
+        setHidden(false);
       }
     };
 
