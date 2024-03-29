@@ -42,7 +42,7 @@ export const DinoHome = () => {
    * Handlers
    */
   const { handleClickFeedButton, handleDinoAnimationIteration } = useDinoHomeHandler(
-    { areaRef, dinoRef, dinoBehavier },
+    { areaRef, dinoRef, direction: dinoBehavier.direction },
     store
   );
 

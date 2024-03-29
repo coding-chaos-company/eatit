@@ -1,22 +1,17 @@
 import * as feedAPI from '@/contents/api/feed';
 import type { Actions, State } from '@/contents/store/use-page-store';
 import { getCurrentDinoPosition, getUserName, wait } from '@/contents/utils';
-import {
-  type AnimationEventHandler,
-  type MouseEventHandler,
-  type RefObject,
-  useCallback,
-} from 'react';
+import { type AnimationEventHandler, type RefObject, useCallback } from 'react';
 
 export type Mutations = Pick<Actions, 'setServing' | 'setDinoBehavier' | 'setDinoStatus'>;
 export type HandlerArgs = {
-  dinoBehavier: State['dinoBehavier'];
+  direction: State['dinoBehavier']['direction'];
   areaRef: RefObject<HTMLDivElement>;
   dinoRef: RefObject<HTMLDivElement>;
 };
 
 export const useDinoHomeHandler = (
-  { areaRef, dinoRef, dinoBehavier }: HandlerArgs,
+  { areaRef, dinoRef, direction }: HandlerArgs,
   { setServing, setDinoBehavier, setDinoStatus }: Mutations
 ) => {
   const handleClickFeedButton = useCallback(() => {
@@ -34,9 +29,7 @@ export const useDinoHomeHandler = (
     async (e) => {
       // 端まで歩いた時
       if (e.animationName.endsWith('walking')) {
-        setDinoBehavier(
-          dinoBehavier.direction === 'right' ? { direction: 'left' } : { direction: 'right' }
-        );
+        setDinoBehavier(direction === 'right' ? { direction: 'left' } : { direction: 'right' });
       }
 
       // エサを食べにbowlまで到達した時
@@ -74,7 +67,7 @@ export const useDinoHomeHandler = (
         setDinoBehavier({ animation: 'walking', direction: 'right', startPos: 0 });
       }
     },
-    [setDinoBehavier, setServing, setDinoStatus, dinoBehavier.direction]
+    [setDinoBehavier, setServing, setDinoStatus, direction]
   );
 
   return {

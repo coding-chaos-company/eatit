@@ -14,7 +14,7 @@ export type State = {
 };
 
 export type Actions = {
-  setDinoStatus: (status: DinoStatus) => void;
+  setDinoStatus: (status: Partial<DinoStatus>) => void;
   setIsRestarted: (isRestarted: boolean) => void;
   setDinoBehavier: (behavier: Partial<DinoBehavier>) => void;
   setServing: (serving: boolean) => void;
@@ -40,7 +40,7 @@ export const usePageStore = create<State & Actions>()(
 
     setDinoStatus: (status) => {
       set((state) => {
-        state.dinoStatus = status;
+        state.dinoStatus = { ...state.dinoStatus, ...status };
       });
     },
     setIsRestarted: (isRestarted) => {

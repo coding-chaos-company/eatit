@@ -7,12 +7,13 @@ import { useShallow } from 'zustand/react/shallow';
 import { EggSplit, StartButton } from './components';
 import { SelectColor } from './components/select-color/select-color';
 import * as styles from './dino-selection.module.css';
+import { useDinoSelectionHandler } from './hooks/use-dino-selection-handler';
 
 export const DinoSelection = () => {
   /**
    * State
    */
-  const { color, splitting, dinoStatus, setColor, setSplitting, setDinoStatus } = usePageStore(
+  const store = usePageStore(
     useShallow((state) => ({
       color: state.color,
       splitting: state.splitting,
@@ -22,38 +23,15 @@ export const DinoSelection = () => {
       setDinoStatus: state.setDinoStatus,
     }))
   );
+  const { color, splitting, dinoStatus } = store;
 
   /**
    * Handler
    */
-  const onChangeColorHandler: ChangeEventHandler<HTMLInputElement> = (e) => {
-    const color = e.target.value as DinoStatus['color'];
-    setColor(color);
-  };
-  const onClickStartButtonHandler: MouseEventHandler<HTMLButtonElement> = async () => {
-    try {
-      setSplitting(true);
-
-      const start = performance.now();
-
-      const res = await registerAPI.post({
-        github_name: getUserName(),
-        color,
-        level: dinoStatus.level,
-      });
-
-      const end = performance.now();
-
-      // 卵が割れるのを待つ
-      await wait(9400 - (end - start));
-
-      setDinoStatus(res.status);
-    } catch {
-      /** エラーハンドリング */
-    } finally {
-      setSplitting(false);
-    }
-  };
+  const { handleChangeColorHandler, handleClickStartButton } = useDinoSelectionHandler(
+    { color, level: dinoStatus.level },
+    store
+  );
 
   return (
     <div className={styles.wrapper}>
@@ -63,12 +41,12 @@ export const DinoSelection = () => {
             <EggSplit color={color} />
           </div>
         ) : (
-          <SelectColor onChangeColorHandler={onChangeColorHandler} />
+          <SelectColor onChangeColorHandler={handleChangeColorHandler} />
         )}
       </div>
       {!splitting && (
         <div className={styles.button}>
-          <StartButton onClick={onClickStartButtonHandler} disabled={splitting} />
+          <StartButton onClick={handleClickStartButton} disabled={splitting} />
         </div>
       )}
     </div>

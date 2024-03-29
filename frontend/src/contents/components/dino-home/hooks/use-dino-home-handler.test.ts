@@ -2,7 +2,7 @@ import * as feedAPI from '@/contents/api/feed';
 import { waitForAdvanceTimers } from '@/tests/unit/utils/wait-for-advance-timers';
 import { jest } from '@jest/globals';
 import { act, renderHook } from '@testing-library/react';
-import type { AnimationEvent, ChangeEvent, RefObject } from 'react';
+import type { AnimationEvent, RefObject } from 'react';
 import { useDinoHomeHandler } from './use-dino-home-handler';
 
 describe('useDinoHomeHandler', () => {
@@ -30,12 +30,7 @@ describe('useDinoHomeHandler', () => {
           {
             areaRef,
             dinoRef,
-            dinoBehavier: {
-              startPos: 0,
-              direction: 'right',
-              animation: 'walking',
-              state: 'walk',
-            },
+            direction: 'right',
           },
           mutationsMock
         )
@@ -64,12 +59,7 @@ describe('useDinoHomeHandler', () => {
           {
             areaRef,
             dinoRef,
-            dinoBehavier: {
-              startPos: 0,
-              direction: 'right', // 右を向いている状態
-              animation: 'walking',
-              state: 'walk',
-            },
+            direction: 'right',
           },
           mutationsMock
         )
@@ -92,12 +82,7 @@ describe('useDinoHomeHandler', () => {
           {
             areaRef,
             dinoRef,
-            dinoBehavier: {
-              startPos: 0,
-              direction: 'right', // 右を向いている状態
-              animation: 'walking',
-              state: 'walk',
-            },
+            direction: 'right',
           },
           mutationsMock
         )
@@ -142,12 +127,7 @@ describe('useDinoHomeHandler', () => {
           {
             areaRef,
             dinoRef,
-            dinoBehavier: {
-              startPos: 0,
-              direction: 'right',
-              animation: 'walking',
-              state: 'walk',
-            },
+            direction: 'right',
           },
           mutationsMock
         )
