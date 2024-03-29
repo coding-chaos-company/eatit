@@ -9,6 +9,7 @@ import {
   useRef,
   useState,
 } from 'react';
+import { Loading } from '../loading';
 import { Dino, Feed, FeedBowl, FeedButton } from './components';
 import * as styles from './dino-home.module.css';
 
@@ -43,6 +44,7 @@ export const DinoHome = ({ dinoStatus, handleChangeDinoStatus }: DinoHomeProps) 
     state: 'walk',
   });
   const [serving, setServing] = useState(false);
+  const [hidden, setHidden] = useState(false);
 
   /**
    * Handlers
@@ -111,13 +113,15 @@ export const DinoHome = ({ dinoStatus, handleChangeDinoStatus }: DinoHomeProps) 
   useEffect(() => {
     const handleVisibilityChange = () => {
       if (document.visibilityState === 'hidden') {
+        setHidden(true);
         handleChangeDinoBehavier({
           animation: 'stop',
         });
       } else if (document.visibilityState === 'visible') {
+        setHidden(false);
         handleChangeDinoBehavier({
           startPos: 0,
-          direction: 'right',
+          direction: dinoBehavier.direction,
           animation: 'walking',
           state: 'walk',
         });
@@ -133,25 +137,31 @@ export const DinoHome = ({ dinoStatus, handleChangeDinoStatus }: DinoHomeProps) 
 
   return (
     <div ref={areaRef} data-testid="DinoHome" className={styles.area}>
-      <div
-        ref={dinoRef}
-        className={`${styles.dino} ${styles[dinoBehavier.animation]}`}
-        onAnimationIteration={onDinoAnimationIterationHandler}
-        style={{
-          left: dinoBehavier.startPos,
-          transform: dinoBehavier.direction === 'right' ? 'scaleX(-1)' : 'scaleX(1)',
-        }}
-      >
-        <Dino dinoBehavier={dinoBehavier} dinoStatus={dinoStatus} />
-      </div>
-      <div className={styles.bowl}>
-        <FeedBowl exp={dinoStatus.exp} />
-      </div>
-      <div className={serving ? styles.feed : styles.hidden}>
-        <Feed />
-      </div>
+      {hidden ? (
+        <Loading />
+      ) : (
+        <>
+          <div
+            ref={dinoRef}
+            className={`${styles.dino} ${styles[dinoBehavier.animation]}`}
+            onAnimationIteration={onDinoAnimationIterationHandler}
+            style={{
+              left: dinoBehavier.startPos,
+              transform: dinoBehavier.direction === 'right' ? 'scaleX(-1)' : 'scaleX(1)',
+            }}
+          >
+            <Dino dinoBehavier={dinoBehavier} dinoStatus={dinoStatus} />
+          </div>
+          <div className={styles.bowl}>
+            <FeedBowl exp={dinoStatus.exp} />
+          </div>
+          <div className={serving ? styles.feed : styles.hidden}>
+            <Feed />
+          </div>
 
-      <FeedButton onClick={onFeedButtonClickHandler} disabled={serving} />
+          <FeedButton onClick={onFeedButtonClickHandler} disabled={serving} />
+        </>
+      )}
     </div>
   );
 };
