@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "immer": "10.0.4",
-    "plasmo": "0.85.0",
+    "plasmo": "0.85.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "zustand": "4.5.2"
@@ -51,13 +51,19 @@
   },
   "manifest": {
     "name": "__MSG_extensionName__",
-    "host_permissions": ["https://github.com/*"],
+    "host_permissions": [
+      "https://github.com/*"
+    ],
     "permissions": [],
     "default_locale": "ja",
     "web_accessible_resources": [
       {
-        "resources": ["assets/**/*"],
-        "matches": ["https://github.com/*"]
+        "resources": [
+          "assets/**/*"
+        ],
+        "matches": [
+          "https://github.com/*"
+        ]
       }
     ]
   },
