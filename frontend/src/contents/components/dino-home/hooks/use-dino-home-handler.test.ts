@@ -148,7 +148,7 @@ describe('useDinoHomeHandler', () => {
       });
 
       // bendのgifアニメーションが終わるまで時間を進める
-      await waitForAdvanceTimers(2000);
+      await waitForAdvanceTimers(1790);
 
       // bendが終わった後、eat状態に移行している
       expect(setDinoBehavier).toHaveBeenCalledWith({ state: 'eat' });
