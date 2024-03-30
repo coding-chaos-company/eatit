@@ -15,21 +15,19 @@ export const DinoSelection = () => {
    */
   const store = usePageStore(
     useShallow((state) => ({
-      color: state.color,
       splitting: state.splitting,
       dinoStatus: state.dinoStatus,
-      setColor: state.setColor,
       setSplitting: state.setSplitting,
       setDinoStatus: state.setDinoStatus,
     }))
   );
-  const { color, splitting, dinoStatus } = store;
+  const { splitting, dinoStatus } = store;
 
   /**
    * Handler
    */
   const { handleChangeColorHandler, handleClickStartButton } = useDinoSelectionHandler(
-    { color, level: dinoStatus.level },
+    { color: dinoStatus.color, level: dinoStatus.level },
     store
   );
 
@@ -38,7 +36,7 @@ export const DinoSelection = () => {
       <div className={styles.egg}>
         {splitting ? (
           <div className={styles.eggSplit}>
-            <EggSplit color={color} />
+            <EggSplit color={dinoStatus.color} />
           </div>
         ) : (
           <SelectColor onChangeColorHandler={handleChangeColorHandler} />

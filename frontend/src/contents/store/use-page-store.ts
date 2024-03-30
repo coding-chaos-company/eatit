@@ -9,7 +9,6 @@ export type State = {
   dinoBehavier: DinoBehavier;
   serving: boolean;
   splitting: boolean;
-  color: DinoStatus['color'];
   visiblity: 'visible' | 'hidden';
 };
 
@@ -19,7 +18,6 @@ export type Actions = {
   setDinoBehavier: (behavier: Partial<DinoBehavier>) => void;
   setServing: (serving: boolean) => void;
   setSplitting: (splitting: boolean) => void;
-  setColor: (color: DinoStatus['color']) => void;
   setVisiblity: (visiblity: 'visible' | 'hidden') => void;
 };
 
@@ -61,11 +59,6 @@ export const usePageStore = create<State & Actions>()(
     setSplitting: (splitting) => {
       set((state) => {
         state.splitting = splitting;
-      });
-    },
-    setColor: (color) => {
-      set((state) => {
-        state.color = color;
       });
     },
     setVisiblity: (visiblity) => {

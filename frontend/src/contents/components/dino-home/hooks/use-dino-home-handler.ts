@@ -43,7 +43,7 @@ export const useDinoHomeHandler = (
 
         try {
           // bendのgifアニメーションを待つ
-          await wait(2000);
+          await wait(1790);
 
           // eatアニメーションを流す
           setDinoBehavier({ state: 'eat' });

@@ -9,22 +9,22 @@ import {
   useCallback,
 } from 'react';
 
-export type Mutations = Pick<Actions, 'setColor' | 'setSplitting' | 'setDinoStatus'>;
+export type Mutations = Pick<Actions, 'setSplitting' | 'setDinoStatus'>;
 export type HandlerArgs = {
-  color: State['color'];
+  color: State['dinoStatus']['color'];
   level: State['dinoStatus']['level'];
 };
 
 export const useDinoSelectionHandler = (
   { color, level }: HandlerArgs,
-  { setColor, setSplitting, setDinoStatus }: Mutations
+  { setSplitting, setDinoStatus }: Mutations
 ) => {
   const handleChangeColorHandler: ChangeEventHandler<HTMLInputElement> = useCallback(
     (e) => {
       const color = e.target.value as DinoStatus['color'];
-      setColor(color);
+      setDinoStatus({ color });
     },
-    [setColor]
+    [setDinoStatus]
   );
 
   const handleClickStartButton = useCallback(async () => {

@@ -6,12 +6,10 @@ import type { AnimationEvent, ChangeEvent, RefObject } from 'react';
 import { useDinoSelectionHandler } from './use-dino-selection-handler';
 
 describe('useDinoSelectionHandler', () => {
-  const setColor = jest.fn();
   const setSplitting = jest.fn();
   const setDinoStatus = jest.fn();
 
   const mutationsMock = {
-    setColor,
     setSplitting,
     setDinoStatus,
   };
@@ -35,7 +33,7 @@ describe('useDinoSelectionHandler', () => {
       });
 
       // pinkに変わる
-      expect(setColor).toHaveBeenCalledWith('pink');
+      expect(setDinoStatus).toHaveBeenCalledWith({ color: 'pink' });
     });
   });
 
