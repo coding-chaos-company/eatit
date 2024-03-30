@@ -4,7 +4,6 @@ import type { PlasmoCSConfig, PlasmoGetInlineAnchor } from 'plasmo';
 import { type MouseEventHandler, useEffect, useMemo } from 'react';
 import { useShallow } from 'zustand/react/shallow';
 import * as statusAPI from './api/status';
-import type { DinoStatus } from './api/types';
 import { Container, styleTextContainer } from './components/container';
 import { DeadDino, styleTextDeadDino } from './components/dead-dino';
 import { DinoHome, styleTextDinoHome } from './components/dino-home';
@@ -56,7 +55,7 @@ const Index = () => {
   /**
    * State
    */
-  const { dinoStatus, isRestarted, setDinoStatus, setIsRestarted } = usePageStore(
+  const { dinoStatus, isRestarted, initializeState, setDinoStatus, setIsRestarted } = usePageStore(
     /**
      * useShallowで必要なものだけsubscribeすることで再描画を抑える
      * https://docs.pmnd.rs/zustand/guides/prevent-rerenders-with-use-shallow
@@ -64,6 +63,7 @@ const Index = () => {
     useShallow((state) => ({
       dinoStatus: state.dinoStatus,
       isRestarted: state.isRestarted,
+      initializeState: state.initializeState,
       setDinoStatus: state.setDinoStatus,
       setIsRestarted: state.setIsRestarted,
     }))
@@ -81,6 +81,8 @@ const Index = () => {
    */
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
+    initializeState();
+
     const fetchStatus = async () => {
       const res = await statusAPI.post({ github_name: githubUserName });
 
@@ -88,7 +90,7 @@ const Index = () => {
     };
 
     fetchStatus();
-  }, [window.location.pathname]);
+  }, []);
 
   /**
    * Rendering

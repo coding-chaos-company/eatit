@@ -13,6 +13,7 @@ export type State = {
 };
 
 export type Actions = {
+  initializeState: () => void;
   setDinoStatus: (status: Partial<DinoStatus>) => void;
   setIsRestarted: (isRestarted: boolean) => void;
   setDinoBehavier: (behavier: Partial<DinoBehavier>) => void;
@@ -21,21 +22,34 @@ export type Actions = {
   setVisiblity: (visiblity: 'visible' | 'hidden') => void;
 };
 
+const initialState = {
+  dinoStatus: null,
+  isRestarted: false,
+  dinoBehavier: {
+    startPos: 0,
+    direction: 'right',
+    animation: 'walking',
+    state: 'walk',
+  },
+  serving: false,
+  splitting: false,
+  visiblity: 'visible',
+} satisfies State;
+
 export const usePageStore = create<State & Actions>()(
   immer((set) => ({
-    dinoStatus: null,
-    isRestarted: false,
-    dinoBehavier: {
-      startPos: 0,
-      direction: 'right',
-      animation: 'walking',
-      state: 'walk',
-    },
-    serving: false,
-    splitting: false,
-    color: 'green',
-    visiblity: 'visible',
+    ...initialState,
 
+    initializeState: () => {
+      set((state) => {
+        state.dinoStatus = initialState.dinoStatus;
+        state.dinoBehavier = initialState.dinoBehavier;
+        state.serving = initialState.serving;
+        state.splitting = initialState.splitting;
+        state.visiblity = initialState.visiblity;
+        state.isRestarted = initialState.isRestarted;
+      });
+    },
     setDinoStatus: (status) => {
       set((state) => {
         state.dinoStatus = { ...state.dinoStatus, ...status };
