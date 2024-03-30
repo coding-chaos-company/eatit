@@ -17,7 +17,6 @@ describe('usePageStore', () => {
     });
     expect(result.current.serving).toBe(false);
     expect(result.current.splitting).toBe(false);
-    expect(result.current.color).toBe('green');
     expect(result.current.visiblity).toBe('visible');
   });
 
@@ -74,11 +73,6 @@ describe('usePageStore', () => {
     expect(result.current.splitting).toBe(false);
     act(() => result.current.setSplitting(true));
     expect(result.current.splitting).toBe(true);
-
-    // setColorを実行するとcolorの状態が更新される
-    expect(result.current.color).toBe('green');
-    act(() => result.current.setColor('pink'));
-    expect(result.current.color).toBe('pink');
 
     // setVisiblityを実行するとvisiblityの状態が更新される
     expect(result.current.visiblity).toBe('visible');

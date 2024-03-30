@@ -12,12 +12,10 @@ export const DinoSelection = () => {
   /**
    * State
    */
-  const { color, splitting, dinoStatus, setColor, setSplitting, setDinoStatus } = usePageStore(
+  const { splitting, dinoStatus, setSplitting, setDinoStatus } = usePageStore(
     useShallow((state) => ({
-      color: state.color,
       splitting: state.splitting,
       dinoStatus: state.dinoStatus,
-      setColor: state.setColor,
       setSplitting: state.setSplitting,
       setDinoStatus: state.setDinoStatus,
     }))
@@ -28,7 +26,7 @@ export const DinoSelection = () => {
    */
   const onChangeColorHandler: ChangeEventHandler<HTMLInputElement> = (e) => {
     const color = e.target.value as DinoStatus['color'];
-    setColor(color);
+    setDinoStatus({ color });
   };
   const onClickStartButtonHandler: MouseEventHandler<HTMLButtonElement> = async () => {
     try {
@@ -38,7 +36,7 @@ export const DinoSelection = () => {
 
       const res = await registerAPI.post({
         github_name: getUserName(),
-        color,
+        color: dinoStatus.color,
         level: dinoStatus.level,
       });
 
@@ -60,7 +58,7 @@ export const DinoSelection = () => {
       <div className={styles.egg}>
         {splitting ? (
           <div className={styles.eggSplit}>
-            <EggSplit color={color} />
+            <EggSplit color={dinoStatus.color} />
           </div>
         ) : (
           <SelectColor onChangeColorHandler={onChangeColorHandler} />
