@@ -1,6 +1,8 @@
+import { usePageStore } from '@/contents/store/use-page-store';
 import { checkIfSelf, getUserName } from '@/contents/utils';
 import type { PlasmoCSConfig, PlasmoGetInlineAnchor } from 'plasmo';
-import { type MouseEventHandler, useEffect, useMemo, useState } from 'react';
+import { type MouseEventHandler, useEffect, useMemo } from 'react';
+import { useShallow } from 'zustand/react/shallow';
 import * as statusAPI from './api/status';
 import type { DinoStatus } from './api/types';
 import { Container, styleTextContainer } from './components/container';
@@ -54,15 +56,22 @@ const Index = () => {
   /**
    * State
    */
-  const [dinoStatus, setDinoStatus] = useState<DinoStatus | null>(null);
-  const [isRestarted, setIsRestarted] = useState(false);
+  const { dinoStatus, isRestarted, setDinoStatus, setIsRestarted } = usePageStore(
+    /**
+     * useShallowで必要なものだけsubscribeすることで再描画を抑える
+     * https://docs.pmnd.rs/zustand/guides/prevent-rerenders-with-use-shallow
+     */
+    useShallow((state) => ({
+      dinoStatus: state.dinoStatus,
+      isRestarted: state.isRestarted,
+      setDinoStatus: state.setDinoStatus,
+      setIsRestarted: state.setIsRestarted,
+    }))
+  );
 
   /**
    * Handler
    */
-  const handleChangeDinoStatus = (status: DinoStatus) => {
-    setDinoStatus((prev) => ({ ...prev, ...status }));
-  };
   const onClickRestartButton: MouseEventHandler<HTMLButtonElement> = () => {
     setIsRestarted(true);
   };
@@ -70,6 +79,7 @@ const Index = () => {
   /**
    * Life Cycle
    */
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     const fetchStatus = async () => {
       const res = await statusAPI.post({ github_name: githubUserName });
@@ -101,28 +111,12 @@ const Index = () => {
   if (dinoStatus.level === -1) {
     return (
       <Container>
-        {!isRestarted ? (
-          <DeadDino onClick={onClickRestartButton} />
-        ) : (
-          <DinoSelection dinoStatus={dinoStatus} handleChangeDinoStatus={handleChangeDinoStatus} />
-        )}
+        {!isRestarted ? <DeadDino onClick={onClickRestartButton} /> : <DinoSelection />}
       </Container>
     );
   }
 
-  return (
-    <Container>
-      {dinoStatus.level > 0 ? (
-        <DinoHome
-          isMe={isMe}
-          dinoStatus={dinoStatus}
-          handleChangeDinoStatus={handleChangeDinoStatus}
-        />
-      ) : (
-        <DinoSelection dinoStatus={dinoStatus} handleChangeDinoStatus={handleChangeDinoStatus} />
-      )}
-    </Container>
-  );
+  return <Container>{dinoStatus.level > 0 ? <DinoHome /> : <DinoSelection />}</Container>;
 };
 
 export default Index;
