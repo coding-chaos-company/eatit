@@ -83,7 +83,6 @@ const Index = () => {
   useEffect(() => {
     const fetchStatus = async () => {
       const res = await statusAPI.post({ github_name: githubUserName });
-      console.log(githubUserName);
 
       setDinoStatus(res.status);
     };
