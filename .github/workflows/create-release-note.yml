@@ -8,6 +8,9 @@ on:
 
 jobs:
   create-release-note:
+    permissions:
+      contents: write
+
     runs-on: ubuntu-22.04
 
     env:
