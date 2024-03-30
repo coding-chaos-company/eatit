@@ -40,18 +40,18 @@ export const getInlineAnchor: PlasmoGetInlineAnchor = async () =>
   document.querySelector('div.graph-before-activity-overview');
 
 /**
- * GitHubのユーザ名を取得する
- */
-const githubUserName = getUserName();
-
-/**
  * Component
  */
 const Index = () => {
   /**
    * ログインユーザのページかどうかを判定する
    */
-  const isMe = useMemo(() => checkIfSelf(), []);
+  const isMe = checkIfSelf();
+
+  /**
+   * GitHubのユーザ名を取得する
+   */
+  const githubUserName = getUserName();
 
   /**
    * State
@@ -83,12 +83,13 @@ const Index = () => {
   useEffect(() => {
     const fetchStatus = async () => {
       const res = await statusAPI.post({ github_name: githubUserName });
+      console.log(githubUserName);
 
       setDinoStatus(res.status);
     };
 
     fetchStatus();
-  }, []);
+  }, [window.location.pathname]);
 
   /**
    * Rendering
