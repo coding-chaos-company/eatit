@@ -4,7 +4,7 @@
   "description": "__MSG_extensionDescription__",
   "private": true,
   "packageManager": "yarn@4.1.1",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "scripts": {
     "dev": "plasmo dev",
     "build": "plasmo build",

@@ -78,5 +78,19 @@ describe('usePageStore', () => {
     expect(result.current.visiblity).toBe('visible');
     act(() => result.current.setVisiblity('hidden'));
     expect(result.current.visiblity).toBe('hidden');
+
+    // initializeStateを実行すると全てのstateが初期値に戻る
+    act(() => result.current.initializeState());
+    expect(result.current.dinoStatus).toBe(null);
+    expect(result.current.isRestarted).toBe(false);
+    expect(result.current.dinoBehavier).toStrictEqual({
+      startPos: 0,
+      direction: 'right',
+      animation: 'walking',
+      state: 'walk',
+    });
+    expect(result.current.serving).toBe(false);
+    expect(result.current.splitting).toBe(false);
+    expect(result.current.visiblity).toBe('visible');
   });
 });
