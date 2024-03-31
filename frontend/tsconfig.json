@@ -8,6 +8,8 @@
       "@/tests/*": ["./tests/*"]
     },
     "baseUrl": ".",
-    "verbatimModuleSyntax": false
+    "verbatimModuleSyntax": false,
+    "isolatedModules": true,
+    "jsx": "react-jsx"
   }
 }

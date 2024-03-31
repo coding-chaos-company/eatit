@@ -4,7 +4,7 @@
   "description": "__MSG_extensionDescription__",
   "private": true,
   "packageManager": "yarn@4.1.1",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "scripts": {
     "dev": "plasmo dev",
     "build": "plasmo build",
@@ -15,7 +15,7 @@
     "package": "plasmo package",
     "ci": "biome ci .",
     "format": "biome check --apply-unsafe .",
-    "test:unit": "NODE_ENV=test jest src",
+    "test:unit": "NODE_ENV=test jest src --ci",
     "test:vrt": "playwright test tests/vrt",
     "test:vrt-docker": "yarn build-docker && docker compose -f ../docker/vrt/docker-compose.yml run --rm vrt yarn test:vrt"
   },

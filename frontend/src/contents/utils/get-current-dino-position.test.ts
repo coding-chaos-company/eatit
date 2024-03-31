@@ -1,4 +1,3 @@
-import { render } from '@testing-library/react';
 import type { RefObject } from 'react';
 import { getCurrentDinoPosition } from './get-current-dino-position';
 
