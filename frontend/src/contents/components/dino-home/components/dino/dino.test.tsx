@@ -3,7 +3,7 @@ import { Dino } from './dino';
 
 describe('Dino', () => {
   test('表示確認', () => {
-    const behavier = {
+    const behavior = {
       startPos: 0,
       direction: 'right',
       state: 'walk',
@@ -11,7 +11,7 @@ describe('Dino', () => {
     } as const;
     const status = { color: 'green', kind: 'brachio', level: 1, loop: 1, exp: 1 } as const;
 
-    render(<Dino dinoBehavier={behavier} dinoStatus={status} />);
+    render(<Dino dinoBehavior={behavior} dinoStatus={status} />);
 
     // 状態に応じたgif画像を表示する
     expect(chrome.runtime.getURL).toHaveBeenCalledWith('assets/dinos/walk-brachio-1-green.gif');
