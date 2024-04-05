@@ -2,7 +2,7 @@ from sqlalchemy import create_engine
 
 from models.status import Base
 
-SQLALCHEMY_DATABASE_URL = "sqlite:///eatit.sqlite3"
+SQLALCHEMY_DATABASE_URL = "sqlite:///sqlite/eatit.sqlite3"
 Engine = create_engine(SQLALCHEMY_DATABASE_URL, echo=False)
 
 
