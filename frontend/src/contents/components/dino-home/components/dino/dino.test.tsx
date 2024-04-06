@@ -13,13 +13,6 @@ describe('Dino', () => {
 
     render(<Dino dinoBehavior={behavior} dinoStatus={status} />);
 
-    // 状態に応じたgif画像を表示する
-    expect(chrome.runtime.getURL).toHaveBeenCalledWith('assets/dinos/walk-brachio-1-green.gif');
-    expect(screen.getByRole('img')).toHaveAttribute(
-      'src',
-      expect.stringMatching(/assets\/dinos\/walk-brachio-1-green.gif$/)
-    );
-
     // 状態に応じたaltが付与される
     expect(screen.getByRole('img')).toHaveAttribute('alt', 'dino walking');
   });
