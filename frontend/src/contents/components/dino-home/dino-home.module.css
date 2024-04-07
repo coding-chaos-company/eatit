@@ -30,6 +30,25 @@
   align-items: end;
 }
 
+.grasses {
+  position: absolute;
+  bottom: 4px;
+  left: 10%;
+}
+
+.grasses2 {
+  position: absolute;
+  bottom: 0px;
+  left: 30%;
+}
+
+.grasses3 {
+  position: absolute;
+  bottom: 5px;
+  left: 60%;
+  transform: scale(0.85);
+}
+
 .hidden {
   display: none;
 }
