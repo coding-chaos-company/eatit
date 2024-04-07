@@ -6,7 +6,7 @@ import { Dino, Feed, FeedBowl, FeedButton, Grass } from './components';
 import * as styles from './dino-home.module.css';
 import { useDinoHomeHandler } from './hooks/use-dino-home-handler';
 
-export type DinoBehavier = {
+export type DinoBehavior = {
   startPos: CSSProperties['left']; // アニメーションの開始位置
   direction: 'left' | 'right';
   animation: 'walking' | 'toWalking' | 'toBowl' | 'stop';
@@ -27,22 +27,22 @@ export const DinoHome = () => {
   const store = usePageStore(
     useShallow((state) => ({
       serving: state.serving,
-      dinoBehavier: state.dinoBehavier,
+      dinoBehavior: state.dinoBehavior,
       dinoStatus: state.dinoStatus,
-      visiblity: state.visiblity,
+      visibility: state.visibility,
       setServing: state.setServing,
-      setDinoBehavier: state.setDinoBehavier,
+      setDinoBehavior: state.setDinoBehavior,
       setDinoStatus: state.setDinoStatus,
-      setVisiblity: state.setVisiblity,
+      setVisibility: state.setVisibility,
     }))
   );
-  const { serving, dinoBehavier, dinoStatus, visiblity, setDinoBehavier, setVisiblity } = store;
+  const { serving, dinoBehavior, dinoStatus, visibility, setDinoBehavior, setVisibility } = store;
 
   /**
    * Handlers
    */
   const { handleClickFeedButton, handleDinoAnimationIteration } = useDinoHomeHandler(
-    { areaRef, dinoRef, direction: dinoBehavier.direction },
+    { areaRef, dinoRef, direction: dinoBehavior.direction },
     store
   );
 
@@ -54,18 +54,18 @@ export const DinoHome = () => {
   useEffect(() => {
     const handleVisibilityChange = () => {
       if (document.visibilityState === 'hidden') {
-        setVisiblity('hidden');
-        setDinoBehavier({
+        setVisibility('hidden');
+        setDinoBehavior({
           animation: 'stop',
         });
       } else if (document.visibilityState === 'visible') {
-        setDinoBehavier({
+        setDinoBehavior({
           startPos: 0,
           direction: 'right',
           animation: 'walking',
           state: 'walk',
         });
-        setVisiblity('visible');
+        setVisibility('visible');
       }
     };
 
@@ -78,20 +78,20 @@ export const DinoHome = () => {
 
   return (
     <div ref={areaRef} data-testid="DinoHome" className={styles.area}>
-      {visiblity === 'hidden' ? (
+      {visibility === 'hidden' ? (
         <Loading />
       ) : (
         <>
           <div
             ref={dinoRef}
-            className={`${styles.dino} ${styles[dinoBehavier.animation]}`}
+            className={`${styles.dino} ${styles[dinoBehavior.animation]}`}
             onAnimationIteration={handleDinoAnimationIteration}
             style={{
-              left: dinoBehavier.startPos,
-              transform: dinoBehavier.direction === 'right' ? 'scaleX(-1)' : 'scaleX(1)',
+              left: dinoBehavior.startPos,
+              transform: dinoBehavior.direction === 'right' ? 'scaleX(-1)' : 'scaleX(1)',
             }}
           >
-            <Dino dinoBehavier={dinoBehavier} dinoStatus={dinoStatus} />
+            <Dino dinoBehavior={dinoBehavior} dinoStatus={dinoStatus} />
           </div>
           <div className={styles.bowl}>
             <FeedBowl exp={dinoStatus.exp} />

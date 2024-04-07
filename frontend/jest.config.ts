@@ -16,7 +16,7 @@ const config: Config.InitialOptions = {
   transform: {
     '^.+\\.ts?$': ['ts-jest', { isolatedModules: true, useESM: true }],
     '^.+\\.tsx?$': ['ts-jest', { useESM: true, tsconfig: { jsx: 'react-jsx' } }],
-    '^.+\\.(css|styl|less|sass|scss|png|jpg|gif|ttf|woff|woff2)$': 'jest-transform-stub',
+    '^.+\\.(css|styl|less|sass|scss|png|jpg|ttf|woff|woff2|gif)$': 'jest-transform-stub',
   },
 };
 

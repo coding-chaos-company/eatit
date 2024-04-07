@@ -7,12 +7,12 @@ import { useDinoHomeHandler } from './use-dino-home-handler';
 
 describe('useDinoHomeHandler', () => {
   const setServing = jest.fn();
-  const setDinoBehavier = jest.fn();
+  const setDinoBehavior = jest.fn();
   const setDinoStatus = jest.fn();
 
   const mutationsMock = {
     setServing,
-    setDinoBehavier,
+    setDinoBehavior,
     setDinoStatus,
   };
 
@@ -44,7 +44,7 @@ describe('useDinoHomeHandler', () => {
       expect(setServing).toHaveBeenCalledWith(true);
 
       // dinoがご飯の方に移動する
-      expect(setDinoBehavier).toHaveBeenCalledWith({
+      expect(setDinoBehavior).toHaveBeenCalledWith({
         startPos: 50, // ボタンを押した時の位置がstartPosになっている
         direction: 'right',
         animation: 'toBowl',
@@ -73,7 +73,7 @@ describe('useDinoHomeHandler', () => {
       });
 
       // 左を向く
-      expect(setDinoBehavier).toHaveBeenCalledWith({ direction: 'left' });
+      expect(setDinoBehavior).toHaveBeenCalledWith({ direction: 'left' });
     });
 
     test('エサを食べ終わって左端まで歩いて戻った後、walkingアニメーションに戻る', () => {
@@ -96,7 +96,7 @@ describe('useDinoHomeHandler', () => {
       });
 
       // walkingアニメーションに戻る
-      expect(setDinoBehavier).toHaveBeenCalledWith({
+      expect(setDinoBehavior).toHaveBeenCalledWith({
         animation: 'walking',
         direction: 'right',
         startPos: 0,
@@ -141,7 +141,7 @@ describe('useDinoHomeHandler', () => {
       });
 
       // bend状態に移行している
-      expect(setDinoBehavier).toHaveBeenCalledWith({
+      expect(setDinoBehavior).toHaveBeenCalledWith({
         startPos: 'calc(100% - 160px)',
         animation: 'stop',
         state: 'bend',
@@ -151,13 +151,13 @@ describe('useDinoHomeHandler', () => {
       await waitForAdvanceTimers(1790);
 
       // bendが終わった後、eat状態に移行している
-      expect(setDinoBehavier).toHaveBeenCalledWith({ state: 'eat' });
+      expect(setDinoBehavior).toHaveBeenCalledWith({ state: 'eat' });
 
       // 3秒ご飯を食べる
       await waitForAdvanceTimers(3000);
 
       // ご飯を食べるのをやめて、左端まで歩いて戻る
-      expect(setDinoBehavier).toHaveBeenCalledWith({
+      expect(setDinoBehavior).toHaveBeenCalledWith({
         animation: 'toWalking',
         direction: 'left',
         state: 'walk',
