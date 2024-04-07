@@ -30,13 +30,15 @@ export const DinoHome = () => {
       dinoBehavior: state.dinoBehavior,
       dinoStatus: state.dinoStatus,
       visibility: state.visibility,
+      restartAnimation: state.restartAnimation,
+      stopAnimation: state.stopAnimation,
       setServing: state.setServing,
       setDinoBehavior: state.setDinoBehavior,
       setDinoStatus: state.setDinoStatus,
       setVisibility: state.setVisibility,
     }))
   );
-  const { serving, dinoBehavior, dinoStatus, visibility, setDinoBehavior, setVisibility } = store;
+  const { serving, dinoBehavior, dinoStatus, visibility, restartAnimation, stopAnimation } = store;
 
   /**
    * Handlers
@@ -54,25 +56,28 @@ export const DinoHome = () => {
   useEffect(() => {
     const handleVisibilityChange = () => {
       if (document.visibilityState === 'hidden') {
-        setVisibility('hidden');
-        setDinoBehavior({
-          animation: 'stop',
-        });
+        stopAnimation();
       } else if (document.visibilityState === 'visible') {
-        setDinoBehavior({
-          startPos: 0,
-          direction: 'right',
-          animation: 'walking',
-          state: 'walk',
-        });
-        setVisibility('visible');
+        restartAnimation();
       }
     };
 
+    const handleFocus = () => {
+      restartAnimation();
+    };
+
+    const handleBlur = () => {
+      stopAnimation();
+    };
+
     document.addEventListener('visibilitychange', handleVisibilityChange);
+    document.addEventListener('focus', handleFocus);
+    document.addEventListener('blur', handleBlur);
 
     return () => {
       document.removeEventListener('visibilitychange', handleVisibilityChange);
+      document.removeEventListener('focus', handleFocus);
+      document.removeEventListener('blur', handleBlur);
     };
   }, []);
 

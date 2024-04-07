@@ -1,7 +1,7 @@
 import * as feedAPI from '@/contents/api/feed';
 import type { Actions, State } from '@/contents/store/use-page-store';
 import { getCurrentDinoPosition, getUserName, wait } from '@/contents/utils';
-import { type AnimationEventHandler, type RefObject, useCallback } from 'react';
+import { type AnimationEventHandler, type RefObject, useCallback, useEffect } from 'react';
 
 export type Mutations = Pick<Actions, 'setServing' | 'setDinoBehavior' | 'setDinoStatus'>;
 export type HandlerArgs = {
