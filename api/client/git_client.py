@@ -3,7 +3,7 @@ import sys
 import datetime
 from typing import NamedTuple
 from typing import NamedTuple
-from utils import log_error
+from utils import log_info
 
 sys.path.append("../")
 from config import constants
@@ -36,7 +36,7 @@ class GitClient:
         if response.status_code == 200:
             return response.json()["name"]
         else:
-            log_error("対象ユーザが見つかりませんでした。：", self.user_name)
+            print("対象ユーザが見つかりませんでした。：", self.user_name)
 
     # ユーザの全リポジトリを取得する
     def get_repos_list(self) -> list:
@@ -57,7 +57,7 @@ class GitClient:
         if response.status_code == 200:
             return response.json()
         else:
-            log_error("対象ユーザのイベントが見つかりませんでした。：", self.user_name)
+            print("対象ユーザのイベントが見つかりませんでした。：", self.user_name)
             return []
 
     # リポジトリの全コミットを取得する
@@ -118,10 +118,10 @@ class GitClient:
             # 現段階ではプッシュイベントのみを対象にする
             if event["type"] == "PushEvent":
                 date_str = event["created_at"]
-                date = datetime.datetime.strptime(
-                        date_str, "%Y-%m-%dT%H:%M:%SZ"
-                )
-                if date <= last_date:
+                date = datetime.datetime.strptime(date_str, "%Y-%m-%dT%H:%M:%SZ")
+                jst_offset = datetime.timedelta(hours=9)
+
+                if date + jst_offset <= last_date:
                     break
 
                 commits = event["payload"]["commits"]
@@ -151,7 +151,7 @@ class GitClient:
                                         diff["filename"],
                                         diff["additions"],
                                         diff["deletions"],
-                                        date,
+                                        date + jst_offset,
                                         commit["sha"],
                                         parent_hash,
                                     )
@@ -162,102 +162,31 @@ class GitClient:
 
         return commit_list
 
-
-
-
-
-
-    # # ユーザの前回更新時までのdiffを全て取得する
-    # def get_commits_diff(self, last_date: str, current_date: str) -> list:
-    #     repos_list = self.get_repos_list()
-    #     repo_commit_list = []
-    #     for repo in repos_list:
-    #         repo_name = repo["name"]
-    #         params = {
-    #             "since": last_date.isoformat(),
-    #             "until": current_date.isoformat(),
-    #             "per_page": 100,
-    #         }
-
-    #         response = requests.get(
-    #             constants.GIT_COMMITS_URL(self.user_name, repo_name),
-    #             params=params,
-    #             headers=self.__headers,
-    #         )
-
-    #         if response.status_code == 200:
-    #             commits_data = response.json()
-    #             if not commits_data:
-    #                 continue
-
-    #             commit_list = []
-    #             for commit in commits_data:
-    #                 utc_date_str = commit["commit"]["author"]["date"]
-    #                 utc_date = datetime.datetime.strptime(
-    #                     utc_date_str, "%Y-%m-%dT%H:%M:%SZ"
-    #                 )
-    #                 jst_offset = datetime.timedelta(hours=9)
-
-    #                 parent_hash = ""
-    #                 if len(commit["parents"]) > 0:
-    #                     parent_hash = commit["parents"][0]["sha"]
-
-    #                 diff_response = requests.get(commit["url"], headers=self.__headers)
-    #                 if diff_response.status_code == 200:
-    #                     diffs = diff_response.json()["files"]
-    #                     diff_list = []
-    #                     for diff in diffs:
-    #                         diff_list.append(
-    #                             Diff(
-    #                                 diff["filename"],
-    #                                 diff["additions"],
-    #                                 diff["deletions"],
-    #                                 utc_date + jst_offset,
-    #                                 commit["sha"],
-    #                                 parent_hash,
-    #                             )
-    #                         )
-    #                     commit_list.append(diff_list)
-    #                 else:
-    #                     return []
-    #             repo_commit_list += commit_list
-    #         else:
-    #             return []
-    #     return repo_commit_list
-
     # 最終餌やり日から5日間の間にコミットしているかを判定
     def exist_5days_commits(self, last_date: str, current_date: str) -> bool:
-        # True:恐竜が生きている．False:恐竜が死んでいる
-        repos_list = self.get_repos_list()
+        events_list = self.get_events()
         date_list = []
-        for repo in repos_list:
-            repo_name = repo["name"]
-            params = {
-                "since": last_date.isoformat(),
-                "until": current_date.isoformat(),
-                "per_page": 100,
-            }
+        for event in events_list:
+            # 現段階ではプッシュイベントのみを対象にする
+            if event["type"] == "PushEvent":
+                date_str = event["created_at"]
+                date = datetime.datetime.strptime(date_str, "%Y-%m-%dT%H:%M:%SZ")
+                jst_offset = datetime.timedelta(hours=9)
+                if date + jst_offset <= last_date:
+                    break
 
-            response = requests.get(
-                constants.GIT_COMMITS_URL(self.user_name, repo_name),
-                params=params,
-                headers=self.__headers,
-            )
-
-            if response.status_code == 200:
-                commits_data = response.json()
-                if not commits_data:
+                commits = event["payload"]["commits"]
+                if not commits:
                     continue
-                else:
-                    for commit in commits_data:
-                        utc_date_str = commit["commit"]["author"]["date"]
-                        utc_date = datetime.datetime.strptime(
-                            utc_date_str, "%Y-%m-%dT%H:%M:%SZ"
-                        )
-                        jst_offset = datetime.timedelta(hours=9)
-                        date_list.append(utc_date + jst_offset)
-            else:
-                continue
+                for commit in commits:
+                    author = commit["author"]["name"]
+                    # コミット作成者がユーザ名と一致している時のみ判定
+                    if author == self.user_name or author == self.display_name:
+                        # コミットメッセージにmergeが含まれていたらマージコミットと判断してスキップ
+                        if "merge" in commit["message"].lower():
+                            continue
+                        date_list.append(date + jst_offset)
+                        break
 
         sorted_date_list = sorted(date_list, key=lambda x: x)
         sorted_date_list.insert(0, last_date)
