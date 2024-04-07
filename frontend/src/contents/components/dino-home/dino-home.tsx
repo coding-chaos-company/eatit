@@ -2,7 +2,7 @@ import { usePageStore } from '@/contents/store/use-page-store';
 import { type CSSProperties, useEffect, useRef } from 'react';
 import { useShallow } from 'zustand/react/shallow';
 import { Loading } from '../loading';
-import { Dino, Feed, FeedBowl, FeedButton } from './components';
+import { Dino, Feed, FeedBowl, FeedButton, Grass } from './components';
 import * as styles from './dino-home.module.css';
 import { useDinoHomeHandler } from './hooks/use-dino-home-handler';
 
@@ -98,6 +98,16 @@ export const DinoHome = () => {
           </div>
           <div className={serving ? styles.feed : styles.hidden}>
             <Feed />
+          </div>
+          <div className={styles.grasses}>
+            <Grass level={dinoStatus.level} />
+          </div>
+          {/* TODO：今後オブジェクトを追加する際に置き換える */}
+          <div className={styles.grasses2}>
+            <Grass />
+          </div>
+          <div className={styles.grasses3}>
+            <Grass />
           </div>
 
           <FeedButton onClick={handleClickFeedButton} disabled={serving} />

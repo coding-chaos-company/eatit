@@ -15,6 +15,10 @@
     "message": "exp",
     "description": "exp label at FeedBowl component"
   },
+  "dinoHome_grass_tooltip": {
+    "message": "level",
+    "description": "level label at Grass component"
+  },
   "dinoSelection_feedButton": {
     "message": "feed",
     "description": "feed button at DinoSelection component"
