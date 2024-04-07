@@ -9,7 +9,7 @@ describe('usePageStore', () => {
 
     expect(result.current.dinoStatus).toBe(null);
     expect(result.current.isRestarted).toBe(false);
-    expect(result.current.dinoBehavier).toStrictEqual({
+    expect(result.current.dinoBehavior).toStrictEqual({
       startPos: 0,
       direction: 'right',
       animation: 'walking',
@@ -17,7 +17,7 @@ describe('usePageStore', () => {
     });
     expect(result.current.serving).toBe(false);
     expect(result.current.splitting).toBe(false);
-    expect(result.current.visiblity).toBe('visible');
+    expect(result.current.visibility).toBe('visible');
   });
 
   test('それぞれの状態を更新できる', () => {
@@ -47,17 +47,17 @@ describe('usePageStore', () => {
     act(() => result.current.setIsRestarted(true));
     expect(result.current.isRestarted).toBe(true);
 
-    // setDinoBehavierを実行するとdinoBehavierの状態が更新される
-    expect(result.current.dinoBehavier).toStrictEqual({
+    // setDinoBehaviorを実行するとdinoBehaviorの状態が更新される
+    expect(result.current.dinoBehavior).toStrictEqual({
       startPos: 0,
       direction: 'right',
       animation: 'walking',
       state: 'walk',
     });
     // directionだけ変更
-    act(() => result.current.setDinoBehavier({ direction: 'left' }));
+    act(() => result.current.setDinoBehavior({ direction: 'left' }));
     // directionの値だけ変更されている
-    expect(result.current.dinoBehavier).toStrictEqual({
+    expect(result.current.dinoBehavior).toStrictEqual({
       startPos: 0,
       direction: 'left',
       animation: 'walking',
@@ -74,16 +74,16 @@ describe('usePageStore', () => {
     act(() => result.current.setSplitting(true));
     expect(result.current.splitting).toBe(true);
 
-    // setVisiblityを実行するとvisiblityの状態が更新される
-    expect(result.current.visiblity).toBe('visible');
-    act(() => result.current.setVisiblity('hidden'));
-    expect(result.current.visiblity).toBe('hidden');
+    // setVisibilityを実行するとvisibilityの状態が更新される
+    expect(result.current.visibility).toBe('visible');
+    act(() => result.current.setVisibility('hidden'));
+    expect(result.current.visibility).toBe('hidden');
 
     // initializeStateを実行すると全てのstateが初期値に戻る
     act(() => result.current.initializeState());
     expect(result.current.dinoStatus).toBe(null);
     expect(result.current.isRestarted).toBe(false);
-    expect(result.current.dinoBehavier).toStrictEqual({
+    expect(result.current.dinoBehavior).toStrictEqual({
       startPos: 0,
       direction: 'right',
       animation: 'walking',
@@ -91,6 +91,6 @@ describe('usePageStore', () => {
     });
     expect(result.current.serving).toBe(false);
     expect(result.current.splitting).toBe(false);
-    expect(result.current.visiblity).toBe('visible');
+    expect(result.current.visibility).toBe('visible');
   });
 });

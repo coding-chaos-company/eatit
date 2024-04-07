@@ -1,15 +1,17 @@
 import type { DinoStatus } from '@/contents/api/types';
-import type { DinoBehavier } from '../../dino-home';
+import { assets } from '@/contents/constants/assets';
+import type { DinoBehavior } from '../../dino-home';
 
 type DinoProps = {
-  dinoBehavier: DinoBehavier;
+  dinoBehavior: DinoBehavior;
   dinoStatus: DinoStatus;
 };
 
-export const Dino = ({ dinoBehavier, dinoStatus }: DinoProps) => {
-  const dinoImage = chrome.runtime.getURL(
-    `assets/dinos/${dinoBehavier.state}-${dinoStatus.kind}-${dinoStatus.level}-${dinoStatus.color}.gif`
+export const Dino = ({ dinoBehavior, dinoStatus }: DinoProps) => {
+  return (
+    <img
+      src={assets[dinoBehavior.state][dinoStatus.kind][dinoStatus.level][dinoStatus.color]}
+      alt={`dino ${dinoBehavior.state}ing`}
+    />
   );
-
-  return <img src={dinoImage} alt={`dino ${dinoBehavier.state}ing`} />;
 };
