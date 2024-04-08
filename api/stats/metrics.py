@@ -124,7 +124,9 @@ class MetricsManager:
 
     # コード経験値を算出
     def __calc_code_exp(self, current_score: float, user_score: float) -> int:
-        rate = current_score / user_score
+        rate = 1
+        if not current_score:
+            rate = current_score / user_score
         return round(constants.CODE_BASE_SCORE * rate)
 
     # 言語経験値を算出
