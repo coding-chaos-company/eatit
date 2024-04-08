@@ -8,8 +8,16 @@ load_dotenv()
 GIT_BASE_URL = "https://api.github.com/"
 
 
+def GIT_USER_URL(user_name: str):
+    return GIT_BASE_URL + "users/" + user_name
+
+
 def GIT_REPOS_URL(user_name: str):
     return GIT_BASE_URL + "users/" + user_name + "/repos"
+
+
+def GIT_EVENTS_URL(user_name: str):
+    return GIT_BASE_URL + "users/" + user_name + "/events"
 
 
 def GIT_COMMITS_URL(user_name: str, repo_name: str):
