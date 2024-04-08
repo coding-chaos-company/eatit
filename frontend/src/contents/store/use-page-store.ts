@@ -14,6 +14,8 @@ export type State = {
 
 export type Actions = {
   initializeState: () => void;
+  restartAnimation: () => void;
+  stopAnimation: () => void;
   setDinoStatus: (status: Partial<DinoStatus>) => void;
   setIsRestarted: (isRestarted: boolean) => void;
   setDinoBehavior: (behavior: Partial<DinoBehavior>) => void;
@@ -48,6 +50,19 @@ export const usePageStore = create<State & Actions>()(
         state.splitting = initialState.splitting;
         state.visibility = initialState.visibility;
         state.isRestarted = initialState.isRestarted;
+      });
+    },
+    restartAnimation: () => {
+      set((state) => {
+        state.serving = false;
+        state.visibility = 'visible';
+        state.dinoBehavior = initialState.dinoBehavior;
+      });
+    },
+    stopAnimation: () => {
+      set((state) => {
+        state.dinoBehavior.animation = 'stop';
+        state.visibility = 'hidden';
       });
     },
     setDinoStatus: (status) => {
