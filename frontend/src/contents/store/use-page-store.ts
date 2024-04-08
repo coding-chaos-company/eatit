@@ -1,31 +1,33 @@
 import type { DinoStatus } from '@/contents/api/types';
-import type { DinoBehavier } from '@/contents/components/dino-home/dino-home';
+import type { DinoBehavior } from '@/contents/components/dino-home/dino-home';
 import { create } from 'zustand';
 import { immer } from 'zustand/middleware/immer';
 
 export type State = {
   dinoStatus: DinoStatus | null;
   isRestarted: boolean;
-  dinoBehavier: DinoBehavier;
+  dinoBehavior: DinoBehavior;
   serving: boolean;
   splitting: boolean;
-  visiblity: 'visible' | 'hidden';
+  visibility: 'visible' | 'hidden';
 };
 
 export type Actions = {
   initializeState: () => void;
+  restartAnimation: () => void;
+  stopAnimation: () => void;
   setDinoStatus: (status: Partial<DinoStatus>) => void;
   setIsRestarted: (isRestarted: boolean) => void;
-  setDinoBehavier: (behavier: Partial<DinoBehavier>) => void;
+  setDinoBehavior: (behavior: Partial<DinoBehavior>) => void;
   setServing: (serving: boolean) => void;
   setSplitting: (splitting: boolean) => void;
-  setVisiblity: (visiblity: 'visible' | 'hidden') => void;
+  setVisibility: (visibility: 'visible' | 'hidden') => void;
 };
 
 const initialState = {
   dinoStatus: null,
   isRestarted: false,
-  dinoBehavier: {
+  dinoBehavior: {
     startPos: 0,
     direction: 'right',
     animation: 'walking',
@@ -33,7 +35,7 @@ const initialState = {
   },
   serving: false,
   splitting: false,
-  visiblity: 'visible',
+  visibility: 'visible',
 } satisfies State;
 
 export const usePageStore = create<State & Actions>()(
@@ -43,11 +45,24 @@ export const usePageStore = create<State & Actions>()(
     initializeState: () => {
       set((state) => {
         state.dinoStatus = initialState.dinoStatus;
-        state.dinoBehavier = initialState.dinoBehavier;
+        state.dinoBehavior = initialState.dinoBehavior;
         state.serving = initialState.serving;
         state.splitting = initialState.splitting;
-        state.visiblity = initialState.visiblity;
+        state.visibility = initialState.visibility;
         state.isRestarted = initialState.isRestarted;
+      });
+    },
+    restartAnimation: () => {
+      set((state) => {
+        state.serving = false;
+        state.visibility = 'visible';
+        state.dinoBehavior = initialState.dinoBehavior;
+      });
+    },
+    stopAnimation: () => {
+      set((state) => {
+        state.dinoBehavior.animation = 'stop';
+        state.visibility = 'hidden';
       });
     },
     setDinoStatus: (status) => {
@@ -60,9 +75,9 @@ export const usePageStore = create<State & Actions>()(
         state.isRestarted = isRestarted;
       });
     },
-    setDinoBehavier: (behavier) => {
+    setDinoBehavior: (behavior) => {
       set((state) => {
-        state.dinoBehavier = { ...state.dinoBehavier, ...behavier };
+        state.dinoBehavior = { ...state.dinoBehavior, ...behavior };
       });
     },
     setServing: (serving) => {
@@ -75,9 +90,9 @@ export const usePageStore = create<State & Actions>()(
         state.splitting = splitting;
       });
     },
-    setVisiblity: (visiblity) => {
+    setVisibility: (visibility) => {
       set((state) => {
-        state.visiblity = visiblity;
+        state.visibility = visibility;
       });
     },
   }))

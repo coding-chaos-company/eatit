@@ -11,4 +11,6 @@ describe('wait', () => {
     expect(setTimeoutMock).toHaveBeenCalledTimes(1);
     expect(setTimeoutMock).toHaveBeenLastCalledWith(expect.any(Function), delay);
   });
+
+  test.todo('wait中に離脱した場合、エラーをthrowする');
 });

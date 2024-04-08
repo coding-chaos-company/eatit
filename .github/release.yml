@@ -9,6 +9,9 @@ changelog:
     - title: Bug Fix 💊
       labels:
         - "bug"
+    - title: Refactoring ♻️
+      labels:
+        - "refactoring"
     - title: Other Changes 🛠
       labels:
         - "*"

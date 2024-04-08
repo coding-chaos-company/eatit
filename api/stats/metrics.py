@@ -6,7 +6,7 @@ sys.path.append("../")
 
 from client import GitClient
 from config import constants
-from utils import extract_extension, what_time
+from utils import extract_extension, what_time, log_info
 
 
 class Metrics(NamedTuple):
@@ -56,12 +56,14 @@ class MetricsManager:
 
         # feedの処理
         if current_met:
-            diffs = git_client.get_commits_diff(current_met.last_date, current_date)
+            diffs = git_client.get_commits_diff(current_met.last_date)
             current_level = current_met.level
             current_exp = current_met.exp
             code_score = current_met.code_score * current_met.commits_count
             change_files = current_met.change_files * current_met.commits_count
             sorted_diffs = sorted(diffs, key=lambda x: x[0].date)
+            log_info(sorted_diffs)
+            log_info(current_met.last_date)
 
             for index, files in enumerate(sorted_diffs):
                 f_met = self.__get_files_metrics(files)

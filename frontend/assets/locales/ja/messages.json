@@ -13,7 +13,11 @@
   },
   "dinoHome_feedBowl_tooltip": {
     "message": "exp",
-    "description": "DinoHomeコンポーネントのツールチップで表示される経験値ラベル"
+    "description": "FeedBowlコンポーネントのツールチップで表示される経験値のラベル"
+  },
+  "dinoHome_grass_tooltip": {
+    "message": "level",
+    "description": "Grassコンポーネントのツールチップで表示されるレベルのラベル"
   },
   "dinoSelection_feedButton": {
     "message": "えさをやる",

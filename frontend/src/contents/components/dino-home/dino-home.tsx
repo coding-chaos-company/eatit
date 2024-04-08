@@ -2,11 +2,11 @@ import { usePageStore } from '@/contents/store/use-page-store';
 import { type CSSProperties, useEffect, useRef } from 'react';
 import { useShallow } from 'zustand/react/shallow';
 import { Loading } from '../loading';
-import { Dino, Feed, FeedBowl, FeedButton } from './components';
+import { Dino, Feed, FeedBowl, FeedButton, Grass } from './components';
 import * as styles from './dino-home.module.css';
 import { useDinoHomeHandler } from './hooks/use-dino-home-handler';
 
-export type DinoBehavier = {
+export type DinoBehavior = {
   startPos: CSSProperties['left']; // アニメーションの開始位置
   direction: 'left' | 'right';
   animation: 'walking' | 'toWalking' | 'toBowl' | 'stop';
@@ -27,22 +27,24 @@ export const DinoHome = () => {
   const store = usePageStore(
     useShallow((state) => ({
       serving: state.serving,
-      dinoBehavier: state.dinoBehavier,
+      dinoBehavior: state.dinoBehavior,
       dinoStatus: state.dinoStatus,
-      visiblity: state.visiblity,
+      visibility: state.visibility,
+      restartAnimation: state.restartAnimation,
+      stopAnimation: state.stopAnimation,
       setServing: state.setServing,
-      setDinoBehavier: state.setDinoBehavier,
+      setDinoBehavior: state.setDinoBehavior,
       setDinoStatus: state.setDinoStatus,
-      setVisiblity: state.setVisiblity,
+      setVisibility: state.setVisibility,
     }))
   );
-  const { serving, dinoBehavier, dinoStatus, visiblity, setDinoBehavier, setVisiblity } = store;
+  const { serving, dinoBehavior, dinoStatus, visibility, restartAnimation, stopAnimation } = store;
 
   /**
    * Handlers
    */
   const { handleClickFeedButton, handleDinoAnimationIteration } = useDinoHomeHandler(
-    { areaRef, dinoRef, direction: dinoBehavier.direction },
+    { areaRef, dinoRef, direction: dinoBehavior.direction },
     store
   );
 
@@ -54,50 +56,63 @@ export const DinoHome = () => {
   useEffect(() => {
     const handleVisibilityChange = () => {
       if (document.visibilityState === 'hidden') {
-        setVisiblity('hidden');
-        setDinoBehavier({
-          animation: 'stop',
-        });
+        stopAnimation();
       } else if (document.visibilityState === 'visible') {
-        setDinoBehavier({
-          startPos: 0,
-          direction: 'right',
-          animation: 'walking',
-          state: 'walk',
-        });
-        setVisiblity('visible');
+        restartAnimation();
       }
     };
 
+    const handleFocus = () => {
+      restartAnimation();
+    };
+
+    const handleBlur = () => {
+      stopAnimation();
+    };
+
     document.addEventListener('visibilitychange', handleVisibilityChange);
+    document.addEventListener('focus', handleFocus);
+    document.addEventListener('blur', handleBlur);
 
     return () => {
       document.removeEventListener('visibilitychange', handleVisibilityChange);
+      document.removeEventListener('focus', handleFocus);
+      document.removeEventListener('blur', handleBlur);
     };
   }, []);
 
   return (
     <div ref={areaRef} data-testid="DinoHome" className={styles.area}>
-      {visiblity === 'hidden' ? (
+      {visibility === 'hidden' ? (
         <Loading />
       ) : (
         <>
           <div
             ref={dinoRef}
-            className={`${styles.dino} ${styles[dinoBehavier.animation]}`}
+            className={`${styles.dino} ${styles[dinoBehavior.animation]}`}
             onAnimationIteration={handleDinoAnimationIteration}
             style={{
-              left: dinoBehavier.startPos,
-              transform: dinoBehavier.direction === 'right' ? 'scaleX(-1)' : 'scaleX(1)',
+              left: dinoBehavior.startPos,
+              transform: dinoBehavior.direction === 'right' ? 'scaleX(-1)' : 'scaleX(1)',
             }}
           >
-            <Dino dinoBehavier={dinoBehavier} dinoStatus={dinoStatus} />
+            <Dino dinoBehavior={dinoBehavior} dinoStatus={dinoStatus} />
           </div>
           <div className={styles.bowl}>
             <FeedBowl exp={dinoStatus.exp} />
           </div>
           <div className={serving ? styles.feed : styles.hidden}>
             <Feed />
+          </div>
+          <div className={styles.grasses}>
+            <Grass level={dinoStatus.level} />
+          </div>
+          {/* TODO：今後オブジェクトを追加する際に置き換える */}
+          <div className={styles.grasses2}>
+            <Grass />
+          </div>
+          <div className={styles.grasses3}>
+            <Grass />
           </div>
 
           <FeedButton onClick={handleClickFeedButton} disabled={serving} />
