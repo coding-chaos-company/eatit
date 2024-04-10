@@ -111,6 +111,8 @@ class MetricsManager:
 
     # レベルが上がったどうかを判定
     def __calc_growth(self, level: int, exp: int) -> CurrentGrowth | None:
+        if level >= 4:
+            return None
         if exp >= constants.EXP(level):
             return CurrentGrowth(level=level + 1, exp=constants.EXP(level) - exp)
         return None
