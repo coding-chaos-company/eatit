@@ -2,9 +2,8 @@
 
 GitHubの草で恐竜を育てよう！
 
-
 <div align="center">
-  <img width="743" alt="スクリーンショット 2024-03-23 1 18 02" src="https://github.com/coding-chaos-company/eatit/assets/67625825/c8807876-2776-4b0d-a371-89b5468a7f2a">
+  <img alt="スクリーンショット 2024-03-23 1 18 02" src="https://github.com/coding-chaos-company/eatit/assets/107530622/b186cabe-2250-4b83-9638-a91144212232" width="80%">
 </div>
 
 ## ご意見・ご要望など
