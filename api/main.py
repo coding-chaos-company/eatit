@@ -4,7 +4,7 @@ from routers import status
 from jobs import status as status_jobs
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
-app = FastAPI()
+app = FastAPI(docs_url=None)
 app.include_router(status.router)
 
 app.add_middleware(
