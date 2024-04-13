@@ -87,8 +87,9 @@ class GitClient:
         latest_commit = self.get_latest_commit(repos_list)
 
         parent_hash = ""
-        if len(latest_commit["parents"]) > 0:
-            parent_hash = latest_commit["parents"][0]["sha"]
+        if "parents" in latest_commit:
+            if len(latest_commit["parents"]) > 0:
+                parent_hash = latest_commit["parents"][0]["sha"]
 
         response = requests.get(latest_commit["url"], headers=self.__headers)
         if response.status_code == 200:
