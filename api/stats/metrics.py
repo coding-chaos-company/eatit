@@ -110,11 +110,11 @@ class MetricsManager:
             )
 
     # レベルが上がったどうかを判定
-    def __calc_growth(self, level: int, exp: int) -> CurrentGrowth | None:
-        if level >= 4:
+    def __calc_growth(self, current_level: int, exp: int) -> CurrentGrowth | None:
+        if current_level >= 4:
             return None
-        if exp >= constants.EXP(level):
-            return CurrentGrowth(level=level + 1, exp=constants.EXP(level) - exp)
+        if exp >= constants.EXP(current_level):
+            return CurrentGrowth(level=current_level + 1, exp=constants.EXP(current_level) - exp)
         return None
 
     # トータル経験値を算出
@@ -131,6 +131,9 @@ class MetricsManager:
             rate = current_score / user_score
         except ZeroDivisionError:
             rate = 1
+        # 倍率の上限値を決めておく
+        if rate > 3:
+            rate = 3
         return round(constants.CODE_BASE_SCORE * rate)
 
     # 言語経験値を算出
@@ -140,6 +143,9 @@ class MetricsManager:
     # ファイル数経験値を算出
     def __calc_file_exp(self, current_files: int, user_files: int) -> int:
         rate = current_files / user_files
+        # 倍率の上限値を決めておく
+        if rate > 3:
+            rate = 3
         return round(constants.CHANGE_FILES_BASE_SCORE * rate)
 
     # 1コミット分のメトリクスを取得
