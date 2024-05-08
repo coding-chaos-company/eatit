@@ -51,8 +51,11 @@ class GitClient:
 
     # ユーザの全イベントを取得する
     def get_events(self) -> list:
+        params = {"per_page": 100}
         response = requests.get(
-            constants.GIT_EVENTS_URL(self.user_name), headers=self.__headers
+            constants.GIT_EVENTS_URL(self.user_name),
+            headers=self.__headers,
+            params=params,
         )
         if response.status_code == 200:
             return response.json()
@@ -189,9 +192,10 @@ class GitClient:
                         date_list.append(date + jst_offset)
                         break
 
+        date_list.insert(0, last_date)
+        date_list.append(current_date)
         sorted_date_list = sorted(date_list, key=lambda x: x)
-        sorted_date_list.insert(0, last_date)
-        sorted_date_list.append(current_date)
+        log_info(sorted_date_list)
         for first, second in zip(sorted_date_list[:-1], sorted_date_list[1:]):
             delta = abs(second - first)
             delta_days = delta.days
