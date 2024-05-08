@@ -195,7 +195,7 @@ class GitClient:
         date_list.insert(0, last_date)
         date_list.append(current_date)
         sorted_date_list = sorted(date_list, key=lambda x: x)
-        log_info(sorted_date_list)
+        # log_info(sorted_date_list)
         for first, second in zip(sorted_date_list[:-1], sorted_date_list[1:]):
             delta = abs(second - first)
             delta_days = delta.days
