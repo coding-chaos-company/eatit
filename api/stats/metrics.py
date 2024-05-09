@@ -114,7 +114,9 @@ class MetricsManager:
         if current_level >= 4:
             return None
         if exp >= constants.EXP(current_level):
-            return CurrentGrowth(level=current_level + 1, exp=constants.EXP(current_level) - exp)
+            return CurrentGrowth(
+                level=current_level + 1, exp=constants.EXP(current_level) - exp
+            )
         return None
 
     # トータル経験値を算出
