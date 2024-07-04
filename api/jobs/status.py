@@ -22,7 +22,7 @@ async def is_arrive_dino():
                 if not git_client.exist_5days_commits(
                     last_date=user.last_updated, current_date=utils.what_time()
                 ):
-                    user.color = None
+                    user.color = 'green'
                     user.exp = 0
                     user.level = 1
                     user.loop = 1
